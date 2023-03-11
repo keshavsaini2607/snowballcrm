@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import RoutesRenderer from './routes/RoutesRenderer'
 
 const App = () => {
   return (
-    <div>App</div>
+      <BrowserRouter>
+        <RoutesRenderer />
+      </BrowserRouter>
   )
 }
 
