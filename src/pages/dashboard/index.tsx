@@ -1,14 +1,15 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet, redirect, useLocation } from "react-router-dom";
 import DashboardNav from "../../components/navbar/DashboardNav";
 import SmallLogo from "../../assets/smalllogo.svg";
 import CrmLogo from "../../assets/crmlogo.svg";
 import { dashboardMenu } from "../../utils/constants";
 import { Avatar, Icon } from "@mui/material";
 import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigation } from "react-router";
 
 export default function Root() {
-   const [isTabsHidden, setIsTabsHidden] = useState(true);
+   const [isTabsHidden, setIsTabsHidden] = useState(false);
 
    return (
       <div className="w-full h-[calc(100vh)] overflow-hidden">
@@ -46,11 +47,18 @@ export default function Root() {
                      </span>
                   )}
                </div>
-               <ul className={`flex ${isTabsHidden ? 'items-center' : 'items-start'} flex-col gap-2 w-max`}>
+               <ul
+                  className={`flex ${
+                     isTabsHidden ? "items-center" : "items-start"
+                  } flex-col gap-2 w-max`}
+               >
                   {dashboardMenu.map((menu) => (
-                     <li
+                     <Link
+                        to={`/dashboard/${menu.icon}`}
                         key={menu.id}
-                        className={`p-2 ${isTabsHidden ? 'ml-2' : 'ml-3'} cursor-pointer flex items-center gap-3`}
+                        className={`p-2 ${
+                           isTabsHidden ? "ml-2" : "ml-3"
+                        } cursor-pointer flex items-center gap-3`}
                      >
                         <Icon
                            component={() => (
@@ -63,16 +71,16 @@ export default function Root() {
                         {!isTabsHidden && (
                            <span className="text-[#9C9B9B]">{menu.title}</span>
                         )}
-                     </li>
+                     </Link>
                   ))}
                </ul>
             </aside>
             <section
                className={`${
-                  isTabsHidden ? "w-full" : "w-[80%]"
+                  isTabsHidden ? "w-full pl-6" : "w-[80%]"
                }  overflow-scroll h-[calc(100vh_-_10vh)]`}
             >
-               <h1 className="text-5xl">Testing Dashboard</h1>
+               <Outlet />
             </section>
          </div>
       </div>
