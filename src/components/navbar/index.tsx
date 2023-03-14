@@ -5,7 +5,7 @@ import { homeNavTabs } from "../../utils/constants";
 
 const Navbar = () => {
    return (
-      <nav className="p-4 flex items-center justify-between">
+      <nav className="p-4 flex items-center justify-between z-10">
          <img src={Logo} className="w-auto h-auto" />
          <ul className="flex items-center gap-x-10">
             {homeNavTabs.map((tab) => (
@@ -17,8 +17,8 @@ const Navbar = () => {
                </li>
             ))}
          </ul>
-         <Link to="/dashboard">
-            <button className="bg-primary px-16 py-2 text-sm text-white">
+         <Link to="/dashboard" className="z-10">
+            <button className="bg-primary px-16 py-2 text-sm text-white z-10">
                Signin
             </button>
          </Link>
