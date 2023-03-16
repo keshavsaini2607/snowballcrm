@@ -33,9 +33,9 @@ const Onboard = () => {
    return (
       <div className="relative">
          <Navbar />
-         <div className="flex items-start justify-between px-10 py-20 z-10">
-            <div className="w-[45%]">
-               <h1 className="text-5xl mb-5 font-extrabold">
+         <div className="flex flex-col md:flex-row items-start justify-between px-10 md:py-20 z-10">
+            <div className="md:w-[45%]">
+               <h1 className="text-3xl md:text-4xl lg:text-5xl mb-5 font-extrabold">
                   Business-centric CRM to{" "}
                   <span className="text-primary">elevate opportunity</span>
                </h1>
@@ -47,7 +47,7 @@ const Onboard = () => {
                   we are here to help you get started.
                </p>
             </div>
-            <div className="flex flex-col items-start w-[30%] gap-3 z-10">
+            <div className="flex flex-col items-start md:w-[40%] lg:w-[30%] gap-3 mt-10 md:mt-0 z-10">
                <h4 className="text-xl font-bold">
                   Get started with our user-friendly platform for awesome
                   customer relationship.
@@ -77,10 +77,10 @@ const Onboard = () => {
                <Outlet />
             </div>
          </div>
-         <div className="px-10 z-10 flex items-start justify-between w-full mt-16">
-            <img src={Dashboard} alt="dashboard" className="z-10" />
-            <div className="text-white w-[40%]">
-               <h2 className="font-extrabold text-5xl mb-7">
+         <div className="px-10 z-10 flex flex-col md:flex-row items-start justify-between w-full mt-16">
+            <img src={Dashboard} alt="dashboard" className="z-10 w-[100%] md:w-[50%]" />
+            <div className="lg:text-white md:w-[40%]">
+               <h2 className="font-extrabold text-2xl mt-10 md:mt-0 md:text-4xl lg:text-5xl mb-7">
                   A new way to look at your customer pipeline
                </h2>
                <p>
@@ -92,37 +92,37 @@ const Onboard = () => {
                </p>
             </div>
          </div>
-         <div className="px-10 z-10 flex items-center justify-between w-full mt-10">
-            <img src={QuoteImg} alt="back_img" className="bg-white" />
+         <div className="px-10 z-10 flex flex-col md:flex-row items-center justify-between w-full mt-10">
+            <img src={QuoteImg} alt="back_img" className="bg-white w-[100%] md:w-[50%] mb-10 md:mb-0" />
             <img src={HeroImg} alt="back_img" className="" />
             <div className="relative">
                <img
                   src={IconImg}
                   alt="back_img"
-                  className="w-[95%] pl-5 mt-10"
+                  className="w-[95%] pl-5 mt-10 hidden lg:block"
                />
                <img
                   src={SignupImg}
                   alt="back_img"
-                  className="absolute bottom-28"
+                  className="absolute bottom-28 hidden lg:block"
                />
             </div>
          </div>
          <div className="px-10 z-10 flex items-center justify-between w-full mt-10">
             <img src={BannerImg} alt="back_img" className="" />
          </div>
-         <div className="px-10 z-10 flex flex-col items-center justify-between w-max mx-auto relative mt-20">
-            <h2 className="text-5xl font-extrabold mb-10">
+         <div className="px-10 z-10 flex flex-col items-center justify-between mx-auto lg:w-max relative mt-20">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold md:mb-10">
                More reasons to try SnowBall CRM today
             </h2>
             <div className="flex items-end justify-end w-full">
-               <img src={SignupBlack} alt="signup" />
+               <img src={SignupBlack} alt="signup" className="mt-5 md:mt-0 w-[50%] sm:w-[30%] md:w-[20%] lg:w-auto" />
             </div>
          </div>
-         <div className="px-10 z-10 flex items-center justify-between w-full mt-20 pb-10">
+         <div className="px-10 z-10 flex flex-col md:flex-row items-center justify-between w-full mt-20 pb-10">
             {features.map((feature) => (
                <div
-                  className="w-[24%] flex items-center flex-col text-center gap-3"
+                  className="md:w-[24%] flex items-center flex-col text-center gap-3 mt-10 md:mt-0"
                   key={feature.id}
                >
                   <h2 className="text-[#477bab] text-2xl font-extrabold">
@@ -141,12 +141,12 @@ const Onboard = () => {
          <img
             src={GradientTriangle}
             alt="back_img"
-            className="absolute top-0 right-0 -z-10 h-[200vh]"
+            className="absolute top-0 right-0 -z-10 h-[200vh] hidden lg:block"
          />
          <img
             src={ColorTriangle}
             alt="back_img"
-            className="absolute top-0 right-0 -z-10 h-[200vh]"
+            className="absolute top-0 right-0 -z-10 h-[200vh] hidden lg:block"
          />
       </div>
    );
