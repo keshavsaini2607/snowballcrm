@@ -1,27 +1,67 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { FormControl, MenuItem, Select } from "@mui/material";
+import { useMutation } from "react-query";
+import { signinUser } from "../../api/auth";
+import { SigninProps } from "../../api/auth/types";
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
    const [currentStep, setCurrentStep] = useState(0);
    const [organization, setOrganization] = useState("");
+   const [formValues, setFormValues] = useState<any>();
+   const navigate = useNavigate();
 
-   const handleOnboard = () => {
+   function handleInputChange(event: any) {
+      const { name, value } = event.target;
+      setFormValues({ ...formValues, [name]: value });
+   }
+
+   const handleOnboard = (e: FormEvent) => {
+      e.preventDefault();
       if (currentStep >= 2) {
          setCurrentStep(0);
          return;
       }
-      setCurrentStep((p) => p + 1);
+
+      const params = new URLSearchParams();
+
+      params.append('username', formValues.username);
+      params.append('password', formValues.password);
+
+      if (currentStep === 0) {
+         signinMutation.mutate(params)
+      }
    };
 
+   const signinMutation = useMutation(signinUser, {
+      onSuccess(data, variables, context) {
+         console.log("signin success", data);
+         // setCurrentStep(p => p + 1);
+         localStorage.setItem('access_token', data.access_token);
+         navigate('/dashboard');
+      },
+      onError(error, variables, context) {
+         console.log("signin error", error, 'v', context);
+      },
+   });
+
    return (
-      <div>
+      <form onSubmit={handleOnboard}>
          {currentStep === 0 ? (
             <>
-               <input placeholder="Username" type="text" className="input" />
+               <input
+                  placeholder="Username"
+                  type="text"
+                  className="input"
+                  name="username"
+                  onChange={handleInputChange}
+               />
                <input
                   placeholder="Password"
                   type="password"
                   className="input mt-4"
+                  name="password"
+                  onChange={handleInputChange}
                />
             </>
          ) : null}
@@ -60,11 +100,11 @@ const Signin = () => {
          ) : null}
          <button
             className="bg-primary px-16 py-2 text-white w-full mt-4"
-            onClick={handleOnboard}
+            type="submit"
          >
-            Next
+            {signinMutation.isLoading ? 'Please wait...' : 'Next'}
          </button>
-      </div>
+      </form>
    );
 };
 

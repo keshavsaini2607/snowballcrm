@@ -1,21 +1,21 @@
 import React, { FormEvent, useState } from "react";
 import { UserRegistrationStep, verifyEmailTxt } from "../../utils/constants";
 import { GiCheckMark } from "react-icons/gi";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { emailSignup, emailVerification, signup } from "../../api/auth";
 import { SignupProps, VerificationProps } from '../../api/auth/types';
-import { useLocation, useNavigate, useNavigation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Signup = () => {
    const navigate = useNavigate();
    const [currentStep, setCurrentStep] = useState(0);
    const [username, setUsername] = useState("");
    const location = useLocation();
-   console.log({location})
 
-   
+   let r_t = "D8rvyhmBtRm77AJZQh8bGNhe73t6eMdV";
+   let t_k = "Ac66ppJYrYbjnjzn9JxeZxCJpT8Yv4FJ";
 
-   const handleOnboard = (e: FormEvent) => {
+   const handleOnboard = async(e: FormEvent) => {
       e.preventDefault();
 
       if (currentStep >= 3) {
@@ -23,23 +23,27 @@ const Signup = () => {
          return;
       }
       if(currentStep === 0) {
-         console.log("mutating");
          emailSignupMutation.mutate(username);
       }
 
       if(currentStep === 1) {
-         // const isEmailVerified = useQuery(['emailVerification', [{t_k: "", r_t: ""} as VerificationProps]], emailVerification);
+         let props: VerificationProps = {
+            t_k: t_k,
+            r_t: r_t
+         }
+         const isEmailVerified = await emailVerification(props);
+         if(isEmailVerified) {
+            setCurrentStep(p => p + 1);
+         }
+         return;
       }
 
       if(currentStep === 2) {
          signupMutation.mutate({
-            token: "wmX9j2ygZGp8h7eUXHeqXYjxw3rQzEtq",
+            token: t_k,
             password: "Kash@9828",
-            r_token: "yn4GB9mNyVk87tzx7Xt6vJ8nbFw8uMXv"
+            r_token: r_t
          } as SignupProps)
-      }
-      if(!emailSignupMutation.isSuccess) {
-         setCurrentStep((p) => p + 1);
       }
       console.log({currentStep});
    };
@@ -51,22 +55,14 @@ const Signup = () => {
          console.log({data})
          if(data.status === UserRegistrationStep.VERIFIED) {
             setCurrentStep(2);
+         }else {
+            setCurrentStep(p => p + 1);
          }
       },
       onError: (error) => {
          console.log("Error signing up", error);
       },
    });
-
-   const verifyEmailMutation = useMutation(emailVerification, {
-      onSuccess(data, variables, context) {
-          console.log("verified");
-          setCurrentStep((p) => p + 1);
-      },
-      onError(error, variables, context) {
-          console.log('error verifying', error);
-      },
-   })
 
    const signupMutation = useMutation(signup, {
       onSuccess(data) {
@@ -146,7 +142,7 @@ const Signup = () => {
             className="bg-primary px-16 py-2 text-white w-full mt-4"
             type="submit"
          >
-            Next
+            {emailSignupMutation.isLoading ? 'Please wait...' : 'Next'}
          </button>
       </form>
    );

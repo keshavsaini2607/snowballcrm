@@ -2,6 +2,7 @@ import { Divider } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/demologo.svg";
+import ProfileMenu from "./ProfileMenu";
 
 const DashboardNav = () => {
    return (
@@ -13,7 +14,7 @@ const DashboardNav = () => {
          <div className="flex items-center gap-4">
             <Link to="/dashboard">Soniez Group</Link>
             <span className="border-[1px] text-gray-600 h-[100%]"></span>
-            <Link to="/dashboard">Sam Benny</Link>
+            <ProfileMenu />
          </div>
       </nav>
    );

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { demo } from "../../api/auth";
 import Navbar from "../../components/navbar";
 import ColorTriangle from "../../assets/hero/triangle_color.svg";
 import GradientTriangle from "../../assets/hero/triangle_gradient.svg";
@@ -17,17 +16,6 @@ import Footer from "../../components/footer";
 
 const Onboard = () => {
    const location = useLocation();
-   const { isError, error, isLoading, data } = useQuery("posts", demo, {
-      staleTime: 6000,
-   });
-
-   if (isLoading) {
-      return <h1>Loading...</h1>;
-   }
-
-   if (isError && error) {
-      return <h1>{`${error}`}</h1>;
-   }
 
    return (
       <div className="relative">

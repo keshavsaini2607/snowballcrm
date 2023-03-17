@@ -14,6 +14,12 @@ const RoutesRenderer = () => {
    const location = useLocation();
 
    useEffect(() => {
+      let isAuth = localStorage.getItem('access_token');
+      if(isAuth) {
+         setLoggedIn(true);
+      } else {
+         setLoggedIn(false);
+      }
       if(location.pathname === "/dashboard") {
          navigate("/dashboard/leads");
       }
@@ -23,7 +29,7 @@ const RoutesRenderer = () => {
       
       {
          path: "/",
-         element: <Onboard />,
+         element: !loggedIn ? <Onboard /> : <Navigate to="/dashboard" />,
          children: [
             {
                path: "/",
