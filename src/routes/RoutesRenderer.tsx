@@ -30,6 +30,10 @@ const RoutesRenderer = () => {
                element: <Signup />,
             },
             {
+               path: ":token:rtoken",
+               element: <Signup />,
+            },
+            {
                path: "/signin",
                element: <Signin />,
             },

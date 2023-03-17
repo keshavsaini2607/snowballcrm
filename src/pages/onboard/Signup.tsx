@@ -2,13 +2,18 @@ import React, { FormEvent, useState } from "react";
 import { UserRegistrationStep, verifyEmailTxt } from "../../utils/constants";
 import { GiCheckMark } from "react-icons/gi";
 import { useMutation, useQuery } from "react-query";
-import { emailSignup, emailVerification } from "../../api/auth";
+import { emailSignup, emailVerification, signup } from "../../api/auth";
+import { SignupProps, VerificationProps } from '../../api/auth/types';
+import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 
 const Signup = () => {
+   const navigate = useNavigate();
    const [currentStep, setCurrentStep] = useState(0);
    const [username, setUsername] = useState("");
+   const location = useLocation();
+   console.log({location})
 
-   // const isEmailVerified = useQuery("emailVerification", emailVerification, {staleTime: 3000});
+   
 
    const handleOnboard = (e: FormEvent) => {
       e.preventDefault();
@@ -17,16 +22,29 @@ const Signup = () => {
          setCurrentStep(0);
          return;
       }
-      if(currentStep === 1) {
+      if(currentStep === 0) {
+         console.log("mutating");
          emailSignupMutation.mutate(username);
       }
-      if(!emailSignupMutation.isLoading) {
 
+      if(currentStep === 1) {
+         // const isEmailVerified = useQuery(['emailVerification', [{t_k: "", r_t: ""} as VerificationProps]], emailVerification);
+      }
+
+      if(currentStep === 2) {
+         signupMutation.mutate({
+            token: "wmX9j2ygZGp8h7eUXHeqXYjxw3rQzEtq",
+            password: "Kash@9828",
+            r_token: "yn4GB9mNyVk87tzx7Xt6vJ8nbFw8uMXv"
+         } as SignupProps)
+      }
+      if(!emailSignupMutation.isSuccess) {
          setCurrentStep((p) => p + 1);
       }
-      console.log("mutating");
-      
+      console.log({currentStep});
    };
+   console.log({currentStep});
+
 
    const emailSignupMutation = useMutation(emailSignup, {
       onSuccess: (data) => {
@@ -39,6 +57,26 @@ const Signup = () => {
          console.log("Error signing up", error);
       },
    });
+
+   const verifyEmailMutation = useMutation(emailVerification, {
+      onSuccess(data, variables, context) {
+          console.log("verified");
+          setCurrentStep((p) => p + 1);
+      },
+      onError(error, variables, context) {
+          console.log('error verifying', error);
+      },
+   })
+
+   const signupMutation = useMutation(signup, {
+      onSuccess(data) {
+         console.log("user created", data);
+         navigate('/signin');
+      },
+      onError(error) {
+         console.log('error creating user', error);
+      }
+   })
    
 
    return (

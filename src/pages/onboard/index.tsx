@@ -17,7 +17,6 @@ import Footer from "../../components/footer";
 
 const Onboard = () => {
    const location = useLocation();
-   console.log(location);
    const { isError, error, isLoading, data } = useQuery("posts", demo, {
       staleTime: 6000,
    });

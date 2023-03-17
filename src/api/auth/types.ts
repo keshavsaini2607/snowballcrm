@@ -8,3 +8,8 @@ export interface SignupProps {
     r_token: string;
     password: string;
 }
+
+export interface VerificationProps {
+    t_k: string;
+    r_t: string;
+}

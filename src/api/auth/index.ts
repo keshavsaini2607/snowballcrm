@@ -1,7 +1,7 @@
 import axios from "axios";
 import server from "..";
 import { handleError } from "../../utils/helpers"
-import { SigninProps, SignupProps } from "./types";
+import { SigninProps, SignupProps, VerificationProps } from "./types";
 
 export const signinUser = async(props: SigninProps) => {
     try {
@@ -21,9 +21,9 @@ export const emailSignup = async(username: string) => {
     }
 }
 
-export const emailVerification = async() => {
+export const emailVerification = async(verificationProps: VerificationProps) => {
     try {
-        const response = await server.get("/auth/email-verification");
+        const response = await server.get(`/auth/email-verification?t_k=${verificationProps.t_k}&r_t=${verificationProps.r_t}`);
         return response.data;
     } catch (error) {
         handleError(error);
