@@ -1,9 +1,9 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { UserRegistrationStep, verifyEmailTxt } from "../../utils/constants";
 import { GiCheckMark } from "react-icons/gi";
 import { useMutation } from "react-query";
 import { emailSignup, emailVerification, signup } from "../../api/auth";
-import { SignupProps, VerificationProps } from '../../api/auth/types';
+import { SignupProps, VerificationProps } from "../../api/auth/types";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -11,52 +11,68 @@ const Signup = () => {
    const [currentStep, setCurrentStep] = useState(0);
    const [username, setUsername] = useState("");
    const location = useLocation();
+   const queryString = location.search;
+
+   function extractTokens(queryString: string) {
+      const params = new URLSearchParams(queryString);
+      const token = params.get("token");
+      const rtoken = params.get("rtoken");
+      return { token, rtoken };
+   }
+
+   useEffect(() => {
+      const { token, rtoken } = extractTokens(queryString);
+      console.log(token); // "mdksalmf"
+      console.log(rtoken); // "djmaksnvas"
+
+      localStorage.setItem("t_k", token || "");
+      localStorage.setItem("r_t", rtoken || "");
+   }, []);
 
    let r_t = "D8rvyhmBtRm77AJZQh8bGNhe73t6eMdV";
    let t_k = "Ac66ppJYrYbjnjzn9JxeZxCJpT8Yv4FJ";
 
-   const handleOnboard = async(e: FormEvent) => {
+   const handleOnboard = async (e: FormEvent) => {
       e.preventDefault();
 
       if (currentStep >= 3) {
          setCurrentStep(0);
          return;
       }
-      if(currentStep === 0) {
+      if (currentStep === 0) {
          emailSignupMutation.mutate(username);
       }
 
-      if(currentStep === 1) {
+      if (currentStep === 1) {
          let props: VerificationProps = {
             t_k: t_k,
-            r_t: r_t
-         }
+            r_t: r_t,
+         };
          const isEmailVerified = await emailVerification(props);
-         if(isEmailVerified) {
-            setCurrentStep(p => p + 1);
+         if (isEmailVerified) {
+            setCurrentStep((p) => p + 1);
          }
          return;
       }
 
-      if(currentStep === 2) {
+      if (currentStep === 2) {
          signupMutation.mutate({
             token: t_k,
             password: "Kash@9828",
-            r_token: r_t
-         } as SignupProps)
+            r_token: r_t,
+         } as SignupProps);
       }
-      console.log({currentStep});
+      console.log({ currentStep });
    };
-   console.log({currentStep});
-
+   console.log({ currentStep });
 
    const emailSignupMutation = useMutation(emailSignup, {
       onSuccess: (data) => {
-         console.log({data})
-         if(data.status === UserRegistrationStep.VERIFIED) {
+         console.log({ data });
+         if (data.status === UserRegistrationStep.VERIFIED) {
             setCurrentStep(2);
-         }else {
-            setCurrentStep(p => p + 1);
+         } else {
+            setCurrentStep((p) => p + 1);
          }
       },
       onError: (error) => {
@@ -67,13 +83,12 @@ const Signup = () => {
    const signupMutation = useMutation(signup, {
       onSuccess(data) {
          console.log("user created", data);
-         navigate('/signin');
+         navigate("/signin");
       },
       onError(error) {
-         console.log('error creating user', error);
-      }
-   })
-   
+         console.log("error creating user", error);
+      },
+   });
 
    return (
       <form onSubmit={handleOnboard}>
@@ -142,7 +157,7 @@ const Signup = () => {
             className="bg-primary px-16 py-2 text-white w-full mt-4"
             type="submit"
          >
-            {emailSignupMutation.isLoading ? 'Please wait...' : 'Next'}
+            {emailSignupMutation.isLoading ? "Please wait..." : "Next"}
          </button>
       </form>
    );

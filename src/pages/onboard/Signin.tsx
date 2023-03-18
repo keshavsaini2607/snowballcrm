@@ -35,10 +35,10 @@ const Signin = () => {
 
    const signinMutation = useMutation(signinUser, {
       onSuccess(data, variables, context) {
+         localStorage.setItem('access_token', data.access_token);
          console.log("signin success", data);
          // setCurrentStep(p => p + 1);
-         localStorage.setItem('access_token', data.access_token);
-         navigate('/dashboard');
+         setTimeout(() => {navigate('/')}, 0);
       },
       onError(error, variables, context) {
          console.log("signin error", error, 'v', context);

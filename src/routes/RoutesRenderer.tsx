@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { Navigate, useLocation, useNavigate, useRoutes } from "react-router-dom";
+import {
+   Navigate,
+   useLocation,
+   useNavigate,
+   useRoutes,
+} from "react-router-dom";
 import Root from "../pages/dashboard";
 import NotFound from "../pages/404";
 import Administration from "../pages/dashboard/administration";
@@ -9,35 +14,46 @@ import Signup from "../pages/onboard/Signup";
 import Leads from "../pages/dashboard/leads";
 
 const RoutesRenderer = () => {
-   const [loggedIn, setLoggedIn] = useState(true);
    const navigate = useNavigate();
    const location = useLocation();
 
    useEffect(() => {
-      let isAuth = localStorage.getItem('access_token');
-      if(isAuth) {
-         setLoggedIn(true);
-      } else {
-         setLoggedIn(false);
-      }
-      if(location.pathname === "/dashboard") {
+      if (location.pathname === "/dashboard") {
          navigate("/dashboard/leads");
       }
-   }, [location])
+   }, [location]);
+
+   const isAuthenticated = () => {
+      const token = localStorage.getItem("access_token");
+      return token !== null;
+   };
+
+   const PrivateRoute = ({ element }: any) => {
+      return isAuthenticated() ? element : <Navigate to="/login" replace />;
+   };
+
+   const AuthRoute = ({ element }: any) => {
+      return isAuthenticated() ? <Navigate to="/dashboard" replace /> : element;
+   };
 
    const routes = useRoutes([
-      
       {
          path: "/",
-         element: !loggedIn ? <Onboard /> : <Navigate to="/dashboard" />,
+         element: <AuthRoute element={<Onboard />} />,
          children: [
             {
                path: "/",
                element: <Signup />,
             },
             {
-               path: ":token:rtoken",
+               path: "/email-verify",
                element: <Signup />,
+               children: [
+                  {
+                     path: ":token:rtoken",
+                     element: <Signup />,
+                  },
+               ],
             },
             {
                path: "/signin",
@@ -47,7 +63,7 @@ const RoutesRenderer = () => {
       },
       {
          path: "/dashboard",
-         element: loggedIn ? <Root /> : <Navigate to="/" />,
+         element: <PrivateRoute element={<Root />} />,
          children: [
             {
                path: "/dashboard/leads",

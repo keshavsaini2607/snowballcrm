@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../../components/navbar";
 import ColorTriangle from "../../assets/hero/triangle_color.svg";
 import GradientTriangle from "../../assets/hero/triangle_gradient.svg";
@@ -19,6 +19,7 @@ const Onboard = () => {
 
    return (
       <div className="relative">
+         {localStorage.getItem('access_token') && <Navigate to="/dashboard" />}
          <Navbar />
          <div className="flex flex-col md:flex-row items-start justify-between px-10 md:py-20 z-10">
             <div className="md:w-[45%]">
