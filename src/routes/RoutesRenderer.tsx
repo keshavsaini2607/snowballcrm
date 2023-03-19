@@ -29,7 +29,7 @@ const RoutesRenderer = () => {
    };
 
    const PrivateRoute = ({ element }: any) => {
-      return isAuthenticated() ? element : <Navigate to="/login" replace />;
+      return isAuthenticated() ? element : <Navigate to="/signin" replace />;
    };
 
    const AuthRoute = ({ element }: any) => {
