@@ -3,11 +3,13 @@ import { useMutation } from "react-query";
 import { getAdministrationData } from "../../../api/administration";
 import Table from "../../../common/Table";
 import TableFilters from "../../../common/Table/TableFilters";
+import { useWindowSize } from "../../../utils/useWindowSize";
 import { COLUMNS } from "./TableColumns";
 
 const Administration = () => {
    const [tableInstance, setTableInstance] = useState<any>();
    const [currentPage, setCurrentPage] = useState(1);
+   const windowSize = useWindowSize();
 
    useEffect(() => {
       adminDataMutation.mutate({
@@ -28,24 +30,24 @@ const Administration = () => {
 
    return (
       <div className="overflow-hidden">
-         <header className="flex items-center gap-10 border-b-[1px] py-6 border-b-gray-300">
-            <h1 className="text-4xl font-bold">Administration</h1>
+         <header className="flex flex-col md:flex-row items-center gap-3 md:gap-10 border-b-[1px] py-6 border-b-gray-300">
+            <h1 className="text-2xl md:text-4xl font-bold">Administration</h1>
             <div className="flex items-center gap-10">
                <span className="flex flex-col items-center">
                   <span className="text-2xl font-bold text-blue-500">0</span>
-                  <span className="text-sm">Total Users</span>
+                  <span className="text-xs md:text-sm">Total Users</span>
                </span>
                <span className="flex flex-col items-center ">
                   <span className="text-2xl font-bold text-green-600">0</span>
-                  <span className="text-sm"> Verified</span>
+                  <span className="text-xs md:text-sm"> Verified</span>
                </span>
                <span className="flex flex-col items-center ">
                   <span className="text-2xl font-bold text-red-600">0</span>
-                  <span className="text-sm">Pending Verification</span>
+                  <span className="text-xs md:text-sm">Pending Verification</span>
                </span>
             </div>
          </header>
-         <div >
+         <div className="overflow-scroll md:overflow-hidden">
             {!adminDataMutation.isLoading && adminDataMutation.isSuccess && (
                <Table
                   tableData={adminDataMutation?.data}

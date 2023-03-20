@@ -1,7 +1,8 @@
 import { Menu, MenuItem } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { useAppSelector } from "../../shared/hooks";
+import { useAppDispatch, useAppSelector } from "../../shared/hooks";
+import { setShowOnlyRow } from "../../shared/slices/tableFilterSlice";
 import Checkbox from "./Checkbox";
 
 interface HideFilterProps {
@@ -9,11 +10,15 @@ interface HideFilterProps {
    getToggleHideAllColumnsProps: any;
 }
 
-interface props extends HideFilterProps {}
+interface PersonFilterProps {
+   userData: any[];
+}
 
-const PersonFilter = () => {
-   const tableInstance = useAppSelector((state) => state.table.tableInstance);
-   console.log({ tableInstance });
+interface props extends PersonFilterProps, HideFilterProps {}
+
+const PersonFilter = ({ userData }: PersonFilterProps) => {
+   const dispatch = useAppDispatch();
+   const { showOnlyRow } = useAppSelector((state) => state.table);
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
    const open = Boolean(anchorEl);
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,6 +27,12 @@ const PersonFilter = () => {
    const handleClose = () => {
       setAnchorEl(null);
    };
+
+   const handleFilter = (column: any) => {
+      dispatch(setShowOnlyRow(column));
+      handleClose();
+   };
+
    return (
       <>
          <button
@@ -32,7 +43,7 @@ const PersonFilter = () => {
             <span className="border-r-[1px] border-r-gray-300 pr-2">
                Person
             </span>
-            <span>0</span>
+            <span>{showOnlyRow.length}</span>
          </button>
          <Menu
             id="basic-menu"
@@ -42,10 +53,29 @@ const PersonFilter = () => {
             MenuListProps={{
                "aria-labelledby": "basic-button",
             }}
+            className="h-[300px]"
          >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            {userData?.map((column) => (
+               <MenuItem
+                  key={Math.random().toString()}
+                  onClick={() => handleFilter(column)}
+               >
+                  <label>
+                     <input
+                        type="checkbox"
+                        checked={showOnlyRow.find(
+                           (col) => col.user_id === column.user_id
+                        )}
+                        readOnly
+                     />
+                     <span className="ml-4">
+                        {column?.user_attributes[2]?.value +
+                           " " +
+                           column?.user_attributes[3]?.value || ""}
+                     </span>
+                  </label>
+               </MenuItem>
+            ))}
          </Menu>
       </>
    );
@@ -71,18 +101,27 @@ const HideFilters = ({
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget);
    };
+   console.log({ allColumns });
    const handleClose = () => {
       setAnchorEl(null);
    };
 
-   const handleReValidate = (column: any) => {
-      let colToUpdate = columns?.find((col) => col.id === column.id);
-      colToUpdate.isVisible = !colToUpdate.isVisible;
-   }
+   let cols: any = useMemo(() => {
+      allColumns;
+   }, []);
+   const getHiddenCount = () => {
+      let hidden = 0;
+      allColumns.map((col: any) => {
+         if (!col.isVisible) {
+            hidden += 1;
+         }
+      });
+      return hidden;
+   };
 
    useEffect(() => {
       setColumns(allColumns);
-   }, [allColumns])
+   }, [allColumns]);
    return (
       <>
          <button
@@ -91,7 +130,7 @@ const HideFilters = ({
          >
             <img src="/filter/hide.svg" />
             <span className="border-r-[1px] border-r-gray-300 pr-2">Hide</span>
-            <span>0</span>
+            <span>{getHiddenCount()}</span>
          </button>
          <Menu
             id="basic-menu"
@@ -104,7 +143,7 @@ const HideFilters = ({
             }}
          >
             {columns?.map((column: any) => (
-               <MenuItem key={column?.id} onClick={() => handleReValidate(column)}>
+               <MenuItem key={column?.id}>
                   <label>
                      <input
                         type="checkbox"
@@ -120,10 +159,14 @@ const HideFilters = ({
    );
 };
 
-const TableFilters = ({ allColumns, getToggleHideAllColumnsProps }: props) => {
+const TableFilters = ({
+   allColumns,
+   getToggleHideAllColumnsProps,
+   userData,
+}: props) => {
    return (
-      <div className="flex items-center gap-6 py-4">
-         <PersonFilter />
+      <div className="flex items-center gap-6 py-4 flex-wrap">
+         <PersonFilter userData={userData} />
          <Filters />
          <HideFilters
             allColumns={allColumns}

@@ -7,9 +7,17 @@ import { Avatar, Icon } from "@mui/material";
 import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useNavigation } from "react-router";
+import { useWindowSize } from "../../utils/useWindowSize";
 
 export default function Root() {
+   const windowSize = useWindowSize();
    const [isTabsHidden, setIsTabsHidden] = useState(false);
+
+   useEffect(() => {
+      if(windowSize.width < 768) {
+         setIsTabsHidden(true);
+      }
+   }, [windowSize])
 
    return (
       <div className="w-full h-[calc(100vh)] overflow-hidden">
@@ -23,7 +31,7 @@ export default function Root() {
                >
                   <span className="bg-secondary h-full px-3 relative">
                      <img src={SmallLogo} alt="small logo" />
-                     {isTabsHidden && (
+                     {isTabsHidden && windowSize.width > 768 && (
                         <span
                            onClick={() => setIsTabsHidden(false)}
                            className="border-[1px] border-gray-400 rounded-full absolute -right-3 top-[25%] bg-white p-[2px] cursor-pointer"

@@ -5,6 +5,7 @@ export const COLUMNS = [
       Header: "Department and User",
       sticky: "left",
       columns: [
+         
          {
             Header: "Department",
             accessor: "department_name",
@@ -16,6 +17,7 @@ export const COLUMNS = [
          {
             Header: "Last Name",
             accessor: "user_attributes[4].value",
+            visible: false
          },
       ],
    },

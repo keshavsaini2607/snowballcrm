@@ -12,13 +12,19 @@ export const Styles = styled.div`
       }
     }
 
+    table #Selection {
+      width: 20px;
+    }
+
     .th {
       font-weight: 700;
+      background-color: #000;
     }
 
     .th, .td {
       border-left: 1px solid #ddd;
     }
+    
 
     .th,
     .td {
@@ -38,7 +44,7 @@ export const Styles = styled.div`
       .footer {
         position: sticky;
         z-index: 1;
-        width: fit-content;
+        width: max-content !important;
       }
 
       .header {
@@ -66,6 +72,7 @@ export const Styles = styled.div`
 
       [data-sticky-first-right-td] {
         box-shadow: -2px 0px 3px #ccc;
+        background-color: #ccc;
       }
     }
   }

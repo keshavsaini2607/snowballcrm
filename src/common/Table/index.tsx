@@ -1,7 +1,15 @@
 import { Menu, MenuItem } from "@mui/material";
-import React, { useEffect, useMemo } from "react";
-import { usePagination, useTable, useBlockLayout } from "react-table";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+   usePagination,
+   useTable,
+   useBlockLayout,
+   useFilters,
+   useRowSelect,
+} from "react-table";
 import { useSticky } from "react-table-sticky";
+import { useAppSelector } from "../../shared/hooks";
+import Checkbox from "./Checkbox";
 import "./table.css";
 import TableFilters from "./TableFilters";
 import { Styles } from "./TableStyles";
@@ -19,25 +27,53 @@ const Table = ({
    setTableInstance,
    setCurrentPage,
 }: props) => {
-   let data = useMemo(() => tableData?.data?.department_user_data, [tableData]);
-   console.log({ data });
+   const { showOnlyRow } = useAppSelector((state) => state.table);
+   let originalData = tableData?.data?.department_user_data;
+   const [dataToShow, setDataToShow] = useState<any[]>(originalData);
 
-   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-   const open = Boolean(anchorEl);
-   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-      setAnchorEl(event.currentTarget);
-   };
-   const handleClose = () => {
-      setAnchorEl(null);
-   };
+   useEffect(() => {
+      showOnlyRow.length > 0
+         ? setDataToShow(showOnlyRow)
+         : setDataToShow(originalData);
+   }, [showOnlyRow]);
 
+   let data = useMemo(() => dataToShow, [tableData, dataToShow]);
    const columns = useMemo(() => COLUMNS, []);
+
+   console.log({dataToShow})
 
    const tableInstance = useTable(
       { data, columns, initialState: { pageIndex: 0, pageSize: 6 } },
-      usePagination,
       useBlockLayout,
-      useSticky
+      useSticky,
+      useFilters,
+      usePagination,
+      useRowSelect,
+      (hooks) => {
+         hooks.visibleColumns.push((columns) => [
+            {
+               id: "selection",
+               Header: ({ getToggleAllRowsSelectedProps }) => (
+                  <div>
+                     <input
+                        type="checkbox"
+                        {...getToggleAllRowsSelectedProps()}
+                     />
+                  </div>
+               ),
+               Cell: ({ row }) => (
+                  <div>
+                     <input
+                        type="checkbox"
+                        {...row.getToggleRowSelectedProps()}
+                     />
+                  </div>
+               ),
+               sticky: "left",
+            },
+            ...columns,
+         ]);
+      }
    );
 
    const {
@@ -58,13 +94,12 @@ const Table = ({
       setCurrentPage(pageIndex);
    }, [tableInstance, pageIndex, canPreviousPage, canNextPage]);
 
-   console.log({ pageIndex });
-
    return (
       <>
          <TableFilters
             allColumns={allColumns}
             getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
+            userData={originalData}
          />
          <div className="mt-10 overflow-scroll border-l-[10px] border-l-orange-500 rounded-tl-lg rounded-bl-lg pr-10 w-[98%]">
             <Styles>
