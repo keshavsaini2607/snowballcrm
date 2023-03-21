@@ -28,9 +28,8 @@ const Signup = () => {
       localStorage.setItem("t_k", token || "");
       localStorage.setItem("r_t", rtoken || "");
    }, []);
-
-   let r_t = "dEBTTkxgfTdy3EztdxNGAxadJsWmrWDb";
-   let t_k = "VFp9CnsWYRqUebQ7Cf4JpFN8Hdx9XGdr";
+   let r_t = "pFfaNU6GEHHUHd6aP8auXsFYEKk3hcJy";
+   let t_k = "utjXjfYWjtu7W92zT2fgWGw2xFCQHbbs";
 
    const handleOnboard = async (e: FormEvent) => {
       e.preventDefault();

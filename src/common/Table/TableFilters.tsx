@@ -101,7 +101,6 @@ const HideFilters = ({
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget);
    };
-   console.log({ allColumns });
    const handleClose = () => {
       setAnchorEl(null);
    };

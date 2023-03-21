@@ -1,6 +1,6 @@
 export const API = {
    BASE_URL:
-      "http://snowball-crm-prod-lb-140824610.ap-southeast-2.elb.amazonaws.com",
+      "https://api-prod.snowball-a-vibe.com",
 };
 
 export const homeNavTabs = [

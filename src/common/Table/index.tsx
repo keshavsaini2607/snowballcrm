@@ -1,4 +1,3 @@
-import { Menu, MenuItem } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import {
    usePagination,
@@ -9,7 +8,7 @@ import {
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 import { useAppSelector } from "../../shared/hooks";
-import Checkbox from "./Checkbox";
+import FloatingMenu from "./FloatingMenu";
 import "./table.css";
 import TableFilters from "./TableFilters";
 import { Styles } from "./TableStyles";
@@ -40,9 +39,8 @@ const Table = ({
    let data = useMemo(() => dataToShow, [tableData, dataToShow]);
    const columns = useMemo(() => COLUMNS, []);
 
-   console.log({dataToShow})
-
    const tableInstance = useTable(
+      //@ts-ignore
       { data, columns, initialState: { pageIndex: 0, pageSize: 6 } },
       useBlockLayout,
       useSticky,
@@ -53,6 +51,7 @@ const Table = ({
          hooks.visibleColumns.push((columns) => [
             {
                id: "selection",
+               //@ts-ignore
                Header: ({ getToggleAllRowsSelectedProps }) => (
                   <div>
                      <input
@@ -65,6 +64,7 @@ const Table = ({
                   <div>
                      <input
                         type="checkbox"
+                        //@ts-ignore
                         {...row.getToggleRowSelectedProps()}
                      />
                   </div>
@@ -80,12 +80,18 @@ const Table = ({
       getTableProps,
       getTableBodyProps,
       headerGroups,
+      //@ts-ignore
       page,
       prepareRow,
+      //@ts-ignore
       state: { pageIndex },
+      //@ts-ignore
       canNextPage,
+      //@ts-ignore
       canPreviousPage,
       allColumns,
+      //@ts-ignore
+      selectedFlatRows,
       getToggleHideAllColumnsProps,
    } = tableInstance;
 
@@ -93,6 +99,8 @@ const Table = ({
       setTableInstance(tableInstance);
       setCurrentPage(pageIndex);
    }, [tableInstance, pageIndex, canPreviousPage, canNextPage]);
+
+   console.log({ selectedFlatRows });
 
    return (
       <>
@@ -139,6 +147,9 @@ const Table = ({
                </div>
             </Styles>
          </div>
+         {selectedFlatRows.length > 0 && (
+            <FloatingMenu selectedFlatRows={selectedFlatRows} />
+         )}
       </>
    );
 };
