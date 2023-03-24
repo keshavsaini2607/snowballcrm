@@ -20,10 +20,22 @@
   background-color: #ccc;
 }
 
-.input {
+.text_input {
   @apply border-[1px] border-gray-400 w-full px-4 py-2 rounded-sm outline-none;
 }
 
 .inputLabel {
   color: "lightgray",
+}
+
+.input {
+  width: 150px !important;
+}
+
+.selInput {
+  width: 155px !important;
+}
+
+.bolder {
+  font-weight: 900 !important;
 }

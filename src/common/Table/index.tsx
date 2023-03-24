@@ -9,6 +9,7 @@ import {
 import { useSticky } from "react-table-sticky";
 import { useAppSelector } from "../../shared/hooks";
 import FloatingMenu from "./FloatingMenu";
+import NewRecordRow from "./NewRecordRow";
 import "./table.css";
 import TableFilters from "./TableFilters";
 import { Styles } from "./TableStyles";
@@ -29,6 +30,7 @@ const Table = ({
    const { showOnlyRow } = useAppSelector((state) => state.table);
    let originalData = tableData?.data?.department_user_data;
    const [dataToShow, setDataToShow] = useState<any[]>(originalData);
+   const [showAddRow, setShowAddRow] = useState(false);
 
    useEffect(() => {
       showOnlyRow.length > 0
@@ -109,7 +111,7 @@ const Table = ({
             getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
             userData={originalData}
          />
-         <div className="mt-10 overflow-scroll border-l-[10px] border-l-orange-500 rounded-tl-lg rounded-bl-lg pr-10 w-[98%]">
+         <div className="mt-5 overflow-scroll border-l-[10px] border-l-orange-500 rounded-tl-lg rounded-bl-lg pr-10 w-[98%]">
             <Styles>
                <div
                   {...getTableProps()}
@@ -143,6 +145,17 @@ const Table = ({
                            </div>
                         );
                      })}
+                  </div>
+                  <div>
+                     {showAddRow && <NewRecordRow />}
+                     <div className="addrec px-2 py-4 border-[1px] border-gray-300 w-full">
+                        <span
+                           className={`hover:bg-gray-100 px-6 py-3 cursor-pointer rounded-md ${showAddRow ? 'bg-red-300' : ''}`}
+                           onClick={() => setShowAddRow((p) => !p)}
+                        >
+                           {showAddRow ? 'Cancel' : '+ Add Record'}
+                        </span>
+                     </div>
                   </div>
                </div>
             </Styles>

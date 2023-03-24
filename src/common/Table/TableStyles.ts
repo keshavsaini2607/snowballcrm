@@ -23,8 +23,18 @@ export const Styles = styled.div`
 
     .th, .td {
       border-left: 1px solid #ddd;
+      
+    }
+
+    .td {
+      width: 300px !important;
     }
     
+    .addrec {
+      position: sticky;
+      left: 0;
+      
+    }
 
     .th,
     .td {

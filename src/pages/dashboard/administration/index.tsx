@@ -67,7 +67,7 @@ const Administration = () => {
             >
                {[6, 10].map((pageSize) => (
                   <option key={pageSize} value={pageSize}>
-                     Show {pageSize}
+                     Rows Per Page: {pageSize}
                   </option>
                ))}
             </select>

@@ -52,14 +52,14 @@ const Signin = () => {
                <input
                   placeholder="Username"
                   type="text"
-                  className="input"
+                  className="text_input"
                   name="username"
                   onChange={handleInputChange}
                />
                <input
                   placeholder="Password"
                   type="password"
-                  className="input mt-4"
+                  className="text_input mt-4"
                   name="password"
                   onChange={handleInputChange}
                />
@@ -94,7 +94,7 @@ const Signin = () => {
                <input
                   placeholder="Organization name"
                   type="text"
-                  className="input"
+                  className="text_input"
                />
             </>
          ) : null}
