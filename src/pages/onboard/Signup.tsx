@@ -10,6 +10,8 @@ const Signup = () => {
    const navigate = useNavigate();
    const [currentStep, setCurrentStep] = useState(0);
    const [username, setUsername] = useState("");
+   const [token, setToken] = useState<any>("");
+   const [rToken, setRToken] = useState<any>("");
    const location = useLocation();
    const queryString = location.search;
 
@@ -21,12 +23,20 @@ const Signup = () => {
    }
 
    useEffect(() => {
-      const { token, rtoken } = extractTokens(queryString);
-      localStorage.setItem("t_k", token || "");
-      localStorage.setItem("r_t", rtoken || "");
+      (async () => {
+         const { token, rtoken } = extractTokens(queryString);
+         setToken(token);
+         setRToken(rtoken);
+         if (token && rtoken) {
+            let props: VerificationProps = {
+               t_k: token,
+               r_t: rtoken,
+            };
+            await emailVerification(props);
+            setCurrentStep(2);
+         }
+      })();
    }, []);
-   let r_t = "sZuVkFRGqD2aMZ7jJ7mcAzbDr8rWGJeh";
-   let t_k = "8T6MwntWjfmjduYGvud96BqsVBTKgZMB";
 
    const handleOnboard = async (e: FormEvent) => {
       e.preventDefault();
@@ -41,8 +51,8 @@ const Signup = () => {
 
       if (currentStep === 1) {
          let props: VerificationProps = {
-            t_k: t_k,
-            r_t: r_t,
+            t_k: token,
+            r_t: rToken,
          };
          const isEmailVerified = await emailVerification(props);
          if (isEmailVerified) {
@@ -53,14 +63,12 @@ const Signup = () => {
 
       if (currentStep === 2) {
          signupMutation.mutate({
-            token: t_k,
+            token: token,
             password: "Kash@9828",
-            r_token: r_t,
+            r_token: rToken,
          } as SignupProps);
       }
-      console.log({ currentStep });
    };
-   console.log({ currentStep });
 
    const emailSignupMutation = useMutation(emailSignup, {
       onSuccess: (data) => {
