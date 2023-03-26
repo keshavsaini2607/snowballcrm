@@ -1,52 +1,109 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { FormControl, MenuItem, Select } from "@mui/material";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { signinUser } from "../../api/auth";
 import { SigninProps } from "../../api/auth/types";
 import { useNavigate } from "react-router-dom";
+import {
+   createOrganization,
+   getOrganizations,
+   selectOrganization,
+} from "../../api/organizations";
+import { CreateOrganizationPayload } from "../../api/organizations/types";
 
 const Signin = () => {
    const [currentStep, setCurrentStep] = useState(0);
-   const [organization, setOrganization] = useState("");
+   const [organizations, setOrganizations] = useState<any>([]);
+   const [organization, setOrganization] = useState<any>(null);
    const [formValues, setFormValues] = useState<any>();
+   const [signinToken, setSigninToken] = useState("");
+   const [newOrganization, setNewOrganization] = useState("");
    const navigate = useNavigate();
+
+   console.log({organization})
 
    function handleInputChange(event: any) {
       const { name, value } = event.target;
       setFormValues({ ...formValues, [name]: value });
    }
 
-   const handleOnboard = (e: FormEvent) => {
+   const handleOnboard = async (e: FormEvent) => {
       e.preventDefault();
-      if (currentStep >= 2) {
-         setCurrentStep(0);
-         return;
-      }
-
       const params = new URLSearchParams();
-
-      params.append('username', formValues.username);
-      params.append('password', formValues.password);
+      params.append("username", formValues.username);
+      params.append("password", formValues.password);
 
       if (currentStep === 0) {
-         signinMutation.mutate(params)
+         signinMutation.mutate(params);
+      }
+
+      if (currentStep === 1) {
+         selectOrganizationMutation.mutate(organization);
+      }
+
+      if (currentStep === 2) {
+         let payload: CreateOrganizationPayload = {
+            name: newOrganization,
+            description: newOrganization,
+            active: true,
+            website: newOrganization,
+         };
+
+         createOrganizationMutation.mutate(payload);
       }
    };
 
-   const signinMutation = useMutation(signinUser, {
-      onSuccess(data, variables, context) {
-         localStorage.setItem('access_token', data.access_token);
-         console.log("signin success", data);
-         // setCurrentStep(p => p + 1);
-         setTimeout(() => {navigate('/')}, 0);
+   const createOrganizationMutation = useMutation(createOrganization, {
+      async onSuccess(data, variables, context) {
+         const orgs = await getOrganizations(signinToken);
+         setOrganizations(orgs);
+         if(orgs) {
+            setCurrentStep(1);
+         }
       },
       onError(error, variables, context) {
-         console.log("signin error", error, 'v', context);
+         console.log("error creating new organization", error);
+         
+      },
+   });
+
+   const selectOrganizationMutation = useMutation(selectOrganization, {
+      onSuccess(data, variables, context) {
+         console.log({ data });
+         localStorage.setItem("access_token", data.access_token);
+         setTimeout(() => {
+            navigate("/");
+         }, 0);
+      },
+      onError(error, variables, context) {
+         console.log("error selecting organization", error);
+      },
+   });
+
+   const signinMutation = useMutation(signinUser, {
+      async onSuccess(data, variables, context) {
+         setSigninToken(data.access_token);
+         console.log("signin success", data);
+
+         const orgs = await getOrganizations(data.access_token);
+         setOrganizations(orgs);
+
+         console.log({orgs});
+
+         if (orgs?.length < 1) {
+            setCurrentStep(2);
+         } else {
+            setCurrentStep(1);
+         }
+      },
+      onError(error, variables, context) {
+         console.log("signin error", error, "v", context);
+         setCurrentStep(2);
       },
    });
 
    return (
-      <form onSubmit={handleOnboard}>
+      <form onSubmit={handleOnboard} className="w-[100%]">
          {currentStep === 0 ? (
             <>
                <input
@@ -65,22 +122,24 @@ const Signin = () => {
                />
             </>
          ) : null}
-         {currentStep === 1 ? (
+         {currentStep === 1 && organizations.length >= 1 ? (
             <>
                <FormControl fullWidth>
+                  <label>Select Organization</label>
                   <Select
-                     labelId="demo-simple-select-label"
+                     // labelId="demo-simple-select-label"
                      id="demo-simple-select"
                      value={organization}
                      color="primary"
-                     label="Select your organization"
-                     className="inputLabel text-gray-700"
+                     // label="Select your organization"
+                     className="inputLabel text-gray-700 bg-white outline-none"
                      onChange={(e) => setOrganization(e.target.value as string)}
                   >
-                     <MenuItem value={10}>Organization 1</MenuItem>
-                     <MenuItem value={20}>Organization 2</MenuItem>
-                     <MenuItem value={30}>Organization 3</MenuItem>
+                     {organizations?.map((org: any) => (
+                        <MenuItem value={org?.id}>{org?.name}</MenuItem>
+                     ))}
                   </Select>
+                  
                </FormControl>
             </>
          ) : null}
@@ -95,6 +154,8 @@ const Signin = () => {
                   placeholder="Organization name"
                   type="text"
                   className="text_input"
+                  value={newOrganization}
+                  onChange={(e) => setNewOrganization(e.target.value)}
                />
             </>
          ) : null}
@@ -102,7 +163,9 @@ const Signin = () => {
             className="bg-primary px-16 py-2 text-white w-full mt-4"
             type="submit"
          >
-            {signinMutation.isLoading ? 'Please wait...' : 'Next'}
+            {signinMutation.isLoading || selectOrganizationMutation.isLoading
+               ? "Please wait..."
+               : "Next"}
          </button>
       </form>
    );

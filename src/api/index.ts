@@ -25,6 +25,7 @@ server.interceptors.response.use(
    },
    (error) => {
       if (error.response.status === 401) {
+         console.log({error})
          localStorage.removeItem("access_token");
          window.location.reload();
       }

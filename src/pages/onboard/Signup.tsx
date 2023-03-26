@@ -22,14 +22,11 @@ const Signup = () => {
 
    useEffect(() => {
       const { token, rtoken } = extractTokens(queryString);
-      console.log(token); // "mdksalmf"
-      console.log(rtoken); // "djmaksnvas"
-
       localStorage.setItem("t_k", token || "");
       localStorage.setItem("r_t", rtoken || "");
    }, []);
-   let r_t = "pFfaNU6GEHHUHd6aP8auXsFYEKk3hcJy";
-   let t_k = "utjXjfYWjtu7W92zT2fgWGw2xFCQHbbs";
+   let r_t = "sZuVkFRGqD2aMZ7jJ7mcAzbDr8rWGJeh";
+   let t_k = "8T6MwntWjfmjduYGvud96BqsVBTKgZMB";
 
    const handleOnboard = async (e: FormEvent) => {
       e.preventDefault();
@@ -139,7 +136,7 @@ const Signup = () => {
                <input
                   placeholder="Password"
                   type="password"
-                  className="input"
+                  className="text_input"
                />
             </>
          ) : null}
@@ -148,7 +145,7 @@ const Signup = () => {
                <input
                   placeholder="Organization Name"
                   type="text"
-                  className="input"
+                  className="text_input"
                />
             </>
          ) : null}
