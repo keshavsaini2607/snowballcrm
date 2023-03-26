@@ -11,45 +11,38 @@ const newRecordCols: any[] = [
       id: "1",
       key: "Department",
       type: "text",
-      
    },
    {
       id: "2",
       key: "First Name",
       type: "text",
-      
    },
    {
       id: "3",
       key: "Last Name",
       type: "text",
-      
    },
    {
       id: "4",
       key: "Email",
       type: "email",
-      
    },
    {
       id: "5",
       key: "Mobile Read",
       type: "phone",
-      
    },
    {
       id: "6",
       key: "Client Read",
       type: "select",
       options: ["Yes", "No"],
-      
    },
    {
       id: "7",
       key: "Client Create",
       type: "select",
       options: ["Yes", "No"],
-      
    },
    {
       id: "8",
@@ -137,7 +130,11 @@ const newRecordCols: any[] = [
    },
 ];
 
-const NewRecordRow = () => {
+type props = {
+   createNewRowRef: any;
+}
+
+const NewRecordRow = ({createNewRowRef}: props) => {
    const handleFormSubmit = (e: FormEvent) => {
       e.preventDefault();
       const form: any = e.target;
@@ -155,7 +152,7 @@ const NewRecordRow = () => {
                      type={column.type}
                      placeholder={column.key}
                      name={column.key}
-                     className={`input ${
+                     className={`input w-[100px] ${
                         column.disabled && "cursor-not-allowed"
                      }`}
                      disabled={column?.disabled || false}
@@ -163,7 +160,11 @@ const NewRecordRow = () => {
                );
             } else {
                return (
-                  <select className="input" name={column.key} defaultValue={column.key}>
+                  <select
+                     className="selInput w-[180px]"
+                     name={column.key}
+                     defaultValue={column.key}  
+                  >
                      <option disabled>{column.key}</option>
                      <option value="Yes">Yes</option>
                      <option value="No">No</option>
@@ -171,7 +172,7 @@ const NewRecordRow = () => {
                );
             }
          })}
-         <button type="submit" className="bg-primary w-max px-10 rounded-md text-sm text-white">Create Record</button>
+         <button ref={createNewRowRef} type="submit" style={{ display: 'none' }} />
       </form>
    );
 };

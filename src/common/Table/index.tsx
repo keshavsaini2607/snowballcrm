@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
    usePagination,
    useTable,
@@ -31,6 +31,13 @@ const Table = ({
    let originalData = tableData?.data?.department_user_data;
    const [dataToShow, setDataToShow] = useState<any[]>(originalData);
    const [showAddRow, setShowAddRow] = useState(false);
+   const createNewRowRef = useRef<any>();
+
+   const handleSubmit = (event: FormEvent) => {
+      event.preventDefault(); // prevent default form submission behavior
+      console.log("submitting");
+      createNewRowRef.current.click(); // submit the form using the reference
+   };
 
    useEffect(() => {
       showOnlyRow.length > 0
@@ -147,13 +154,25 @@ const Table = ({
                      })}
                   </div>
                   <div>
-                     {showAddRow && <NewRecordRow />}
+                     {showAddRow && (
+                        <NewRecordRow createNewRowRef={createNewRowRef} />
+                     )}
                      <div className="addrec px-2 py-4 border-[1px] border-gray-300 w-full">
+                        {showAddRow && (
+                           <button
+                              className={` px-6 py-3 mr-4 bg-primary text-white cursor-pointer rounded-md`}
+                              onClick={() => createNewRowRef?.current?.click()}
+                           >
+                              Create Row
+                           </button>
+                        )}
                         <span
-                           className={`hover:bg-gray-100 px-6 py-3 cursor-pointer rounded-md ${showAddRow ? 'bg-red-300' : ''}`}
+                           className={`hover:bg-gray-100 px-6 py-3 cursor-pointer rounded-md ${
+                              showAddRow ? "bg-gray-300" : ""
+                           }`}
                            onClick={() => setShowAddRow((p) => !p)}
                         >
-                           {showAddRow ? 'Cancel' : '+ Add Record'}
+                           {showAddRow ? "Cancel" : "+ Add Record"}
                         </span>
                      </div>
                   </div>
