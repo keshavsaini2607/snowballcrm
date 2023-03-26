@@ -3,16 +3,16 @@ import React from "react";
 const Footer = () => {
    return (
       <footer className="bg-[#23374A] p-10">
-         <div className=" p-10 flex items-center justify-center ">
-            <div className="flex text-white w-[40%] items-center gap-4">
+         <div className=" p-10 flex flex-col md:flex-row items-center justify-center ">
+            <div className="flex flex-col md:flex-row mb-10 md:mb-0 text-white md:w-[40%] items-center gap-4">
                <img src="/crmwhite.svg" alt="" />
-               <span className="w-[40%]">
+               <span className="md:w-[40%] text-center md:text-start">
                   Find meaning in the form you understand from billions of raw
                   data.Harness reliable insights with Snow Ball products and
                   services.
                </span>
             </div>
-            <div className="flex  gap-20 text-white w-[60%]">
+            <div className="flex flex-col md:flex-row  text-center md:text-start gap-20 text-white md:w-[60%]">
                <ul>
                   <p className="text-xl font-extrabold mb-2">Company</p>
                   <li>About Us</li>

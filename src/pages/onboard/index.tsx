@@ -111,7 +111,7 @@ const Onboard = () => {
             id="Features"
             className="flex items-center flex-col justify-center py-10 mt-10"
          >
-            <div className="flex items-center gap-20">
+            <div className="flex items-center flex-col md:flex-row md:gap-20">
                <img src="/features/header.svg" />
                <img src="/features/signup.svg" />
             </div>
@@ -119,7 +119,7 @@ const Onboard = () => {
                {features.map((feature) => (
                   <div
                      key={feature.id}
-                     className="flex items-center justify-center w-[24%] hover:scale-105  transition-all delay-200"
+                     className="flex items-center justify-center w-[44%] md:w-[24%] hover:scale-105  transition-all delay-200"
                   >
                      <img src={feature.icon} alt="icon" />
                      <div className="flex flex-col gap-2 ml-3">
@@ -135,27 +135,27 @@ const Onboard = () => {
             </div>
          </div>
          <div id="summary" className="p-10">
-            <div className="flex items-center gap-40">
+            <div className="flex md:items-center flex-col md:flex-row md:gap-40">
                <div>
-                  <div className="flex flex-col text-4xl gap-2">
+                  <div className="flex flex-col text-2xl md:text-4xl gap-2">
                      <span className="text-primary">More reasons</span>
                      <span className="text-[#9C9B9B]">
                         to choose SnowBall CRM today
                      </span>
                   </div>
-                  <div className="text-3xl flex items-center gap-40 mt-2">
+                  <div className="text-xl md:text-3xl flex flex-col md:flex-row md:items-center md:gap-40 mt-2">
                      <span>
                         Integrate with your{" "}
                         <span className="text-primary font-extrabold">ERP</span>
                      </span>
-                     <img src="/signuporange.svg" alt="signup" />
+                     <img src="/signuporange.svg" alt="signup" className="w-[50%] md:w-auto mt-2 md:mt-0" />
                   </div>
                </div>
                <img src="/summary.svg" alt="summary" />
             </div>
-            <div id="content" className="flex  justify-between mt-10">
+            <div id="content" className="flex flex-col md:flex-row justify-between mt-10">
                {summary.map((item) => (
-                  <div key={item.id} className="w-[20%]">
+                  <div key={item.id} className="md:w-[20%]">
                      <h1 className="border-b-[3px] text-[#252328] font-extrabold border-b-primary text-2xl mb-4 pb-2">
                         {item.title}
                      </h1>
@@ -168,8 +168,8 @@ const Onboard = () => {
             <span></span>
             <img src="/banner.svg" alt="banner" className="flex items-end " />
          </div>
-         <div className="p-10 mt-10 flex items-center justify-between">
-            <div className="flex flex-col gap-4 w-[50%]">
+         <div className="p-10 mt-10 flex flex-col md:flex-row items-center justify-between">
+            <div className="flex flex-col gap-4 md:w-[50%] mb-4 md:mb-0">
                <span className="text-[#9C9B9B] text-4xl">
                   Powerful Alone, Better Together
                </span>
@@ -188,21 +188,21 @@ const Onboard = () => {
                   magic happens when you use them together.
                </span>
             </div>
-            <div className="flex items-center gap-4 w-[50%]">
+            <div className="flex flex-col md:flex-row items-center gap-4 md:w-[50%]">
                <div className="flex items-center flex-col gap-4">
-                  <div className="text-4xl bg-[#477AAA] rounded-full w-[17vw] h-[17vw] flex items-center justify-center text-white">
+                  <div className="text-4xl bg-[#477AAA] rounded-full w-[20vh] h-[20vh] md:w-[17vw] md:h-[17vw] flex items-center justify-center text-white">
                      74%
                   </div>
-                  <span className="w-[50%] text-center">
+                  <span className="md:w-[50%] text-center">
                      Customers with SnowBall CRM see 74% increase in deal close
                      rate after 12 months
                   </span>
                </div>
                <div className="flex items-center flex-col gap-4">
-                  <div className="text-4xl bg-[#477AAA] rounded-full w-[17vw] h-[17vw] flex items-center justify-center text-white">
+                  <div className="text-4xl bg-[#477AAA] rounded-full md:w-[17vw] w-[20vh] h-[20vh] md:h-[17vw] flex items-center justify-center text-white">
                      124%
                   </div>
-                  <span className="w-[50%] text-center">
+                  <span className="md:w-[50%] text-center">
                      Customers with SnowBall see a 124% increase in deals
                      close-won after 12 months
                   </span>
