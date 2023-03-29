@@ -10,15 +10,15 @@ const Department = ({ cell }: any) => {
                   <span>Created: 12/02/2023</span>
                   <span>Updated: 12/02/2023</span>
                </div>
-               <span className="flex flex-col">
-                  <p>Users:</p>
-                  <div className="flex flex-col">
-                     <span>Sam benny (Org.)</span>
-                     <span>Samuel</span>
-                     <span>Binny</span>
-                     <span>Dillon</span>
+               <div className="flex items-start gap-1 relative">
+                     <span className="">Users: </span>
+                     <div className="flex flex-col absolute -right-28 text-sm text-gray-600">
+                        <span>Sam Benny (Org.)</span>
+                        <span>Nipun Rao</span>
+                        <span>Lin You</span>
+                        <span>Mohan Mathur</span>
+                     </div>
                   </div>
-               </span>
             </div>
          </div>
 

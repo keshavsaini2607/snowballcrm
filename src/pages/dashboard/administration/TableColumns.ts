@@ -3,7 +3,7 @@ import Explore from "./explore";
 
 export const COLUMNS = [
    {
-      Header: "Department and User",
+      Header: "Department and User",   
       sticky: "left",
       columns: [
          
@@ -12,7 +12,7 @@ export const COLUMNS = [
             accessor: "department_name",
             Cell: Explore
          },
-         {
+         {  
             Header: "First Name",
             accessor: "user_attributes[2].value",
             Cell: Explore

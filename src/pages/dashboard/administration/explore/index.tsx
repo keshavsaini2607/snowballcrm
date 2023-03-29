@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineExpandAlt } from "react-icons/ai";
 import AdminModal from "../../../../components/modals/AdminModal";
+import Consultant from "./Consultant";
 import Department from "./Department";
 
 const Explore = ({ cell }: any) => {
@@ -11,6 +12,9 @@ const Explore = ({ cell }: any) => {
       switch (cell.column.Header) {
          case "Department":
             return <Department cell={cell} />;
+
+         case "First Name":
+            return <Consultant cell={cell} />
 
          default: {
             return <h1>Something went wrong</h1>;
@@ -38,6 +42,7 @@ const Explore = ({ cell }: any) => {
                setShowModal(false);
                setShowExplore(false);
             }}
+            cell={cell}
          >
             {getContentFile()}
          </AdminModal>

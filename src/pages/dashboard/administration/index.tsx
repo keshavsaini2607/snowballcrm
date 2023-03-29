@@ -54,7 +54,6 @@ const Administration = () => {
                   COLUMNS={COLUMNS}
                   setTableInstance={setTableInstance}
                   setCurrentPage={setCurrentPage}
-
                />
             )}
          </div>

@@ -28,6 +28,11 @@
   @apply cursor-pointer hover:text-primary;
 }
 
+.scroll-important {
+  overflow: scroll !important;
+  height: 400px;
+}
+
 .inputLabel {
   color: "lightgray",
 }
