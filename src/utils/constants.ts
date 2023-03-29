@@ -160,3 +160,13 @@ export const features = [
       icon: "/features/idp.svg",
    },
 ];
+
+
+export const departmentDataSharing = [
+   'Tax',
+   'Loan',
+   'Accounting',
+   'Finance',
+   'Engineering',
+   'Construction'
+]

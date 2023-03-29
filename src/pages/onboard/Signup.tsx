@@ -12,6 +12,7 @@ const Signup = () => {
    const [username, setUsername] = useState("");
    const [token, setToken] = useState<any>("");
    const [rToken, setRToken] = useState<any>("");
+   const [password, setPassword] = useState("");
    const location = useLocation();
    const queryString = location.search;
 
@@ -64,7 +65,7 @@ const Signup = () => {
       if (currentStep === 2) {
          signupMutation.mutate({
             token: token,
-            password: "Kash@9828",
+            password: password,
             r_token: rToken,
          } as SignupProps);
       }
@@ -145,6 +146,7 @@ const Signup = () => {
                   placeholder="Password"
                   type="password"
                   className="text_input"
+                  onChange={(e) => setPassword(e.target.value)}
                />
             </>
          ) : null}

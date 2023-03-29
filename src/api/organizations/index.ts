@@ -7,7 +7,7 @@ export const getOrganizations = async (token: string) => {
       server.defaults.headers.common = {
          Authorization: `Bearer ${token}`,
       };
-      const response = await server.get("/organizations");
+      const response = await server.get("/api/v2/organizations");
       return response.data;
    } catch (error) {
       handleError(error);
@@ -18,7 +18,7 @@ export const createOrganization = async (
    payload: CreateOrganizationPayload
 ) => {
    try {
-      const response = await server.post("/organizations", payload);
+      const response = await server.post("/api/v2/organizations", payload);
       return response.data;
    } catch (error) {
       handleError(error);
@@ -27,7 +27,7 @@ export const createOrganization = async (
 
 export const selectOrganization = async (orgId: string) => {
    try {
-      const response = await server.post(`/organizations/${orgId}`);
+      const response = await server.post(`/api/v2/organizations/${orgId}`);
       return response.data;
    } catch (error) {
       handleError(error);

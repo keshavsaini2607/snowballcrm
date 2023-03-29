@@ -15,23 +15,23 @@ const Footer = () => {
             <div className="flex flex-col md:flex-row  text-center md:text-start gap-20 text-white md:w-[60%]">
                <ul>
                   <p className="text-xl font-extrabold mb-2">Company</p>
-                  <li>About Us</li>
-                  <li>Privacy policy</li>
-                  <li>Terms and conditions</li>
+                  <li className="list-style">About Us</li>
+                  <li className="list-style">Privacy policy</li>
+                  <li className="list-style">Terms and conditions</li>
                </ul>
                <ul>
                   <p className="text-xl font-extrabold mb-2">Services</p>
-                  <li>What we do</li>
-                  <li>Natural language</li>
-                  <li>Intelligent document processing</li>
-                  <li>SnowBall CRM</li>
+                  <li className="list-style">What we do</li>
+                  <li className="list-style">Natural language</li>
+                  <li className="list-style">Intelligent document processing</li>
+                  <li className="list-style">SnowBall CRM</li>
                </ul>
                <ul>
                   <p className="text-xl font-extrabold mb-2">Contact Us</p>
-                  <li>+61 - 410 896 039</li>
-                  <li>contact@snowball-a-vibe.com</li>
-                  <li>141 Marquends road, Truganina</li>
-                  <li>Company number: 73499626178</li>
+                  <li className="list-style">+61 - 410 896 039</li>
+                  <li className="list-style">contact@snowball-a-vibe.com</li>
+                  <li className="list-style">141 Marquends road, Truganina</li>
+                  <li className="list-style">Company number: 73499626178</li>
                </ul>
             </div>
          </div>

@@ -24,6 +24,10 @@
   @apply border-[1px] border-gray-400 w-full px-4 py-2 rounded-sm outline-none;
 }
 
+.list-style {
+  @apply cursor-pointer hover:text-primary;
+}
+
 .inputLabel {
   color: "lightgray",
 }

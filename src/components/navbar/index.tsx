@@ -3,10 +3,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo_big.svg";
 import { homeNavTabs } from "../../utils/constants";
+import { useWindowSize } from "../../utils/useWindowSize";
+import ResponsiveNav from "./ResponsiveNav";
 
 const Navbar = () => {
-   const [navActive, setNavActive] = useState(false);
    const [scrollPosition, setScrollPosition] = useState(0);
+   const [showMobileMenu, setShowMobileMenu] = useState(false);
+   const { width } = useWindowSize();
+   console.log({width});
 
    const handleScroll = () => {
       const position = window.pageYOffset;
@@ -32,16 +36,17 @@ const Navbar = () => {
                Signin
             </button>
          </Link>
+         {
+            width < 1024 && showMobileMenu ? <ResponsiveNav /> : null
+         }
          <div
-            className="z-10 lg:hidden"
-            onClick={() => setNavActive((p) => !p)}
+            className="z-50 lg:hidden"
+            onClick={() => setShowMobileMenu((p) => !p)}
          >
             <Hamburger
                color={
-                  navActive && scrollPosition > 60
-                     ? "#000"
-                     : scrollPosition > 60
-                     ? "#000"
+                  showMobileMenu 
+                     ? "#fff"
                      : "#000"
                }
                size={25}

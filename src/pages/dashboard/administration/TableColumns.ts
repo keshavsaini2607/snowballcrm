@@ -1,4 +1,5 @@
 import { Column } from "react-table";
+import Explore from "./explore";
 
 export const COLUMNS = [
    {
@@ -9,10 +10,12 @@ export const COLUMNS = [
          {
             Header: "Department",
             accessor: "department_name",
+            Cell: Explore
          },
          {
             Header: "First Name",
             accessor: "user_attributes[2].value",
+            Cell: Explore
          },
          {
             Header: "Last Name",
