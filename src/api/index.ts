@@ -3,7 +3,7 @@ import { API } from "../utils/constants";
 
 const server = axios.create({
    baseURL: API.BASE_URL,
-   timeout: 4000,
+   timeout: 8000,
    maxRedirects: 5,
 });
 
