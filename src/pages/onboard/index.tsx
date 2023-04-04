@@ -10,12 +10,13 @@ import HeroImg from "../../assets/hero/hero_img.svg";
 import IconImg from "../../assets/hero/icon.svg";
 import SignupImg from "../../assets/hero/signup.svg";
 import BannerImg from "../../assets/banner.svg";
-import SignupBlack from "../../assets/signup_black.svg";
 import Footer from "../../components/footer";
 import { features, summary } from "../../utils/constants";
 
 const Onboard = () => {
    const location = useLocation();
+   let pathName = location.pathname.split('/')[1];
+   console.log({pathName});
 
    return (
       <div className="relative">
@@ -84,7 +85,7 @@ const Onboard = () => {
                </p>
             </div>
          </div>
-         <div className="px-10 z-10 flex flex-col md:flex-row items-center justify-between w-full mt-10">
+         <div className={`px-10 z-10 flex flex-col md:flex-row items-center justify-between w-full ${pathName === 'signin' ? 'mt-24' : 'mt-10' }`}>
             <img
                src={QuoteImg}
                alt="back_img"

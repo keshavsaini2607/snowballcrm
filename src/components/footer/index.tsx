@@ -38,9 +38,9 @@ const Footer = () => {
 
          <div className="flex items-center gap-4 justify-center">
             <div className="w-[40%] bg-[#B9B2B2] p-[1px]"></div>
-            <img src="/fb.svg" alt="" />
-            <img src="/linkedin.svg" alt="" />
-            <img src="/insta.svg" alt="" />
+            <img src="/fb.svg" alt="" className="hover:scale-125 cursor-pointer" />
+            <img src="/linkedin.svg" alt="" className="hover:scale-125 cursor-pointer" />
+            <img src="/insta.svg" alt="" className="hover:scale-125 cursor-pointer" />
             <div className="w-[40%] bg-[#B9B2B2] p-[1px]"></div>
          </div>
          <div className="flex flex-col items-center text-white mt-8 justify-center">

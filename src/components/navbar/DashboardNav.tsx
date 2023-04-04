@@ -6,7 +6,7 @@ import ProfileMenu from "./ProfileMenu";
 
 const DashboardNav = () => {
    return (
-      <nav className="p-4 flex items-center justify-between shadow-lg h-[10vh]">
+      <nav className="p-4 flex items-center justify-between shadow-lg h-[7vh]">
          <Link to="/">
             <img src={Logo} className="w-auto h-auto" />
          </Link>

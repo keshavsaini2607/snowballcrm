@@ -1,32 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useMutation } from "react-query";
+import React, { useState } from "react";
+import { useQuery } from "react-query";
 import { getAdministrationData } from "../../../api/administration";
 import Table from "../../../common/Table";
-import TableFilters from "../../../common/Table/TableFilters";
 import { useWindowSize } from "../../../utils/useWindowSize";
-import { COLUMNS } from "./TableColumns";
+import { COLUMNS, EMPTY_COLUMNS } from "./TableColumns";
+import { AdministrationDataProps } from "../../../api/administration/types";
+import EmptyTable from "../../../common/Table/EmptyTable";
 
 const Administration = () => {
    const [tableInstance, setTableInstance] = useState<any>();
    const [currentPage, setCurrentPage] = useState(1);
    const windowSize = useWindowSize();
-
-   useEffect(() => {
-      adminDataMutation.mutate({
-         organization_name: "snowball_crm",
-         offset: 0,
-         limit: 100,
-      });
-   }, []);
-
-   const adminDataMutation = useMutation(getAdministrationData, {
-      onSuccess(data, variables, context) {
-         console.log("admin data", data);
-      },
-      onError(error, variables, context) {
-         console.log("error getting admin data", error);
-      },
-   });
+   const { data, isLoading, isError, error, isSuccess } = useQuery(['users', { page: 1, page_size: 10 } as any], getAdministrationData);
 
    return (
       <div className="overflow-hidden">
@@ -48,14 +33,14 @@ const Administration = () => {
             </div>
          </header>
          <div className="overflow-scroll md:overflow-hidden">
-            {!adminDataMutation.isLoading && adminDataMutation.isSuccess && (
+            {!isLoading && isSuccess && data.length > 0 ? (
                <Table
-                  tableData={adminDataMutation?.data}
+                  tableData={data?.data}
                   COLUMNS={COLUMNS}
                   setTableInstance={setTableInstance}
                   setCurrentPage={setCurrentPage}
                />
-            )}
+            ): <EmptyTable columns={EMPTY_COLUMNS} data={[]} />}
          </div>
          <div className="flex items-end py-2 px-4 gap-2 w-full justify-end">
             <select

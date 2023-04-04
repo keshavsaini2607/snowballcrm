@@ -132,9 +132,10 @@ const newRecordCols: any[] = [
 
 type props = {
    createNewRowRef: any;
-}
+   isNewTable?: boolean;
+};
 
-const NewRecordRow = ({createNewRowRef}: props) => {
+const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
    const handleFormSubmit = (e: FormEvent) => {
       e.preventDefault();
       const form: any = e.target;
@@ -144,35 +145,45 @@ const NewRecordRow = ({createNewRowRef}: props) => {
    };
 
    return (
-      <form className="w-[100vw] flex items-center" onSubmit={handleFormSubmit}>
-         {newRecordCols?.map((column) => {
-            if (column.type === "text" || column.type === "email") {
-               return (
-                  <input
-                     type={column.type}
-                     placeholder={column.key}
-                     name={column.key}
-                     className={`input w-[100px] ${
-                        column.disabled && "cursor-not-allowed"
-                     }`}
-                     disabled={column?.disabled || false}
-                  />
-               );
-            } else {
-               return (
-                  <select
-                     className="selInput w-[180px]"
-                     name={column.key}
-                     defaultValue={column.key}  
-                  >
-                     <option disabled>{column.key}</option>
-                     <option value="Yes">Yes</option>
-                     <option value="No">No</option>
-                  </select>
-               );
-            }
-         })}
-         <button ref={createNewRowRef} type="submit" style={{ display: 'none' }} />
+      <form
+         className={`  border-l-[10px] border-l-primary`}
+         onSubmit={handleFormSubmit}
+      >
+         <div className=" flex items-center w-[100vw]">
+            {newRecordCols?.map((column) => {
+               if (column.type === "text" || column.type === "email") {
+                  return (
+                     <input
+                        type={column.type}
+                        placeholder={column.key}
+                        name={column.key}
+                        className={`input w-[100px] ${
+                           column.disabled && "cursor-not-allowed"
+                        }`}
+                        disabled={column?.disabled || false}
+                     />
+                  );
+               } else {
+                  return (
+                     <select
+                        className="selInput w-[180px]"
+                        name={column.key}
+                        defaultValue={column.key}
+                     >
+                        <option disabled>{column.key}</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                     </select>
+                  );
+               }
+            })}
+         </div>
+
+         <button
+            ref={createNewRowRef}
+            type="submit"
+            style={{ display: "none" }}
+         />
       </form>
    );
 };

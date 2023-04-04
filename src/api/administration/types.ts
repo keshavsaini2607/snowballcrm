@@ -1,5 +1,4 @@
 export interface AdministrationDataProps {
-   organization_name: string;
-   offset: number;
-   limit: number;
+   page: number;
+   page_size: number;
 }

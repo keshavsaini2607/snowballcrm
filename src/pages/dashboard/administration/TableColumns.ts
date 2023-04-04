@@ -1,6 +1,34 @@
 import { Column } from "react-table";
 import Explore from "./explore";
 
+export const EMPTY_COLUMNS = [
+   {
+      Header: "Department and User",
+      columns: [
+         {
+            Header: "Department",
+            Cell: Explore
+         },
+         {
+            Header: "First Name",
+            Cell: Explore
+         },
+         {
+            Header: "Last Name",
+            Cell: Explore
+         },
+         {
+            Header: "Email",
+            Cell: Explore
+         },
+         {
+            Header: "Add Column",
+            Cell: Explore
+         },
+      ]
+   }
+]
+
 export const COLUMNS = [
    {
       Header: "Department and User",   

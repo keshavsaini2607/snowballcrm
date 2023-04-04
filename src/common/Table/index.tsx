@@ -13,6 +13,7 @@ import NewRecordRow from "./NewRecordRow";
 import "./table.css";
 import TableFilters from "./TableFilters";
 import { Styles } from "./TableStyles";
+import { EMPTY_COLUMNS } from "../../pages/dashboard/administration/TableColumns";
 
 type props = {
    tableData: any;
@@ -45,8 +46,9 @@ const Table = ({
          : setDataToShow(originalData);
    }, [showOnlyRow]);
 
-   let data = useMemo(() => dataToShow, [tableData, dataToShow]);
-   const columns = useMemo(() => COLUMNS, []);
+   let data: any[] = useMemo(() => dataToShow, [tableData, dataToShow]);
+   const columns = useMemo(() => data?.length > 0 ? COLUMNS : EMPTY_COLUMNS, []);
+
 
    const tableInstance = useTable(
       //@ts-ignore
