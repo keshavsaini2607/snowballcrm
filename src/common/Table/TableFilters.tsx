@@ -55,27 +55,30 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
             }}
             className="h-[300px]"
          >
-            {userData?.map((column) => (
-               <MenuItem
-                  key={Math.random().toString()}
-                  onClick={() => handleFilter(column)}
-               >
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={showOnlyRow.find(
-                           (col) => col.user_id === column.user_id
-                        )}
-                        readOnly
-                     />
-                     <span className="ml-4">
-                        {column?.user_attributes[2]?.value +
-                           " " +
-                           column?.user_attributes[3]?.value || ""}
-                     </span>
-                  </label>
-               </MenuItem>
-            ))}
+            <div className="border-l-[4px] border-l-primary h-full text-text">
+               <p className="pl-4 py-2 font-extrabold">Users</p>
+               {userData?.map((column) => (
+                  <MenuItem
+                     key={Math.random().toString()}
+                     onClick={() => handleFilter(column)}
+                  >
+                     <label className="flex items-center">
+                        <input
+                           type="checkbox"
+                           checked={showOnlyRow.find(
+                              (col) => col.user_id === column.user_id
+                           )}
+                           readOnly
+                        />
+                        <span className="ml-4 text-sm">
+                           {column?.user_attributes[2]?.value +
+                              " " +
+                              column?.user_attributes[3]?.value || ""}
+                        </span>
+                     </label>
+                  </MenuItem>
+               ))}
+            </div>
          </Menu>
       </>
    );
@@ -124,7 +127,7 @@ const HideFilters = ({
    return (
       <>
          <button
-            className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
+            className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg "
             onClick={handleClick}
          >
             <img src="/filter/hide.svg" />
@@ -136,23 +139,26 @@ const HideFilters = ({
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
-            className="h-[300px]"
+            className="h-[300px] w-[290px] p-0"
             MenuListProps={{
                "aria-labelledby": "basic-button",
             }}
          >
-            {columns?.map((column: any) => (
-               <MenuItem key={column?.id}>
-                  <label>
-                     <input
-                        type="checkbox"
-                        value={column?.isVisible}
-                        {...column?.getToggleHiddenProps()}
-                     />
-                     <span className="ml-4">{column?.Header}</span>
-                  </label>
-               </MenuItem>
-            ))}
+            <div className="border-l-[4px] border-l-primary h-full text-text">
+               <p className="pl-4 py-2 font-extrabold">Columns</p>
+               {columns?.map((column: any) => (
+                  <MenuItem key={column?.id}>
+                     <label className="flex items-center">
+                        <input
+                           type="checkbox"
+                           value={column?.isVisible}
+                           {...column?.getToggleHiddenProps()}
+                        />
+                        <span className="ml-4 text-sm">{column?.Header}</span>
+                     </label>
+                  </MenuItem>
+               ))}
+            </div>
          </Menu>
       </>
    );

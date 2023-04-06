@@ -1,19 +1,12 @@
-import {
-   Link,
-   Navigate,
-   Outlet,
-   redirect,
-   useLocation,
-   useNavigate,
-} from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import DashboardNav from "../../components/navbar/DashboardNav";
-import SmallLogo from "../../assets/smalllogo.svg";
-import CrmLogo from "../../assets/crmlogo.svg";
 import { dashboardMenu } from "../../utils/constants";
-import { Avatar, Icon } from "@mui/material";
+import { Icon } from "@mui/material";
 import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useWindowSize } from "../../utils/useWindowSize";
+import { useQuery } from "react-query";
+import { getUserAttributes } from "../../api/userAttributes";
 
 export default function Root() {
    const windowSize = useWindowSize();
@@ -21,7 +14,9 @@ export default function Root() {
    const [activeTab, setActiveTab] = useState<string>("administration");
    const location = useLocation();
 
-   console.log({ isTabsHidden });
+   const { data, isLoading } = useQuery("userAttributes", getUserAttributes);
+
+   console.log({ data });
 
    useEffect(() => {
       if (windowSize.width < 768) {
@@ -52,22 +47,24 @@ export default function Root() {
                   <img
                      src={isTabsHidden ? "/logosmall.svg" : "/crm_full.svg"}
                      alt=""
-                     className={`w-[100%] ${isTabsHidden && 'bg-secondary h-[95%]'} `}
+                     className={`w-[100%] ${
+                        isTabsHidden && "bg-secondary h-[95%]"
+                     } `}
                   />
                   {isTabsHidden && windowSize.width > 768 && (
                      <span
                         onClick={() => setIsTabsHidden(false)}
-                        className="border-[1px] border-gray-400 rounded-full absolute -right-3 top-[25%] bg-white p-[2px] cursor-pointer"
+                        className="border-[1px] border-[#9c9a9a] rounded-full absolute -right-3 top-[25%] bg-white p-[2px] cursor-pointer"
                      >
-                        <AiOutlineRight />
+                        <AiOutlineRight color="#9c9a9a" />
                      </span>
                   )}
                   {!isTabsHidden && (
                      <span
                         onClick={() => setIsTabsHidden(true)}
-                        className="border-[1px] border-gray-400 rounded-full absolute -right-1 top-[25%] bg-white p-[2px] cursor-pointer"
+                        className="border-[1px] border-[#9c9a9a] rounded-full absolute -right-1 top-[25%] bg-white p-[2px] cursor-pointer"
                      >
-                        <AiOutlineLeft />
+                        <AiOutlineLeft color="#9c9a9a" />
                      </span>
                   )}
                </div>
@@ -122,6 +119,7 @@ export default function Root() {
                <Outlet />
             </section>
          </div>
+         {/* {isLoading && <Loader />} */}
       </div>
    );
 }

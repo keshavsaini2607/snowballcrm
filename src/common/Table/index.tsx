@@ -29,10 +29,13 @@ const Table = ({
    setCurrentPage,
 }: props) => {
    const { showOnlyRow } = useAppSelector((state) => state.table);
-   let originalData = tableData?.data?.department_user_data;
+   let originalData = tableData;
    const [dataToShow, setDataToShow] = useState<any[]>(originalData);
    const [showAddRow, setShowAddRow] = useState(false);
    const createNewRowRef = useRef<any>();
+
+
+   console.log({tableData})
 
    const handleSubmit = (event: FormEvent) => {
       event.preventDefault(); // prevent default form submission behavior
@@ -127,25 +130,25 @@ const Table = ({
                   className="table sticky"
                   style={{ overflow: "scroll" }}
                >
-                  <div className="header">
-                     {headerGroups.map((headerGroup) => (
+                  <div className="header text-sm">
+                     {headerGroups.map((headerGroup, key) => (
                         <div
                            {...headerGroup.getHeaderGroupProps()}
                            className="tr"
                         >
                            {headerGroup.headers.map((column) => (
-                              <div {...column.getHeaderProps()} className="th">
-                                 {column.render("Header")}
+                              <div {...column.getHeaderProps()} className={`th main_head-${key}`}>
+                                 <span>{column.render("Header")}</span>
                               </div>
                            ))}
                         </div>
                      ))}
                   </div>
-                  <div {...getTableBodyProps()} className="body">
+                  <div {...getTableBodyProps()} className="body text-sm main_row">
                      {page.map((row: any) => {
                         prepareRow(row);
                         return (
-                           <div {...row.getRowProps()} className="tr">
+                           <div {...row.getRowProps()} className="tr ">
                               {row.cells.map((cell: any) => (
                                  <div {...cell.getCellProps()} className="td">
                                     {cell.render("Cell")}
@@ -155,7 +158,7 @@ const Table = ({
                         );
                      })}
                   </div>
-                  <div>
+                  <div className="text-sm">
                      {showAddRow && (
                         <NewRecordRow createNewRowRef={createNewRowRef} />
                      )}
@@ -169,7 +172,7 @@ const Table = ({
                            </button>
                         )}
                         <span
-                           className={`hover:bg-gray-100 px-6 py-3 cursor-pointer rounded-md ${
+                           className={`hover:bg-gray-100 border-[1px] border-gray-200 px-6 py-3 cursor-pointer rounded-md ${
                               showAddRow ? "bg-gray-300" : ""
                            }`}
                            onClick={() => setShowAddRow((p) => !p)}

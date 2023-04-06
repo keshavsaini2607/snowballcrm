@@ -34,7 +34,7 @@ const Explore = ({ cell }: any) => {
             onClick={() => setShowModal((p) => !p)}
          >
             <AiOutlineExpandAlt />
-            {showExplore && <span className="text-[0.5rem] absolute -bottom-[2px] right-1">Open</span>}
+            {showExplore && <span className="text-[0.5rem] absolute -bottom-[5px] right-1">Open</span>}
          </span>
          <AdminModal
             open={showModal}

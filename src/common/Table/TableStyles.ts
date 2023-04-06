@@ -59,12 +59,12 @@ export const Styles = styled.div`
 
       .header {
         top: 0;
-        box-shadow: 0px 3px 3px #ccc;
+        box-shadow: 0px 3px 3px #ddd;
       }
 
       .footer {
         bottom: 0;
-        box-shadow: 0px -3px 3px #ccc;
+        box-shadow: 0px -3px 3px #ddd;
       }
 
       .body {
@@ -85,5 +85,27 @@ export const Styles = styled.div`
         background-color: #ccc;
       }
     }
+
+    
+
+    .main_head  {
+      padding: 1px !important;
+    }
+    .main_head-0{
+      padding: 14px 12px !important;
+      font-size: 15px !important;
+    }
+
+    .main_head-1 {
+      padding: 0px !important;
+      padding-left: 11px !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .main_head-0 {
+      background-color: #fbf9f7 !important;
+    }
+    
   }
 `;

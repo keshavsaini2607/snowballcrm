@@ -146,7 +146,7 @@ const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
 
    return (
       <form
-         className={`  border-l-[10px] border-l-primary`}
+         className={` ${isNewTable && "border-l-[10px] border-l-primary"} `}
          onSubmit={handleFormSubmit}
       >
          <div className=" flex items-center w-[100vw]">

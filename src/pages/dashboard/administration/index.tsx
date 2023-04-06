@@ -13,6 +13,7 @@ const Administration = () => {
    const windowSize = useWindowSize();
    const { data, isLoading, isError, error, isSuccess } = useQuery(['users', { page: 1, page_size: 10 } as any], getAdministrationData);
 
+   console.log({data});
    return (
       <div className="overflow-hidden">
          <header className="flex flex-col md:flex-row items-center gap-3 md:gap-10 border-b-[1px] py-6 border-b-gray-300">
@@ -35,7 +36,7 @@ const Administration = () => {
          <div className="overflow-scroll md:overflow-hidden">
             {!isLoading && isSuccess && data.length > 0 ? (
                <Table
-                  tableData={data?.data}
+                  tableData={data}
                   COLUMNS={COLUMNS}
                   setTableInstance={setTableInstance}
                   setCurrentPage={setCurrentPage}
