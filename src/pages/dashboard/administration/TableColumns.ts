@@ -38,7 +38,7 @@ export const COLUMNS = [
    },
    {
       Header: "Email",
-      accessor: "user_attributes[1].value",
+      accessor: "username",
    },
    {
       Header: "Mobile",

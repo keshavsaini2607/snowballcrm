@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useWindowSize } from "../../utils/useWindowSize";
 import { useQuery } from "react-query";
 import { getUserAttributes } from "../../api/userAttributes";
+import Loader from "../../components/loader";
 
 export default function Root() {
    const windowSize = useWindowSize();
@@ -85,7 +86,7 @@ export default function Root() {
                         <Icon
                            component={() => (
                               <img
-                                 src={`/assets/${menu.icon}.svg`}
+                                 src={`/assets/${menu.icon}${activeTab === menu.icon ? '_active': ''}.svg`}
                                  className="w-5 h-5 "
                               />
                            )}
@@ -119,7 +120,7 @@ export default function Root() {
                <Outlet />
             </section>
          </div>
-         {/* {isLoading && <Loader />} */}
+         {isLoading && <Loader />}
       </div>
    );
 }
