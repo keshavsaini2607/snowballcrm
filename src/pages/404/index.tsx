@@ -13,8 +13,8 @@ const errorCheck = (error: any): error is ErrorResponse => {
 
 export default function NotFound() {
    // const error: any = useRouteError();
-  //  console.log(error);
-   //   console.log(typeof error);
+  //  
+   //   
 
    return (
       <div id="error-page">

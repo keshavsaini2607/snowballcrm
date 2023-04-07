@@ -36,7 +36,7 @@ let commonStyles = {
 };
 
 const AdminModal = ({ open, handleClose, children, cell }: props) => {
-   console.log({ cell });
+   
    return (
       <Modal
          open={open}

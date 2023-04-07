@@ -5,19 +5,12 @@ import { Icon } from "@mui/material";
 import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useWindowSize } from "../../utils/useWindowSize";
-import { useQuery } from "react-query";
-import { getUserAttributes } from "../../api/userAttributes";
-import Loader from "../../components/loader";
 
 export default function Root() {
    const windowSize = useWindowSize();
    const [isTabsHidden, setIsTabsHidden] = useState<boolean>(false);
    const [activeTab, setActiveTab] = useState<string>("administration");
    const location = useLocation();
-
-   const { data, isLoading } = useQuery("userAttributes", getUserAttributes);
-
-   console.log({ data });
 
    useEffect(() => {
       if (windowSize.width < 768) {
@@ -86,7 +79,9 @@ export default function Root() {
                         <Icon
                            component={() => (
                               <img
-                                 src={`/assets/${menu.icon}${activeTab === menu.icon ? '_active': ''}.svg`}
+                                 src={`/assets/${menu.icon}${
+                                    activeTab === menu.icon ? "_active" : ""
+                                 }.svg`}
                                  className="w-5 h-5 "
                               />
                            )}
@@ -120,7 +115,6 @@ export default function Root() {
                <Outlet />
             </section>
          </div>
-         {isLoading && <Loader />}
       </div>
    );
 }

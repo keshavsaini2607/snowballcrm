@@ -18,22 +18,11 @@ export const COLUMNS = [
       Header: "Department and User",   
       sticky: "left",
       columns: [
-         
          {
             Header: "Department",
             accessor: "department_name",
             Cell: Explore
-         },
-         {  
-            Header: "First Name",
-            accessor: "user_attributes[2].value",
-            Cell: Explore
-         },
-         {
-            Header: "Last Name",
-            accessor: "user_attributes[4].value",
-            visible: false
-         },
+         }
       ],
    },
    {

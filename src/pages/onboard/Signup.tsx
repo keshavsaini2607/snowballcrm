@@ -73,7 +73,7 @@ const Signup = () => {
 
    const emailSignupMutation = useMutation(emailSignup, {
       onSuccess: (data) => {
-         console.log({ data });
+         
          if (data.status === UserRegistrationStep.VERIFIED) {
             setCurrentStep(2);
          } else {
@@ -81,17 +81,17 @@ const Signup = () => {
          }
       },
       onError: (error) => {
-         console.log("Error signing up", error);
+         
       },
    });
 
    const signupMutation = useMutation(signup, {
       onSuccess(data) {
-         console.log("user created", data);
+         
          navigate("/signin");
       },
       onError(error) {
-         console.log("error creating user", error);
+         
       },
    });
 

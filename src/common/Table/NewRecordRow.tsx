@@ -1,5 +1,7 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import "./TableStyles";
+import { getUserAttributes } from "../../api/userAttributes";
+import { useQuery } from "react-query";
 
 const newRecordCols: any[] = [
    {
@@ -12,21 +14,9 @@ const newRecordCols: any[] = [
       key: "Department",
       type: "text",
    },
-   {
-      id: "2",
-      key: "First Name",
-      type: "text",
-   },
-   {
-      id: "3",
-      key: "Last Name",
-      type: "text",
-   },
-   {
-      id: "4",
-      key: "Email",
-      type: "email",
-   },
+];
+
+const defaultRecordCols = [
    {
       id: "5",
       key: "Mobile Read",
@@ -136,17 +126,44 @@ type props = {
 };
 
 const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
+   const { data: userAttributes, isLoading: userAttributeLoading } = useQuery(
+      "userAttributes",
+      getUserAttributes
+   );
+
+   useEffect(() => {
+      userAttributes?.forEach((attribute: any) => {
+         const entryExists = newRecordCols.find(
+            (record) => record?.key === attribute?.name
+         );
+         if (!entryExists && attribute?.name !== "Add Column") {
+            newRecordCols.push({
+               id: Math.random().toString(),
+               key: attribute.name,
+               type: "text",
+            });
+         }
+      });
+      defaultRecordCols?.forEach((col) => {
+         const entryExists = newRecordCols.find(
+            (record) => record?.key === col?.key
+         );
+         if (!entryExists) {
+            newRecordCols.push(col);
+         }
+      });
+   }, [userAttributes]);
+
    const handleFormSubmit = (e: FormEvent) => {
       e.preventDefault();
       const form: any = e.target;
       const formData = new FormData(form);
       const formValues = Object.fromEntries(formData.entries());
-      console.log({ formValues });
    };
 
    return (
       <form
-         className={` ${isNewTable && "border-l-[10px] border-l-primary"} `}
+         className={` ${isNewTable && "border-l-[10px] border-l-primary overflow-scroll"} `}
          onSubmit={handleFormSubmit}
       >
          <div className=" flex items-center w-[100vw]">

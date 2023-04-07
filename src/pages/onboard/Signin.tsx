@@ -20,7 +20,7 @@ const Signin = () => {
    const [newOrganization, setNewOrganization] = useState("");
    const navigate = useNavigate();
 
-   console.log({organization})
+   
 
    function handleInputChange(event: any) {
       const { name, value } = event.target;
@@ -62,33 +62,33 @@ const Signin = () => {
          }
       },
       onError(error, variables, context) {
-         console.log("error creating new organization", error);
+         
          
       },
    });
 
    const selectOrganizationMutation = useMutation(selectOrganization, {
       onSuccess(data, variables, context) {
-         console.log({ data });
+         
          localStorage.setItem("access_token", data.access_token);
          setTimeout(() => {
             navigate("/");
          }, 0);
       },
       onError(error, variables, context) {
-         console.log("error selecting organization", error);
+         
       },
    });
 
    const signinMutation = useMutation(signinUser, {
       async onSuccess(data, variables, context) {
          setSigninToken(data.access_token);
-         console.log("signin success", data);
+         
 
          const orgs = await getOrganizations(data.access_token);
          setOrganizations(orgs);
 
-         console.log({orgs});
+         
 
          if (orgs?.length < 1) {
             setCurrentStep(2);
@@ -97,7 +97,7 @@ const Signin = () => {
          }
       },
       onError(error, variables, context) {
-         console.log("signin error", error, "v", context);
+         
          setCurrentStep(2);
       },
    });

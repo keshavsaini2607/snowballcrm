@@ -106,6 +106,9 @@ export const Styles = styled.div`
     .main_head-0 {
       background-color: #fbf9f7 !important;
     }
-    
+    .add_head {
+      padding: 14px 2px !important;
+      font-size: 15px !important;
+    }
   }
 `;

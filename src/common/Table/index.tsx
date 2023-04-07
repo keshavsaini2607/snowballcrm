@@ -13,7 +13,6 @@ import NewRecordRow from "./NewRecordRow";
 import "./table.css";
 import TableFilters from "./TableFilters";
 import { Styles } from "./TableStyles";
-import { EMPTY_COLUMNS } from "../../pages/dashboard/administration/TableColumns";
 
 type props = {
    tableData: any;
@@ -32,16 +31,8 @@ const Table = ({
    let originalData = tableData;
    const [dataToShow, setDataToShow] = useState<any[]>(originalData);
    const [showAddRow, setShowAddRow] = useState(false);
+   const [cols, setCols] = useState<any[]>(COLUMNS);
    const createNewRowRef = useRef<any>();
-
-
-   console.log({tableData})
-
-   const handleSubmit = (event: FormEvent) => {
-      event.preventDefault(); // prevent default form submission behavior
-      console.log("submitting");
-      createNewRowRef.current.click(); // submit the form using the reference
-   };
 
    useEffect(() => {
       showOnlyRow.length > 0
@@ -49,9 +40,16 @@ const Table = ({
          : setDataToShow(originalData);
    }, [showOnlyRow]);
 
-   let data: any[] = useMemo(() => dataToShow, [tableData, dataToShow]);
-   const columns = useMemo(() => data?.length > 0 ? COLUMNS : EMPTY_COLUMNS, []);
+   // let columns = useMemo(() => cols, [cols]);
+   useEffect(() => {
+      setCols([...COLUMNS]);
+   }, [COLUMNS]);
 
+   let columns = useMemo(() => {
+      return cols;
+   }, [cols]);
+
+   let data: any[] = useMemo(() => dataToShow, [tableData, dataToShow]);
 
    const tableInstance = useTable(
       //@ts-ignore
@@ -114,8 +112,6 @@ const Table = ({
       setCurrentPage(pageIndex);
    }, [tableInstance, pageIndex, canPreviousPage, canNextPage]);
 
-   console.log({ selectedFlatRows });
-
    return (
       <>
          <TableFilters
@@ -137,14 +133,32 @@ const Table = ({
                            className="tr"
                         >
                            {headerGroup.headers.map((column) => (
-                              <div {...column.getHeaderProps()} className={`th main_head-${key}`}>
-                                 <span>{column.render("Header")}</span>
-                              </div>
+                              <>
+                                 <div
+                                    {...column.getHeaderProps()}
+                                    className={`th main_head-${key}`}
+                                 >
+                                    {column?.Header === "Add Column" ? (
+                                       <input
+                                          placeholder="+ Add Column"
+                                          style={{
+                                             width: "80%",
+                                             outline: "none",
+                                          }}
+                                       />
+                                    ) : (
+                                       <span>{column.render("Header")}</span>
+                                    )}
+                                 </div>
+                              </>
                            ))}
                         </div>
                      ))}
                   </div>
-                  <div {...getTableBodyProps()} className="body text-sm main_row">
+                  <div
+                     {...getTableBodyProps()}
+                     className="body text-sm main_row"
+                  >
                      {page.map((row: any) => {
                         prepareRow(row);
                         return (

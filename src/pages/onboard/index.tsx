@@ -16,7 +16,7 @@ import { features, summary } from "../../utils/constants";
 const Onboard = () => {
    const location = useLocation();
    let pathName = location.pathname.split('/')[1];
-   console.log({pathName});
+   
 
    return (
       <div className="relative">

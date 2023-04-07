@@ -13,7 +13,7 @@ function EmptyTable({ columns, data }: any) {
    const handleCellClick = (column: any) => {
       // Handle the click event for the cell here
       if (column.Header === "Add Column") {
-         console.log(`Clicked on cell value:`);
+         
       }
    };
 
@@ -30,12 +30,13 @@ function EmptyTable({ columns, data }: any) {
                         {headerGroup.headers.map((column) => (
                            <>
                               {column?.Header === "Add Column" ? (
-                                 <th style={{color: 'gray', cursor: 'pointer', width: 'max-content'}}>
+                                 <th key={column?.id} style={{color: 'gray', cursor: 'pointer', width: 'max-content'}}>
                                     <input type="text" placeholder="+ Add Column" className="bg-transparent w-full outline-none" />
                                  </th>
                               ) : (
                                  <th
                                     {...column.getHeaderProps()}
+                                    key={column?.id}
                                     onClick={() => handleCellClick(column)}
                                  >
                                     {column.render("Header")}
@@ -50,7 +51,7 @@ function EmptyTable({ columns, data }: any) {
                   {rows.map((row) => {
                      prepareRow(row);
                      return (
-                        <tr {...row.getRowProps()}>
+                        <tr {...row.getRowProps()} key={row?.id}>
                            {row.cells.map((cell) => {
                               return (
                                  <td {...cell.getCellProps()}>

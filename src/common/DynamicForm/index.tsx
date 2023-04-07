@@ -60,7 +60,7 @@ const DynamicForm = ({ data, submit, btnText, schema, formRef }: props) => {
                   <>
                      {Object.entries(errors).map(([key, value]) => {
                         if (key === formField.key) {
-                           console.log("value", value);
+                           
                            return (
                               <span
                                  key={Math.random().toString()}
