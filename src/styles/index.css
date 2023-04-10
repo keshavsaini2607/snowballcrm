@@ -2,59 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-*, html {
-  padding: 0; 
-  margin: 0;
-  font-family: 'PT Sans', sans-serif;
+*,
+html {
+   padding: 0;
+   margin: 0;
+   font-family: "PT Sans", sans-serif;
 }
 
 .root {
-  /* display: flex; */
-  min-width: 100vw;
-  height: calc(100vh);
+   /* display: flex; */
+   min-width: 100vw;
+   height: calc(100vh);
 }
 
 .sidebar {
-  height: 100vh;
-  width: 20vw;
-  background-color: #ccc;
+   height: 100vh;
+   width: 20vw;
+   background-color: #ccc;
 }
 
 .text_input {
-  @apply border-[1px] border-gray-400 w-full px-4 py-2 rounded-sm outline-none;
+   @apply border-[1px] border-gray-400 w-full px-4 py-2 rounded-sm outline-none;
 }
 
 .list-style {
-  @apply cursor-pointer hover:text-primary;
+   @apply cursor-pointer hover:text-primary;
 }
 
 .scroll-important {
-  overflow: scroll !important;
-  height: 400px;
+   overflow: scroll !important;
+   height: 400px;
 }
 
 .inputLabel {
-  color: "lightgray",
+   color: "lightgray";
 }
 
 .input {
-  width: 150px !important;
-  border: 1px solid #ccc;
-  padding: 6px;
-  outline: none;
+   width: 150px !important;
+   border: 1px solid #ccc;
+   padding: 7.9px;
+   outline: none;
 }
 
 .selInput {
-  min-width: 150px !important;
-  border: 1px solid #ccc;
-  padding: 6px;
+   min-width: 150px !important;
+   border: 1px solid #ccc;
+   padding: 7.7px;
 }
 
 .bolder {
-  font-weight: 900 !important;
+   font-weight: 900 !important;
 }
 
 .css-6hp17o-MuiList-root-MuiMenu-list {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+   padding-top: 0 !important;
+   padding-bottom: 0 !important;
+}
+
+.MuiAutocomplete-inputRoot {
+   padding: 0 !important;
+   width: 150px !important;
+   border-radius: 0 !important;
+   display: flex !important;
+   text-align: center !important;
+   z-index: 100 !important;
 }

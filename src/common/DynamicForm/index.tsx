@@ -3,6 +3,12 @@ import { Controller, useForm } from "react-hook-form";
 // import Button from "../Common/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormInterface } from "../../utils/interface";
+import { Autocomplete} from "@mui/material";
+import Dropdown from "./Controls/Dropdown";
+import PasswordInput from "./Controls/PasswordInput";
+import TextInput from "./Controls/TextInput";
+import Search from "./Controls/Search";
+
 
 type props = {
    data: FormInterface;
@@ -24,25 +30,7 @@ const DynamicForm = ({ data, submit, btnText, schema, formRef }: props) => {
       switch (formField.controlType) {
          case "text":
             return (
-               <div className="flex flex-col">
-                  <input
-                     {...register(formField.key, { required: true })}
-                     className={`bg-[#f6f6f6] px-2 py-3 border-[#dffcf2] rounded-md text-sm outline-none border-2`}
-                     placeholder={formField.placeholder || formField.label}
-                  />
-                  <>
-                     {Object.entries(errors).map(([key, value]) => {
-                        if (key === formField.key) {
-                           return (
-                              <span
-                                 key={Math.random().toString()}
-                                 className="text-red-700 text-xs capitalize"
-                              >{`${formField.label} ${value?.message}`}</span>
-                           );
-                        }
-                     })}
-                  </>
-               </div>
+               <TextInput formField={formField} registerFunc={register} errors={errors} />
             );
          case "textarea":
             return (
@@ -50,28 +38,11 @@ const DynamicForm = ({ data, submit, btnText, schema, formRef }: props) => {
             );
          case "password":
             return (
-               <div className="flex flex-col">
-                  <input
-                     {...register(formField.key, { required: true })}
-                     className="bg-[#f6f6f6] px-2 py-3 border-[#dffcf2] rounded-md text-sm outline-none border-2"
-                     placeholder={formField.placeholder || formField.label}
-                     type="password"
-                  />
-                  <>
-                     {Object.entries(errors).map(([key, value]) => {
-                        if (key === formField.key) {
-                           
-                           return (
-                              <span
-                                 key={Math.random().toString()}
-                                 className="text-red-700 text-xs capitalize"
-                              >{`${formField.label} ${value?.message}`}</span>
-                           );
-                        }
-                     })}
-                  </>
-               </div>
+               <PasswordInput formField={formField} registerFunc={register} errors={errors} />
             );
+
+         case "autocomplete":
+            return <Search />
 
          case "checkbox":
             return (
@@ -90,27 +61,56 @@ const DynamicForm = ({ data, submit, btnText, schema, formRef }: props) => {
                   </p>
                </div>
             );
+
+         case "dropdown":
+            return <Dropdown formField={formField} registerFunc={register} errors={errors} />;
+
+         default:
+            return <span>Please give a control type</span>;
       }
    };
 
    return (
       <div>
          <form onSubmit={handleSubmit(submit)} ref={formRef}>
-            {data.formFields.map((formField: any) => (
-               <div
-                  className="flex flex-col w-[100%] my-4"
-                  key={formField.key}
-                  style={{ width: "100%", textAlign: "start" }}
-               >
-                  <label className="text-[#065743] text-sm">
-                     {formField.label}
-                  </label>
-                  {renderController(formField)}
-               </div>
-            ))}
+            {data.formFields &&
+               data.formFields.map((formField: any) => (
+                  <>
+                     {formField?.multiFields ? (
+                        <div className="flex items-center gap-2">
+                           {formField?.multiFields?.map((field: any) => (
+                              <div
+                                 className="flex flex-col w-[49%]"
+                                 key={formField.key}
+                              >
+                                 {field?.controlType !== "dropdown" && (
+                                    <label className="text-gray-700 text-sm">
+                                       {field.label}
+                                    </label>
+                                 )}
+                                 {renderController(field)}
+                              </div>
+                           ))}
+                        </div>
+                     ) : (
+                        <div
+                           className="flex flex-col w-[100%] my-4"
+                           key={formField.key}
+                           style={{ width: "100%", textAlign: "start" }}
+                        >
+                           {formField?.controlType !== "dropdown" && (
+                              <label className="text-gray-700 text-sm">
+                                 {formField.label}
+                              </label>
+                           )}
+                           {renderController(formField)}
+                        </div>
+                     )}
+                  </>
+               ))}
             <div>
                {/* <Button title={isSubmitting ? "Please wait..." : btnText} click={() => {}} /> */}
-               <button className="bg-primary px-16 py-4 text-sm text-white w-full mt-4">
+               <button className="bg-primary px-16 py-2 text-sm text-white mt-4">
                   {isSubmitting ? "Please Wait..." : btnText}
                </button>
             </div>

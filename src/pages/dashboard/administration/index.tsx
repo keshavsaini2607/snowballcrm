@@ -39,14 +39,13 @@ const Administration = () => {
             name: "Add Column",
          });
          userAttributes.forEach((attribute) => {
-            let alreadyExists = COLUMNS[0]?.columns?.find(
-               (column) => column?.Header === attribute?.name
+            let alreadyExists = COLUMNS[1]?.columns?.find(
+               (column: any) => column?.Header === attribute?.name
             );
             if (!alreadyExists) {
-               COLUMNS[0]?.columns?.push({
+               COLUMNS[1]?.columns?.push({
                   Header: attribute?.name,
                   accessor: getAccessor(attribute?.id) ?? "",
-                  Cell: (() => <div></div>)
                });
             }
          });

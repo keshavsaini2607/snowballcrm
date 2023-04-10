@@ -172,3 +172,7 @@ export const departmentDataSharing = [
 ]
 
 // export const 
+
+export const userAttributeTypes = [
+   ''
+]

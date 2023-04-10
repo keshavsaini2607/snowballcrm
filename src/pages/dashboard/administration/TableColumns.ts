@@ -7,31 +7,41 @@ export const EMPTY_COLUMNS = [
       columns: [
          {
             Header: "Add Column",
-            Cell: Explore
+            Cell: Explore,
          },
-      ]
-   }
-]
+      ],
+   },
+];
 
 export const COLUMNS = [
    {
-      Header: "Department and User",   
+      Header: "Department and User",
       sticky: "left",
       columns: [
          {
             Header: "Department",
             accessor: "department_name",
-            Cell: Explore
-         }
+            Cell: Explore,
+         },
+         {
+            Header: "Email",
+            accessor: "username",
+         },
+         {
+            Header: "Full Name",
+            accessor: "user",
+         },
       ],
    },
+
    {
-      Header: "Email",
-      accessor: "username",
-   },
-   {
-      Header: "Mobile",
-      accessor: "user_attributes[5].value",
+      Header: "User Details",
+      columns: [
+         // {
+         //    Header: "Add Column",
+         //    // Cell: Explore,
+         // },
+      ]
    },
    {
       Header: "Activity Access",

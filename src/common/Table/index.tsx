@@ -13,6 +13,7 @@ import NewRecordRow from "./NewRecordRow";
 import "./table.css";
 import TableFilters from "./TableFilters";
 import { Styles } from "./TableStyles";
+import AddFeatureModal from "../Modals/AddFeatureModals";
 
 type props = {
    tableData: any;
@@ -32,7 +33,11 @@ const Table = ({
    const [dataToShow, setDataToShow] = useState<any[]>(originalData);
    const [showAddRow, setShowAddRow] = useState(false);
    const [cols, setCols] = useState<any[]>(COLUMNS);
+   const [showAddFeature, setShowAddFeature] = useState<boolean>(false);
+   const [featureToAdd, setFeatureToAdd] = useState<string>('');
    const createNewRowRef = useRef<any>();
+
+   
 
    useEffect(() => {
       showOnlyRow.length > 0
@@ -40,7 +45,6 @@ const Table = ({
          : setDataToShow(originalData);
    }, [showOnlyRow]);
 
-   // let columns = useMemo(() => cols, [cols]);
    useEffect(() => {
       setCols([...COLUMNS]);
    }, [COLUMNS]);
@@ -50,6 +54,12 @@ const Table = ({
    }, [cols]);
 
    let data: any[] = useMemo(() => dataToShow, [tableData, dataToShow]);
+   console.log({columns});
+
+   const toggleAddFeatureModal = (headerTitle: any) => {
+      setShowAddFeature(p => !p);
+      setFeatureToAdd(headerTitle);
+   }
 
    const tableInstance = useTable(
       //@ts-ignore
@@ -139,13 +149,15 @@ const Table = ({
                                     className={`th main_head-${key}`}
                                  >
                                     {column?.Header === "Add Column" ? (
-                                       <input
-                                          placeholder="+ Add Column"
-                                          style={{
-                                             width: "80%",
-                                             outline: "none",
-                                          }}
-                                       />
+                                       <button
+                                          type="button"
+                                          data-te-ripple-init
+                                          data-te-ripple-color="light"
+                                          className="inline-block rounded bg-gray-50 px-6 py-2.5 text-xs font-medium uppercase leading-tight text-gray-700 shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
+                                          onClick={() => toggleAddFeatureModal(column?.Header)}
+                                       >
+                                          + Add Column
+                                       </button>
                                     ) : (
                                        <span>{column.render("Header")}</span>
                                     )}
@@ -201,6 +213,11 @@ const Table = ({
          {selectedFlatRows.length > 0 && (
             <FloatingMenu selectedFlatRows={selectedFlatRows} />
          )}
+         <AddFeatureModal 
+            open={showAddFeature}
+            handleClose={() => setShowAddFeature(false)}
+            featureToAdd={featureToAdd}
+         />
       </>
    );
 };

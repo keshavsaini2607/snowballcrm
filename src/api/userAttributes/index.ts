@@ -28,3 +28,12 @@ export const DeleteUserAttribute = async(uAId: string) => {
         handleError(error);
     }
 }
+
+export const getAttributeTypes = async() => {
+    try {
+        const response = await server.get('/types/attribute');
+        return response.data;
+    } catch (error) {
+        handleError(error);
+    }
+}

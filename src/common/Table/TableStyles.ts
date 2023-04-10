@@ -42,10 +42,15 @@ export const Styles = styled.div`
       border-bottom: 1px solid #ddd;
       background-color: #fff;
       overflow: hidden;
+      overflow: scroll !important;
 
       :last-child {
         border-right: 0;
       }
+    }
+
+    .td::-webkit-scrollbar {
+      display: none;
     }
 
     &.sticky {

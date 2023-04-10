@@ -2,6 +2,7 @@ import React, { FormEvent, useEffect } from "react";
 import "./TableStyles";
 import { getUserAttributes } from "../../api/userAttributes";
 import { useQuery } from "react-query";
+import Search from "../DynamicForm/Controls/Search";
 
 const newRecordCols: any[] = [
    {
@@ -12,7 +13,7 @@ const newRecordCols: any[] = [
    {
       id: "1",
       key: "Department",
-      type: "text",
+      type: "autocomplete",
    },
 ];
 
@@ -163,12 +164,16 @@ const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
 
    return (
       <form
-         className={` ${isNewTable && "border-l-[10px] border-l-primary overflow-scroll"} `}
+         className={` ${
+            isNewTable && "border-l-[10px] border-l-primary overflow-scroll"
+         } `}
          onSubmit={handleFormSubmit}
       >
          <div className=" flex items-center w-[100vw]">
             {newRecordCols?.map((column) => {
-               if (column.type === "text" || column.type === "email") {
+               if (column.type === "autocomplete") {
+                  return <Search />;
+               } else if (column.type === "text" || column.type === "email") {
                   return (
                      <input
                         type={column.type}
