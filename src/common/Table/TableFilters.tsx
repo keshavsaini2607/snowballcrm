@@ -29,9 +29,12 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
    };
 
    const handleFilter = (column: any) => {
+      console.log({column})
       dispatch(setShowOnlyRow(column));
       handleClose();
    };
+
+   console.log({userData})
 
    return (
       <>
@@ -71,9 +74,7 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
                            readOnly
                         />
                         <span className="ml-4 text-sm">
-                           {column?.user_attributes[2]?.value +
-                              " " +
-                              column?.user_attributes[3]?.value || ""}
+                           {column?.user_attributes[1]?.value || column?.username}
                         </span>
                      </label>
                   </MenuItem>

@@ -6,11 +6,13 @@ import { COLUMNS, EMPTY_COLUMNS } from "./TableColumns";
 import EmptyTable from "../../../common/Table/EmptyTable";
 import { getUserAttributes } from "../../../api/userAttributes";
 import Loader from "../../../components/loader";
+import { useNavigate } from "react-router-dom";
 
 const Administration = () => {
    const [tableInstance, setTableInstance] = useState<any>();
    const [currentPage, setCurrentPage] = useState(1);
    const [columns, setColumns] = useState(COLUMNS);
+   const navigate = useNavigate();
 
    const { data, isLoading, isError, error, isSuccess } = useQuery(
       ["users", { page: 1, page_size: 10 } as any],
@@ -52,6 +54,7 @@ const Administration = () => {
       }
 
       setColumns(COLUMNS);
+      // navigate('/dashboard/administration')
    }, [userAttributes]);
 
    return (
