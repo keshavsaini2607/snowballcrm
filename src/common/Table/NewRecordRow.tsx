@@ -4,7 +4,7 @@ import { getUserAttributes } from "../../api/userAttributes";
 import { useQuery } from "react-query";
 import Search from "../DynamicForm/Controls/Search";
 
-const newRecordCols: any[] = [
+const defaultCols: any[] = [
    {
       id: "0",
       type: "text",
@@ -15,14 +15,20 @@ const newRecordCols: any[] = [
       key: "Department",
       type: "autocomplete",
    },
+   {
+      id: "2",
+      key: "Email",
+      type: "text",
+   },
+   {
+      id: "3",
+      key: "Name",
+      type: "text",
+   },
 ];
 
+const newRecordCols: any[] = [];
 const defaultRecordCols = [
-   {
-      id: "5",
-      key: "Mobile Read",
-      type: "phone",
-   },
    {
       id: "6",
       key: "Client Read",
@@ -145,14 +151,14 @@ const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
             });
          }
       });
-      defaultRecordCols?.forEach((col) => {
-         const entryExists = newRecordCols.find(
-            (record) => record?.key === col?.key
-         );
-         if (!entryExists) {
-            newRecordCols.push(col);
-         }
-      });
+      if (!newRecordCols[newRecordCols.length - 1]?.disabled) {
+         newRecordCols.push({
+            id: "1",
+            key: "",
+            type: "text",
+            disabled: true,
+         });
+      }
    }, [userAttributes]);
 
    const handleFormSubmit = (e: FormEvent) => {
@@ -162,43 +168,56 @@ const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
       const formValues = Object.fromEntries(formData.entries());
    };
 
+   const renderControl = (column: any) => {
+      if (column.type === "autocomplete") {
+         return <Search column={column} />;
+      } else if (column.type === "text" || column.type === "email") {
+         return (
+            <input
+               type={column.type}
+               placeholder={column.key}
+               name={column.key}
+               className={`input w-[100px] ${
+                  column.disabled && "cursor-not-allowed"
+               }`}
+               disabled={column?.disabled || false}
+            />
+         );
+      } else {
+         return (
+            <select
+               className="selInput w-[180px]"
+               name={column.key}
+               defaultValue={column.key}
+            >
+               <option disabled>{column.key}</option>
+               <option value="Yes">Yes</option>
+               <option value="No">No</option>
+            </select>
+         );
+      }
+   };
+
    return (
       <form
          className={` ${
-            isNewTable && "border-l-[10px] border-l-primary overflow-scroll"
+            isNewTable &&
+            "border-l-[10px] border-l-primary max-w-[100vw] overflow-scroll"
          } `}
          onSubmit={handleFormSubmit}
       >
-         <div className=" flex items-center w-[100vw]">
-            {newRecordCols?.map((column) => {
-               if (column.type === "autocomplete") {
-                  return <Search />;
-               } else if (column.type === "text" || column.type === "email") {
-                  return (
-                     <input
-                        type={column.type}
-                        placeholder={column.key}
-                        name={column.key}
-                        className={`input w-[100px] ${
-                           column.disabled && "cursor-not-allowed"
-                        }`}
-                        disabled={column?.disabled || false}
-                     />
-                  );
-               } else {
-                  return (
-                     <select
-                        className="selInput w-[180px]"
-                        name={column.key}
-                        defaultValue={column.key}
-                     >
-                        <option disabled>{column.key}</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                     </select>
-                  );
-               }
-            })}
+         <div className="flex items-center max-w-[100%] overflow-hidden">
+            <div className="flex items-center">
+               {defaultCols?.map((column) => renderControl(column))}
+            </div>
+
+            <div className="flex items-center">
+               {newRecordCols?.map((column) => renderControl(column))}
+            </div>
+
+            <div className="flex items-center">
+               {defaultRecordCols?.map((column) => renderControl(column))}
+            </div>
          </div>
 
          <button

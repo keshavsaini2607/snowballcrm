@@ -66,11 +66,11 @@ const AddColumn = ({handleClose}: any) => {
 
    const saveUserAttributeMutation = useMutation(createUserAttribute, {
       onSuccess(data, variables, context) {
-         console.log({ data });
+         
          queryClient.refetchQueries('userAttributes');
       },
       onError(error, variables, context) {
-         console.log({ error });
+         
       },
    });
 

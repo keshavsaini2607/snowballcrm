@@ -26,11 +26,13 @@ const Administration = () => {
 
    function getAccessor(attributeId: number): string {
       let result: string = "";
-      data[0]?.user_attributes?.forEach((attribute: any, index: number) => {
-         if (attribute?.attribute_id === attributeId) {
-            result = `user_attributes[${index}].value`;
-         }
-      });
+      if (data[0]) {
+         data[0]?.user_attributes?.forEach((attribute: any, index: number) => {
+            if (attribute?.attribute_id === attributeId) {
+               result = `user_attributes[${index}].value`;
+            }
+         });
+      }
 
       return result;
    }

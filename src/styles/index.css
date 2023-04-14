@@ -46,7 +46,7 @@ html {
 }
 
 .selInput {
-   min-width: 150px !important;
+   width: 150px !important;
    border: 1px solid #ccc;
    padding: 7.7px;
 }

@@ -1,10 +1,8 @@
 import * as React from "react";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useQuery } from "react-query";
-import { getDepartments } from "../../../api/departments";
 import useAutocomplete from "@mui/base/useAutocomplete";
 import { styled } from "@mui/system";
+import { useQuery } from "react-query";
+import { getDepartments } from "../../../api/departments";
 
 const Label = styled("label")({
    display: "block",
@@ -17,7 +15,7 @@ const Input = styled("input")(({ theme }) => ({
 }));
 
 const Listbox = styled("ul")(({ theme }) => ({
-   width: 150,
+   width: 200,
    margin: 0,
    padding: 0,
    zIndex: 1,
@@ -38,15 +36,28 @@ const Listbox = styled("ul")(({ theme }) => ({
    },
 }));
 
-export default function Search() {
-   const { isLoading, data, isError } = useQuery("departments", getDepartments);
-   console.log({ data });
+export default function UseAutocomplete({ column }: any) {
+   const { isLoading, data, isError, isSuccess } = useQuery(
+      "departments",
+      getDepartments
+   );
    const [options, setOptions] = React.useState<any[]>([]);
-   const [inputFoccus, setInputFocus] = React.useState(false);
-   const [inputValue, setInputValue] = React.useState("");
 
+   React.useEffect(() => {
+      const datas: string[] = [];
+      data?.forEach((data: any) => {
+         let alreadyExists = datas.includes(data.name);
+         if(!alreadyExists) {
+            datas.push(data.name);
+         }
+      });
+
+      setOptions(datas);
+   }, [data, isSuccess]);
+   console.log({ options });
    const {
       getRootProps,
+      getInputLabelProps,
       getInputProps,
       getListboxProps,
       getOptionProps,
@@ -57,50 +68,24 @@ export default function Search() {
       getOptionLabel: (option) => option,
    });
 
-   React.useEffect(() => {
-      if (!isError && data instanceof Array) {
-         data.forEach((department: any) => {
-            console.log({department})
-            let alreadyExists = options.find(
-               (item) => item === department.name
-            );
-            if (!alreadyExists) {
-               setOptions([...options, department.name]);
-            }
-         });
-      }
-   }, [data]);
-
-   console.log({ options });
-
    return (
-      <div className="relative w-[150px]">
-         <div>
-            <div {...getRootProps()}>
-               <Input
-                  {...getInputProps()}
-                  className="input"
-                  placeholder="Department"
-               />
-            </div>
-            {groupedOptions.length > 0 ? (
-               <Listbox {...getListboxProps()}>
-                  {(groupedOptions as typeof options).map((option, index) => (
-                     <li {...getOptionProps({ option, index })} className="p-2">
-                        {option}
-                     </li>
-                  ))}
-               </Listbox>
-            ) : null}
-
-            {/* <button
-               className={`absolute bg-white p-2 z-10 w-[150px] shadow-lg ${
-                  !inputFoccus && groupedOptions.length <= 0 && "hidden"
-               }`}
-            >
-               Create New
-            </button> */}
+      <div>
+         <div {...getRootProps()}>
+            <Input
+               {...getInputProps()}
+               className="input"
+               placeholder={column.key}
+            />
          </div>
+         {groupedOptions.length > 0 ? (
+            <Listbox {...getListboxProps()} className="input">
+               {(groupedOptions as typeof options).map((option, index) => (
+                  <li {...getOptionProps({ option, index })} className="p-2">
+                     {option}
+                  </li>
+               ))}
+            </Listbox>
+         ) : null}
       </div>
    );
 }

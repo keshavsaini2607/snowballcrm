@@ -38,7 +38,6 @@ export const Styles = styled.div`
 
     .th,
     .td {
-      padding: 10px;
       border-bottom: 1px solid #ddd;
       background-color: #fff;
       overflow: hidden;

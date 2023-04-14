@@ -29,12 +29,12 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
    };
 
    const handleFilter = (column: any) => {
-      console.log({column})
+      
       dispatch(setShowOnlyRow(column));
       handleClose();
    };
 
-   console.log({userData})
+   
 
    return (
       <>

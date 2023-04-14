@@ -14,6 +14,7 @@ import "./table.css";
 import TableFilters from "./TableFilters";
 import { Styles } from "./TableStyles";
 import AddFeatureModal from "../Modals/AddFeatureModals";
+import CellInput from "./CellInput";
 
 type props = {
    tableData: any;
@@ -34,10 +35,8 @@ const Table = ({
    const [showAddRow, setShowAddRow] = useState(false);
    const [cols, setCols] = useState<any[]>(COLUMNS);
    const [showAddFeature, setShowAddFeature] = useState<boolean>(false);
-   const [featureToAdd, setFeatureToAdd] = useState<string>('');
+   const [featureToAdd, setFeatureToAdd] = useState<string>("");
    const createNewRowRef = useRef<any>();
-
-   
 
    useEffect(() => {
       showOnlyRow.length > 0
@@ -54,12 +53,11 @@ const Table = ({
    }, [cols]);
 
    let data: any[] = useMemo(() => dataToShow, [tableData, dataToShow]);
-   console.log({columns});
 
    const toggleAddFeatureModal = (headerTitle: any) => {
-      setShowAddFeature(p => !p);
+      setShowAddFeature((p) => !p);
       setFeatureToAdd(headerTitle);
-   }
+   };
 
    const tableInstance = useTable(
       //@ts-ignore
@@ -154,7 +152,11 @@ const Table = ({
                                           data-te-ripple-init
                                           data-te-ripple-color="light"
                                           className="inline-block rounded bg-gray-50 px-6 py-2.5 text-xs font-medium uppercase leading-tight text-gray-700 shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
-                                          onClick={() => toggleAddFeatureModal(column?.Header)}
+                                          onClick={() =>
+                                             toggleAddFeatureModal(
+                                                column?.Header
+                                             )
+                                          }
                                        >
                                           + Add Column
                                        </button>
@@ -174,10 +176,18 @@ const Table = ({
                      {page.map((row: any) => {
                         prepareRow(row);
                         return (
-                           <div {...row.getRowProps()} className="tr ">
+                           <div {...row.getRowProps()} className="tr p-0">
                               {row.cells.map((cell: any) => (
                                  <div {...cell.getCellProps()} className="td">
-                                    {cell.render("Cell")}
+                                    {cell?.column?.id === "selection" ? (
+                                       <div className="px-3 py-3">{cell.render("Cell")}</div>
+                                    ) : (
+                                       <>
+                                          {cell.render(
+                                             <CellInput cell={cell} />
+                                          )}
+                                       </>
+                                    )}
                                  </div>
                               ))}
                            </div>
@@ -213,7 +223,7 @@ const Table = ({
          {selectedFlatRows.length > 0 && (
             <FloatingMenu selectedFlatRows={selectedFlatRows} />
          )}
-         <AddFeatureModal 
+         <AddFeatureModal
             open={showAddFeature}
             handleClose={() => setShowAddFeature(false)}
             featureToAdd={featureToAdd}
