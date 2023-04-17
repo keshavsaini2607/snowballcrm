@@ -24,13 +24,13 @@ export const tableFilterSlice = createSlice({
       },
       setShowOnlyRow: (state, action: PayloadAction<any>) => {
          const alreadyExists = state.showOnlyRow.find(
-            (column) => column.user_id === action.payload.user_id
+            (column) => column.username === action.payload.username
          );
          if (!alreadyExists) {
             state.showOnlyRow = [...state.showOnlyRow, action.payload];
          } else {
             state.showOnlyRow = state.showOnlyRow.filter(
-               (column) => column.user_id !== action.payload.user_id
+               (column) => column.username !== action.payload.username
             );
          }
       },

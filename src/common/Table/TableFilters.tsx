@@ -4,6 +4,9 @@ import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../shared/hooks";
 import { setShowOnlyRow } from "../../shared/slices/tableFilterSlice";
 import Checkbox from "./Checkbox";
+import { useQuery } from "react-query";
+import { getUsers } from "../../api/users";
+import { getAdministrationData } from "../../api/administration";
 
 interface HideFilterProps {
    allColumns: any;
@@ -29,12 +32,10 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
    };
 
    const handleFilter = (column: any) => {
-      
       dispatch(setShowOnlyRow(column));
       handleClose();
    };
 
-   
 
    return (
       <>
@@ -69,7 +70,7 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
                         <input
                            type="checkbox"
                            checked={showOnlyRow.find(
-                              (col) => col.user_id === column.user_id
+                              (col) => col.username === column.username
                            )}
                            readOnly
                         />

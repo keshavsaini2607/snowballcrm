@@ -41,8 +41,8 @@ const DynamicForm = ({ data, submit, btnText, schema, formRef }: props) => {
                <PasswordInput formField={formField} registerFunc={register} errors={errors} />
             );
 
-         case "autocomplete":
-            return <Search />
+         // case "autocomplete":
+         //    return <Search />
 
          case "checkbox":
             return (

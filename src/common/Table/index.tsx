@@ -40,12 +40,15 @@ const Table = ({
    const createNewRowRef = useRef<any>();
    const [newRows, setNewRows] = useState(0);
    const [createRows, setCreateRows] = useState<any[]>([]);
-   
 
    useEffect(() => {
-      showOnlyRow.length > 0
-         ? setDataToShow(showOnlyRow)
-         : setDataToShow(originalData);
+      console.log(showOnlyRow, '#');
+      if (showOnlyRow.length > 0) {
+         setDataToShow(showOnlyRow);
+      } else {
+         setDataToShow(originalData);
+      }
+      console.log(dataToShow, 'only show#')
    }, [showOnlyRow]);
 
    useEffect(() => {
@@ -66,7 +69,9 @@ const Table = ({
    useEffect(() => {
       let arr = [];
       for (let index = 0; index < newRows; index++) {
-         arr.push(<NewRecordRow createNewRowRef={createNewRowRef} key={index} />);
+         arr.push(
+            <NewRecordRow createNewRowRef={createNewRowRef} key={index} />
+         );
       }
       setCreateRows(arr);
    }, [newRows]);
