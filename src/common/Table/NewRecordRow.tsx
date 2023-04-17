@@ -25,7 +25,8 @@ const defaultCols: any[] = [
    },
    {
       id: "2",
-      key: "User",
+      key: "Users",
+      placeholder: "User",
       type: "text",
       disabled: true,
    },
@@ -205,7 +206,7 @@ const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
    function handleInputChange(event: any) {
       if (event.target.name === "First Name") {
          console.log("event", event.target.value);
-         var inputElement: any = document.getElementsByName("User")[0];
+         var inputElement: any = document.getElementsByName("Users")[0];
          inputElement.value = event.target.value;
       }
    }
@@ -223,7 +224,7 @@ const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
          return (
             <input
                type={column.type}
-               placeholder={column.key}
+               placeholder={column?.placeholder || column.key}
                name={column.key}
                className={`input w-[100px] ${
                   column.disabled && "cursor-not-allowed"
