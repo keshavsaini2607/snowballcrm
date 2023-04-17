@@ -13,7 +13,7 @@ const Explore = ({ cell }: any) => {
          case "Department":
             return <Department cell={cell} />;
 
-         case "First Name":
+         case "User":
             return <Consultant cell={cell} />
 
          default: {
@@ -28,7 +28,7 @@ const Explore = ({ cell }: any) => {
          onMouseOver={() => setShowExplore(true)}
          onMouseOut={() => setShowExplore(false)}
       >
-         <span>{cell.value}</span>
+         {/* <span>{cell.value}</span> */}
          <span
             className="cursor-pointer flex items-center text-center flex-col h-[100%] relative p-[5px]"
             onClick={() => setShowModal((p) => !p)}

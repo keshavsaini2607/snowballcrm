@@ -15,6 +15,7 @@ import TableFilters from "./TableFilters";
 import { Styles } from "./TableStyles";
 import AddFeatureModal from "../Modals/AddFeatureModals";
 import CellInput from "./CellInput";
+import { handleUnderscore } from "../../utils/helpers";
 
 type props = {
    tableData: any;
@@ -37,6 +38,9 @@ const Table = ({
    const [showAddFeature, setShowAddFeature] = useState<boolean>(false);
    const [featureToAdd, setFeatureToAdd] = useState<string>("");
    const createNewRowRef = useRef<any>();
+   const [newRows, setNewRows] = useState(0);
+   const [createRows, setCreateRows] = useState<any[]>([]);
+   
 
    useEffect(() => {
       showOnlyRow.length > 0
@@ -58,6 +62,14 @@ const Table = ({
       setShowAddFeature((p) => !p);
       setFeatureToAdd(headerTitle);
    };
+
+   useEffect(() => {
+      let arr = [];
+      for (let index = 0; index < newRows; index++) {
+         arr.push(<NewRecordRow createNewRowRef={createNewRowRef} key={index} />);
+      }
+      setCreateRows(arr);
+   }, [newRows]);
 
    const tableInstance = useTable(
       //@ts-ignore
@@ -127,7 +139,7 @@ const Table = ({
             getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
             userData={originalData}
          />
-         <div className="mt-5 overflow-scroll border-l-[10px] border-l-orange-500 rounded-tl-lg rounded-bl-lg pr-10 w-[98%]">
+         <div className="mt-5 overflow-scroll border-l-[10px] border-l-orange-500 rounded-tl-lg rounded-bl-lg pr-10 w-[98%] h-[56vh] overflow-scroll">
             <Styles>
                <div
                   {...getTableProps()}
@@ -161,7 +173,19 @@ const Table = ({
                                           + Add Column
                                        </button>
                                     ) : (
-                                       <span>{column.render("Header")}</span>
+                                       <>
+                                          {column?.id !== "selection" ? (
+                                             <span className="relative">
+                                                {handleUnderscore(
+                                                   column?.Header
+                                                )}
+                                             </span>
+                                          ) : (
+                                             <span>
+                                                {column.render("Header")}
+                                             </span>
+                                          )}
+                                       </>
                                     )}
                                  </div>
                               </>
@@ -180,7 +204,9 @@ const Table = ({
                               {row.cells.map((cell: any) => (
                                  <div {...cell.getCellProps()} className="td">
                                     {cell?.column?.id === "selection" ? (
-                                       <div className="px-3 py-3">{cell.render("Cell")}</div>
+                                       <div className="px-3 py-3">
+                                          {cell.render("Cell")}
+                                       </div>
                                     ) : (
                                        <>
                                           {cell.render(
@@ -195,25 +221,15 @@ const Table = ({
                      })}
                   </div>
                   <div className="text-sm">
-                     {showAddRow && (
-                        <NewRecordRow createNewRowRef={createNewRowRef} />
-                     )}
-                     <div className="addrec px-2 py-4 border-[1px] border-gray-300 w-full">
-                        {showAddRow && (
-                           <button
-                              className={` px-6 py-3 mr-4 bg-primary text-white cursor-pointer rounded-md`}
-                              onClick={() => createNewRowRef?.current?.click()}
-                           >
-                              Create Row
-                           </button>
-                        )}
+                     {createRows}
+                     <div className="addrec px-2 py-4 border-[1px] w-full">
                         <span
-                           className={`hover:bg-gray-100 border-[1px] border-gray-200 px-6 py-3 cursor-pointer rounded-md ${
+                           className={`hover:bg-gray-100 px-6 py-3 cursor-pointer rounded-md ${
                               showAddRow ? "bg-gray-300" : ""
                            }`}
-                           onClick={() => setShowAddRow((p) => !p)}
+                           onClick={() => setNewRows((p) => p + 1)}
                         >
-                           {showAddRow ? "Cancel" : "+ Add Record"}
+                           {"+ Add Record"}
                         </span>
                      </div>
                   </div>

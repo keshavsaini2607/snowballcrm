@@ -11,14 +11,14 @@ const Department = ({ cell }: any) => {
                   <span>Updated: 12/02/2023</span>
                </div>
                <div className="flex items-start gap-1 relative">
-                     <span className="">Users: </span>
-                     <div className="flex flex-col absolute -right-28 text-sm text-gray-600">
-                        <span>Sam Benny (Org.)</span>
-                        <span>Nipun Rao</span>
-                        <span>Lin You</span>
-                        <span>Mohan Mathur</span>
-                     </div>
+                  <span className="">Users: </span>
+                  <div className="flex flex-col absolute -right-28 text-sm text-gray-600">
+                     <span>Sam Benny (Org.)</span>
+                     <span>Nipun Rao</span>
+                     <span>Lin You</span>
+                     <span>Mohan Mathur</span>
                   </div>
+               </div>
             </div>
          </div>
 
@@ -29,31 +29,35 @@ const Department = ({ cell }: any) => {
             <div className="flex items-start justify-between mt-5">
                <div>
                   <h2 className="mb-3">
-                     <span className="text-primary">
-                        {cell?.value}
-                     </span>{" "}
+                     <span className="text-primary">{cell?.value}</span>{" "}
                      department sharing data with
                   </h2>
                   {departmentDataSharing.map((type) => (
-                     <div className="flex items-center gap-3 mb-3">
-                        <input type="checkbox" name={type} id={type} />
-                        <span>{type}</span>
-                     </div>
+                     <>
+                        {type !== cell?.value && (
+                           <div className="flex items-center gap-3 mb-3">
+                              <input type="checkbox" name={type} id={type} />
+                              <span>{type}</span>
+                           </div>
+                        )}
+                     </>
                   ))}
                </div>
                <div>
                   <h2 className="mb-3">
                      Departments sharing data with{" "}
-                     <span className="text-primary">
-                        {cell?.value}
-                     </span>{" "}
+                     <span className="text-primary">{cell?.value}</span>{" "}
                      department
                   </h2>
                   {departmentDataSharing.map((type) => (
-                     <div className="flex items-center gap-3 mb-3">
-                        <input type="checkbox" name={type} id={type} />
-                        <span>{type}</span>
-                     </div>
+                     <>
+                        {type !== cell?.value && (
+                           <div className="flex items-center gap-3 mb-3">
+                              <input type="checkbox" name={type} id={type} />
+                              <span>{type}</span>
+                           </div>
+                        )}
+                     </>
                   ))}
                </div>
             </div>

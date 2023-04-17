@@ -4,10 +4,6 @@ import { styled } from "@mui/system";
 import { useQuery } from "react-query";
 import { getDepartments } from "../../../api/departments";
 
-const Label = styled("label")({
-   display: "block",
-});
-
 const Input = styled("input")(({ theme }) => ({
    width: 200,
    backgroundColor: theme.palette.mode === "light" ? "#fff" : "#000",
@@ -36,7 +32,14 @@ const Listbox = styled("ul")(({ theme }) => ({
    },
 }));
 
-export default function UseAutocomplete({ column }: any) {
+type props = {
+   column: any;
+   name: any;
+   onBlur?: any;
+}
+
+export default function UseAutocomplete({ column, name, onBlur }: props) {
+   
    const { isLoading, data, isError, isSuccess } = useQuery(
       "departments",
       getDepartments
@@ -54,7 +57,7 @@ export default function UseAutocomplete({ column }: any) {
 
       setOptions(datas);
    }, [data, isSuccess]);
-   console.log({ options });
+   
    const {
       getRootProps,
       getInputLabelProps,
@@ -75,6 +78,8 @@ export default function UseAutocomplete({ column }: any) {
                {...getInputProps()}
                className="input"
                placeholder={column.key}
+               name={name}
+               onBlur={(e) => onBlur(e)}
             />
          </div>
          {groupedOptions.length > 0 ? (

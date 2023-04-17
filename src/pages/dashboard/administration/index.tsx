@@ -4,7 +4,10 @@ import { getAdministrationData } from "../../../api/administration";
 import Table from "../../../common/Table";
 import { COLUMNS, EMPTY_COLUMNS } from "./TableColumns";
 import EmptyTable from "../../../common/Table/EmptyTable";
-import { getUserAttributes } from "../../../api/userAttributes";
+import {
+   getAllActivityAccessTypes,
+   getUserAttributes,
+} from "../../../api/userAttributes";
 import Loader from "../../../components/loader";
 import { useNavigate } from "react-router-dom";
 
@@ -24,9 +27,56 @@ const Administration = () => {
       getUserAttributes
    );
 
+   const { data: accessTypes, isLoading: accessLoading } = useQuery(
+      "accessTypes",
+      getAllActivityAccessTypes
+   );
+
+   // 
+
+   useEffect(() => {
+      if (!accessLoading && accessTypes instanceof Array) {
+         const accessObject: any = {
+            Client_Access: [],
+            Form_Access: [],
+            Lead_Access: [],
+            Marketing_Access: [],
+            Document_Access: [],
+            Client_onboarding_access: [],
+            Department_view_access: [],
+            User_access: [],
+            Access_control: [],
+            Form_field_access: [],
+            Export_access: [],
+            Progress_view_access: [],
+            Email_Notification: [],
+            lead_board: [],
+         };
+
+         accessTypes.forEach((access) => {
+            accessObject[access.parent_name].push({
+               Header: access.child_name,
+               accessor: access.child_name[Math.random()],
+            });
+         });
+
+         
+         Object.entries(accessObject).map(([key, value]) => {
+            let alreadyExists = COLUMNS.find((item) => item.Header === key);
+            if (!alreadyExists) {
+               COLUMNS.push({
+                  Header: key,
+                  //@ts-ignore
+                  columns: value,
+               });
+            }
+         });
+      }
+   }, [accessLoading, accessTypes]);
+
    function getAccessor(attributeId: number): string {
       let result: string = "";
-      if (data[0]) {
+      if (data && data?.length > 0) {
          data[0]?.user_attributes?.forEach((attribute: any, index: number) => {
             if (attribute?.attribute_id === attributeId) {
                result = `user_attributes[${index}].value`;
@@ -46,7 +96,9 @@ const Administration = () => {
             let alreadyExists = COLUMNS[1]?.columns?.find(
                (column: any) => column?.Header === attribute?.name
             );
+
             if (!alreadyExists) {
+               //@ts-ignore
                COLUMNS[1]?.columns?.push({
                   Header: attribute?.name,
                   accessor: getAccessor(attribute?.id) ?? "",
@@ -58,6 +110,8 @@ const Administration = () => {
       setColumns(COLUMNS);
       // navigate('/dashboard/administration')
    }, [userAttributes]);
+
+   
 
    return (
       <div className="overflow-hidden">
