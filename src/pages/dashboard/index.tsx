@@ -110,7 +110,7 @@ export default function Root() {
             <section
                className={`${
                   isTabsHidden ? "w-full pl-6" : "w-[80%]"
-               }  overflow-scroll h-[calc(100vh_-_10vh)]`}
+               }  overflow-scroll h-[calc(100vh_-_10vh)] hide-scroll`}
             >
                <Outlet />
             </section>

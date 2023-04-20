@@ -90,6 +90,10 @@ export const Styles = styled.div`
       }
     }
 
+    .th::-webkit-scrollbar {
+      display: none !important;
+    }
+
     
 
     .main_head  {
