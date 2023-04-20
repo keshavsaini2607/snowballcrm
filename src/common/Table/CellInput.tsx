@@ -12,8 +12,6 @@ const CellInput = ({ cell }: any) => {
    const [hover, setHover] = useState(false);
    const { data, isLoading } = useQuery("userAttribtues", getUserAttributes);
 
-   console.log({data})
-
    const handleInputBlur = (event: any) => {
       event.preventDefault();
       console.log("event", event.target.value);

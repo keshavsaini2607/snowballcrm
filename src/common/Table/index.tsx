@@ -5,6 +5,7 @@ import {
    useBlockLayout,
    useFilters,
    useRowSelect,
+   useSortBy,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 import { useAppSelector } from "../../shared/hooks";
@@ -16,6 +17,7 @@ import { Styles } from "./TableStyles";
 import AddFeatureModal from "../Modals/AddFeatureModals";
 import CellInput from "./CellInput";
 import { handleUnderscore } from "../../utils/helpers";
+import SortableHeader from "./SortableHeader";
 
 type props = {
    tableData: any;
@@ -82,6 +84,7 @@ const Table = ({
       useBlockLayout,
       useSticky,
       useFilters,
+      useSortBy,
       usePagination,
       useRowSelect,
       (hooks) => {
@@ -181,9 +184,7 @@ const Table = ({
                                        <>
                                           {column?.id !== "selection" ? (
                                              <span className="relative">
-                                                {handleUnderscore(
-                                                   column?.Header
-                                                )}
+                                                <SortableHeader column={column} />
                                              </span>
                                           ) : (
                                              <span>

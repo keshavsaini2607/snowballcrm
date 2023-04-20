@@ -23,7 +23,6 @@ export const Styles = styled.div`
 
     .th, .td {
       border-left: 1px solid #ddd;
-      
     }
 
     .td {
@@ -42,6 +41,7 @@ export const Styles = styled.div`
       background-color: #fff;
       overflow: hidden;
       overflow: scroll !important;
+      
 
       :last-child {
         border-right: 0;
