@@ -6,6 +6,7 @@ import { IoClose } from "react-icons/io5";
 import { IconButton, Tooltip } from "@mui/material";
 import ModalMenuAccordion from "./ModalMenuAccordion";
 import ConsultantMenu from "./ConsultantMenu";
+import { useEffect, useState } from "react";
 
 const style = {
    position: "absolute" as "absolute",
@@ -35,8 +36,27 @@ let commonStyles = {
    cursor: "pointer",
 };
 
+const Icon = ({ iconName }: any) => {
+   const [hovered, setHovered] = useState(false);
+   const [icon, setIcon] = useState(iconName);
+
+   useEffect(() => {
+      if (hovered) {
+         setIcon(iconName + "-fill");
+      } else {
+         setIcon(iconName);
+      }
+   }, [hovered]);
+   return (
+      <img
+         src={`/assets/modal/${icon}.svg`}
+         onMouseOver={() => setHovered(true)}
+         onMouseOut={() => setHovered(false)}
+      />
+   );
+};
+
 const AdminModal = ({ open, handleClose, children, cell }: props) => {
-   
    return (
       <Modal
          open={open}
@@ -44,43 +64,25 @@ const AdminModal = ({ open, handleClose, children, cell }: props) => {
          aria-labelledby="modal-modal-title"
          aria-describedby="modal-modal-description"
          disableAutoFocus={true}
+         hideBackdrop
       >
          <Box sx={style}>
             <div className="flex items-center gap-10 w-[100%]">
                <div className="flex items-center">
                   <Tooltip title="close">
-                     <IconButton onClick={handleClose}>
-                        <IoClose
-                           color="#fd0000"
-                           style={{
-                              color: "#fd0000",
-                              border: "2px solid red",
-                              ...commonStyles,
-                           }}
-                        />
-                     </IconButton>
+                     <div onClick={handleClose} className="mx-2 cursor-pointer">
+                        <Icon iconName="close" />
+                     </div>
                   </Tooltip>
                   <Tooltip title="save">
-                     <IconButton>
-                        <IoIosSave
-                           style={{
-                              border: "2px solid #279d00",
-                              color: "#279d00",
-                              ...commonStyles,
-                           }}
-                        />
-                     </IconButton>
+                     <div className="mx-2 cursor-pointer">
+                        <Icon iconName="save" />
+                     </div>
                   </Tooltip>
                   <Tooltip title="info">
-                     <IconButton>
-                        <BsInfo
-                           style={{
-                              border: "2px solid #fec000",
-                              color: "#fec000",
-                              ...commonStyles,
-                           }}
-                        />
-                     </IconButton>
+                     <div className="mx-2 cursor-pointer">
+                        <Icon iconName="info" />
+                     </div>
                   </Tooltip>
                </div>
 

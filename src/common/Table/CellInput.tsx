@@ -16,35 +16,41 @@ const CellInput = ({ cell }: any) => {
       event.preventDefault();
       console.log("event", event.target.value);
       console.log("event", event.target.name);
-      let isUserAttr = data.find((item: any) => item.name === event.target.name);
+      let isUserAttr = data.find(
+         (item: any) => item.name === event.target.name
+      );
       let payload: any;
-      if(isUserAttr) {
+      if (isUserAttr) {
          payload = [
             {
                is: isUserAttr?.id,
                attribute_id: isUserAttr?.attribute_type_id,
-               value: event?.target?.value
-            }
-         ]
+               value: event?.target?.value,
+            },
+         ];
 
          saveUserMutation.mutate(payload);
       }
-   }
+   };
 
    const saveUserMutation = useMutation(saveUserAttribute, {
       onSuccess(data, variables, context) {
-          console.log({data})
+         console.log({ data });
       },
       onError(error, variables, context) {
-          console.log('error saving user attr', error);
+         console.log("error saving user attr", error);
       },
-   })
-   
+   });
+
    useEffect(() => {
       setCellValue(cell.value);
    }, [cell]);
    return (
-      <div className="relative flex items-center pr-2">
+      <div
+         className="relative flex items-center pr-2"
+         onMouseOver={() => setHover(true)}
+         onMouseOut={() => setHover(false)}
+      >
          <input
             className="w-[100%] px-2 py-3"
             value={cellValue}
@@ -54,8 +60,12 @@ const CellInput = ({ cell }: any) => {
             disabled={cell.column.Header === "Full Name" ? true : false}
          />
 
-         {cell?.column?.Header === "Department" && <Explore cell={cell} />}
-         {cell?.column?.Header === "User" && <Explore cell={cell} />}
+         {cell?.column?.Header === "Department" && (
+            <Explore cell={cell} hover={hover} />
+         )}
+         {cell?.column?.Header === "User" && (
+            <Explore cell={cell} hover={hover} />
+         )}
          {error && (
             <span className="absolute right-2 top-[25%] text-red-500">
                <MdError />

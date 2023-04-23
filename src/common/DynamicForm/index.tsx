@@ -16,9 +16,10 @@ type props = {
    btnText: string;
    schema?: any;
    formRef?: any;
+   loading?: boolean;
 };
 
-const DynamicForm = ({ data, submit, btnText, schema, formRef }: props) => {
+const DynamicForm = ({ data, submit, btnText, schema, formRef, loading }: props) => {
    const {
       control,
       handleSubmit,
@@ -111,7 +112,7 @@ const DynamicForm = ({ data, submit, btnText, schema, formRef }: props) => {
             <div>
                {/* <Button title={isSubmitting ? "Please wait..." : btnText} click={() => {}} /> */}
                <button className="bg-primary px-16 py-2 text-sm text-white mt-4">
-                  {isSubmitting ? "Please Wait..." : btnText}
+                  {(isSubmitting || loading) ? "Please Wait..." : btnText}
                </button>
             </div>
          </form>

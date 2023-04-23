@@ -4,7 +4,7 @@ import AdminModal from "../../../../components/modals/AdminModal";
 import Consultant from "./Consultant";
 import Department from "./Department";
 
-const Explore = ({ cell }: any) => {
+const Explore = ({ cell, hover }: any) => {
    const [showExplore, setShowExplore] = useState(false);
    const [showModal, setShowModal] = useState(false);
 
@@ -30,11 +30,11 @@ const Explore = ({ cell }: any) => {
       >
          {/* <span>{cell.value}</span> */}
          <span
-            className="cursor-pointer flex items-center text-center flex-col h-[100%] relative p-[5px]"
+            className={`cursor-pointer flex items-center text-center flex-col h-[100%] relative p-[5px] ${hover ? 'scale-125' : 'text-[#cdcdcc]'}`}
             onClick={() => setShowModal((p) => !p)}
          >
-            <AiOutlineExpandAlt />
-            {showExplore && <span className="text-[0.5rem] absolute -bottom-[5px] right-1">Open</span>}
+            <AiOutlineExpandAlt className={`${hover && 'scale-110'}`} />
+            {/* {showExplore && <span className="text-[0.5rem] absolute -bottom-[6px] right-1 z-10">Open</span>} */}
          </span>
          <AdminModal
             open={showModal}

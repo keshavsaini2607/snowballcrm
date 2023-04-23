@@ -66,7 +66,7 @@ const Onboard = () => {
                <Outlet />
             </div>
          </div>
-         <div className="px-10 z-10 flex flex-col md:flex-row items-start justify-between w-full mt-16">
+         <div className="px-10 z-10 flex flex-col md:flex-row items-start justify-between w-full mt-24">
             <img
                src={Dashboard}
                alt="dashboard"
@@ -85,7 +85,7 @@ const Onboard = () => {
                </p>
             </div>
          </div>
-         <div className={`px-10 z-10 flex flex-col md:flex-row items-center justify-between w-full ${pathName === 'signin' ? 'mt-24' : 'mt-10' }`}>
+         <div className={`px-10 z-10 flex flex-col md:flex-row items-center justify-between w-full ${pathName === 'signin' ? 'mt-44' : 'mt-44' }`}>
             <img
                src={QuoteImg}
                alt="back_img"

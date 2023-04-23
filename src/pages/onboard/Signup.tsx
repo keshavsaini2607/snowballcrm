@@ -73,26 +73,20 @@ const Signup = () => {
 
    const emailSignupMutation = useMutation(emailSignup, {
       onSuccess: (data) => {
-         
          if (data.status === UserRegistrationStep.VERIFIED) {
             setCurrentStep(2);
          } else {
             setCurrentStep((p) => p + 1);
          }
       },
-      onError: (error) => {
-         
-      },
+      onError: (error) => {},
    });
 
    const signupMutation = useMutation(signup, {
       onSuccess(data) {
-         
          navigate("/signin");
       },
-      onError(error) {
-         
-      },
+      onError(error) {},
    });
 
    return (
@@ -107,14 +101,14 @@ const Signup = () => {
                   required
                />
                <div className="flex items-center gap-4">
-                  <input type="checkbox" />
+                  <input type="checkbox" className="min-w-[5%]" />
                   <p>
                      I would like to receive marketing communication from
                      Snowball and Snowball’s products, services, and events.
                   </p>
                </div>
                <div className="flex items-center gap-4">
-                  <input type="checkbox" required />
+                  <input type="checkbox" required  className="min-w-[5%]"/>
                   <p>
                      I agree to the{" "}
                      <span className="underline cursor-pointer">

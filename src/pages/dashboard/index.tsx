@@ -11,6 +11,7 @@ export default function Root() {
    const [isTabsHidden, setIsTabsHidden] = useState<boolean>(false);
    const [activeTab, setActiveTab] = useState<string>("administration");
    const location = useLocation();
+   const [mouseHovered, setMouseHovered] = useState(false);
 
    useEffect(() => {
       if (windowSize.width < 768) {
@@ -35,16 +36,20 @@ export default function Root() {
             <aside
                className={`ease-in-out duration-300 ${
                   !isTabsHidden ? "w-[20%] " : ""
-               } py-6 transition duration-500 ease-in-out`}
+               } py-8 transition duration-500 ease-in-out`}
             >
-               <div className="w-[70%] relative h-[50px]">
+               <div className={`relative w-[65%] h-[40px] border-secondary ${!isTabsHidden && 'border-[1px]'} rounded-tr-lg rounded-br-lg flex items-center gap-4`}>
                   <img
-                     src={isTabsHidden ? "/logosmall.svg" : "/crm_full.svg"}
+                     src={"/logosmall.svg"}
                      alt=""
-                     className={`w-[100%] ${
-                        isTabsHidden && "bg-secondary h-[95%]"
-                     } `}
+                     className={`h-[100%] min-w-[25%] bg-secondary ${isTabsHidden ? 'w-full rounded-tr-lg rounded-br-lg pr-2' : 'w-[25%]'}`}
                   />
+                  {!isTabsHidden && windowSize.width > 768 && (
+                     <div className="w-[45%] flex flex-col gap-[1px]">
+                        <img src="/assets/crm.svg" alt="" className="w-full" />
+                        <img src="/assets/opp.svg" alt="" className="w-full" />
+                     </div>
+                  )}
                   {isTabsHidden && windowSize.width > 768 && (
                      <span
                         onClick={() => setIsTabsHidden(false)}
@@ -56,16 +61,14 @@ export default function Root() {
                   {!isTabsHidden && (
                      <span
                         onClick={() => setIsTabsHidden(true)}
-                        className="border-[1px] border-[#9c9a9a] rounded-full absolute -right-1 top-[25%] bg-white p-[2px] cursor-pointer"
+                        className="border-[1px] border-[#9c9a9a] rounded-full absolute -right-3 top-[25%] bg-white p-[2px] cursor-pointer"
                      >
                         <AiOutlineLeft color="#9c9a9a" />
                      </span>
                   )}
                </div>
                <ul
-                  className={`flex mt-5 ${
-                     isTabsHidden ? "items-center" : "items-start"
-                  } flex-col gap-2 w-max`}
+                  className={`flex mt-5  flex-col gap-2 w-max`}
                >
                   {dashboardMenu.map((menu) => (
                      <Link
@@ -82,9 +85,10 @@ export default function Root() {
                                  src={`/assets/${menu.icon}${
                                     activeTab === menu.icon ? "_active" : ""
                                  }.svg`}
-                                 className="w-5 h-5 "
+                                 className={`w-5 h-5 `}
                               />
                            )}
+                           className="w-[30%]"
                         />
                         <div
                            className={`border-[2px] rounded-md ${
@@ -109,7 +113,7 @@ export default function Root() {
             </aside>
             <section
                className={`${
-                  isTabsHidden ? "w-full pl-6" : "w-[80%]"
+                  isTabsHidden ? "w-full pl-6" : "w-[90%]"
                }  overflow-scroll h-[calc(100vh_-_10vh)] hide-scroll`}
             >
                <Outlet />

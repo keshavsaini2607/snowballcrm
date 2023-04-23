@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormInterface } from "../../../../utils/interface";
 import * as yup from "yup";
 import DynamicForm from "../../../DynamicForm";
@@ -61,13 +61,12 @@ const AddColumn = ({handleClose}: any) => {
       };
       saveUserAttributeMutation.mutate(props);
       handleClose();
-      
    };
 
    const saveUserAttributeMutation = useMutation(createUserAttribute, {
       onSuccess(data, variables, context) {
-         
          queryClient.refetchQueries('userAttributes');
+         window.location.reload();
       },
       onError(error, variables, context) {
          
@@ -81,6 +80,7 @@ const AddColumn = ({handleClose}: any) => {
             submit={handleSubmit}
             btnText="Create"
             schema={schema}
+            loading={saveUserAttributeMutation.isLoading}
          />
       </div>
    );

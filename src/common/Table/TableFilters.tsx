@@ -7,6 +7,7 @@ import Checkbox from "./Checkbox";
 import { useQuery } from "react-query";
 import { getUsers } from "../../api/users";
 import { getAdministrationData } from "../../api/administration";
+import { handleUnderscore } from "../../utils/helpers";
 
 interface HideFilterProps {
    allColumns: any;
@@ -36,7 +37,6 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
       handleClose();
    };
 
-
    return (
       <>
          <button
@@ -44,10 +44,10 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
             onClick={handleClick}
          >
             <img src="/filter/person.svg" />
-            <span className="border-r-[1px] border-r-gray-300 pr-2">
+            <span className="border-r-[1px] border-r-gray-300 text-[#b2b3b3] pr-2">
                Person
             </span>
-            <span>{showOnlyRow.length}</span>
+            <span className="text-[#b2b3b3]">{showOnlyRow.length}</span>
          </button>
          <Menu
             id="basic-menu"
@@ -75,7 +75,8 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
                            readOnly
                         />
                         <span className="ml-4 text-sm">
-                           {column?.user_attributes[1]?.value || column?.username}
+                           {column?.user_attributes[1]?.value ||
+                              column?.username}
                         </span>
                      </label>
                   </MenuItem>
@@ -90,8 +91,10 @@ const Filters = () => {
    return (
       <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg">
          <img src="/filter/filter.svg" />
-         <span className="border-r-[1px] border-r-gray-300 pr-2">Filter</span>
-         <span>0</span>
+         <span className="border-r-[1px] border-r-gray-300 pr-2 text-[#b2b3b3]">
+            Filter
+         </span>
+         <span className="text-[#b2b3b3]">0</span>
       </div>
    );
 };
@@ -133,8 +136,10 @@ const HideFilters = ({
             onClick={handleClick}
          >
             <img src="/filter/hide.svg" />
-            <span className="border-r-[1px] border-r-gray-300 pr-2">Hide</span>
-            <span>{getHiddenCount()}</span>
+            <span className="border-r-[1px] border-r-gray-300 pr-2 text-[#b2b3b3]">
+               Hide
+            </span>
+            <span className="text-[#b2b3b3]">{getHiddenCount()}</span>
          </button>
          <Menu
             id="basic-menu"
@@ -149,16 +154,22 @@ const HideFilters = ({
             <div className="border-l-[4px] border-l-primary h-full text-text">
                <p className="pl-4 py-2 font-extrabold">Columns</p>
                {columns?.map((column: any) => (
-                  <MenuItem key={column?.id}>
-                     <label className="flex items-center">
-                        <input
-                           type="checkbox"
-                           value={column?.isVisible}
-                           {...column?.getToggleHiddenProps()}
-                        />
-                        <span className="ml-4 text-sm">{column?.Header}</span>
-                     </label>
-                  </MenuItem>
+                  <>
+                     {column?.Header.length > 1 && (
+                        <MenuItem key={column?.id}>
+                           <label className="flex items-center">
+                              <input
+                                 type="checkbox"
+                                 value={column?.isVisible}
+                                 {...column?.getToggleHiddenProps()}
+                              />
+                              <span className="ml-4 text-sm">
+                                 {handleUnderscore(column?.Header)}
+                              </span>
+                           </label>
+                        </MenuItem>
+                     )}
+                  </>
                ))}
             </div>
          </Menu>

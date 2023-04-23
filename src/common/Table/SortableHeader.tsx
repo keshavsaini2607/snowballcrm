@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import SortHeaderMenu from "./SortHeaderMenu";
+import { GrStar } from "react-icons/gr";
+import { handleUnderscore } from "../../utils/helpers";
 
 type props = {
    column: any;
@@ -22,7 +24,7 @@ const SortableHeader = ({ column }: props) => {
    };
    return (
       <div
-         className="flex items-center gap-1 w-full"
+         className="flex items-center gap-1 w-[100%] relative"
          onMouseOver={() => setShowSort(true)}
          onMouseOut={() => setShowSort(false)}
       >
@@ -39,7 +41,12 @@ const SortableHeader = ({ column }: props) => {
             )}
          </div>
          <div>
-            <span>{column?.Header}</span>
+            <p className="flex items-start gap-1">
+               <p>{handleUnderscore(column?.Header)}</p>
+               {
+                  (column.Header === "User" || column.Header === "Email") && <GrStar color="red" className="w-[10px]" />
+               }
+            </p>
          </div>
          {showHeader() && showSort && <BsThreeDots className="cursor-pointer"/>}
          {/* <SortHeaderMenu /> */}

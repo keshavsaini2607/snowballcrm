@@ -44,13 +44,13 @@ const Table = ({
    const [createRows, setCreateRows] = useState<any[]>([]);
 
    useEffect(() => {
-      console.log(showOnlyRow, '#');
+      console.log(showOnlyRow, "#");
       if (showOnlyRow.length > 0) {
          setDataToShow(showOnlyRow);
       } else {
          setDataToShow(originalData);
       }
-      console.log(dataToShow, 'only show#')
+      console.log(dataToShow, "only show#");
    }, [showOnlyRow]);
 
    useEffect(() => {
@@ -93,17 +93,20 @@ const Table = ({
                id: "selection",
                //@ts-ignore
                Header: ({ getToggleAllRowsSelectedProps }) => (
-                  <div>
+                  <div className="check">
                      <input
                         type="checkbox"
                         {...getToggleAllRowsSelectedProps()}
+                        className=""
                      />
                   </div>
                ),
                Cell: ({ row }) => (
-                  <div>
+                  <div className="check">
                      <input
                         type="checkbox"
+                        id="my-checkbox"
+                        name="my-checkbox"
                         //@ts-ignore
                         {...row.getToggleRowSelectedProps()}
                      />
@@ -147,100 +150,108 @@ const Table = ({
             getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
             userData={originalData}
          />
-         <div className="mt-5 overflow-scroll border-l-[10px] border-l-orange-500 rounded-tl-lg rounded-bl-lg pr-10 w-[98%] h-[56vh] overflow-scroll">
-            <Styles>
-               <div
-                  {...getTableProps()}
-                  className="table sticky"
-                  style={{ overflow: "scroll" }}
-               >
-                  <div className="header text-sm">
-                     {headerGroups.map((headerGroup, key) => (
-                        <div
-                           {...headerGroup.getHeaderGroupProps()}
-                           className="tr"
-                        >
-                           {headerGroup.headers.map((column) => (
-                              <>
-                                 <div
-                                    {...column.getHeaderProps()}
-                                    className={`th main_head-${key}`}
-                                 >
-                                    {column?.Header === "Add Column" ? (
-                                       <button
-                                          type="button"
-                                          data-te-ripple-init
-                                          data-te-ripple-color="light"
-                                          className="inline-block rounded bg-gray-50 px-6 py-2.5 text-xs font-medium uppercase leading-tight text-gray-700 shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
-                                          onClick={() =>
-                                             toggleAddFeatureModal(
-                                                column?.Header
-                                             )
-                                          }
-                                       >
-                                          + Add Column
-                                       </button>
-                                    ) : (
-                                       <>
-                                          {column?.id !== "selection" ? (
-                                             <span className="relative">
-                                                <SortableHeader column={column} />
-                                             </span>
-                                          ) : (
-                                             <span>
-                                                {column.render("Header")}
-                                             </span>
-                                          )}
-                                       </>
-                                    )}
-                                 </div>
-                              </>
-                           ))}
-                        </div>
-                     ))}
-                  </div>
+         <div className="border-l-[10px] border-l-orange-500 rounded-tl-lg rounded-bl-lg">
+            <div className="mt-5 pr-10 w-[98%] max-h-[50vh] overflow-scroll">
+               <Styles>
                   <div
-                     {...getTableBodyProps()}
-                     className="body text-sm main_row"
+                     {...getTableProps()}
+                     className="table sticky"
+                     style={{ overflow: "scroll" }}
                   >
-                     {page.map((row: any) => {
-                        prepareRow(row);
-                        return (
-                           <div {...row.getRowProps()} className="tr p-0">
-                              {row.cells.map((cell: any) => (
-                                 <div {...cell.getCellProps()} className="td">
-                                    {cell?.column?.id === "selection" ? (
-                                       <div className="px-3 py-3">
-                                          {cell.render("Cell")}
-                                       </div>
-                                    ) : (
-                                       <>
-                                          {cell.render(
-                                             <CellInput cell={cell} />
-                                          )}
-                                       </>
-                                    )}
-                                 </div>
+                     <div className="header text-sm">
+                        {headerGroups.map((headerGroup, key) => (
+                           <div
+                              {...headerGroup.getHeaderGroupProps()}
+                              className="tr"
+                           >
+                              {headerGroup.headers.map((column) => (
+                                 <>
+                                    <div
+                                       {...column.getHeaderProps()}
+                                       className={`th main_head-${key}`}
+                                    >
+                                       {column?.Header === "Add Column" ? (
+                                          <button
+                                             type="button"
+                                             data-te-ripple-init
+                                             data-te-ripple-color="light"
+                                             className="inline-block rounded bg-gray-50 px-6 py-2.5 text-xs font-medium uppercase leading-tight text-gray-700 shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
+                                             onClick={() =>
+                                                toggleAddFeatureModal(
+                                                   column?.Header
+                                                )
+                                             }
+                                          >
+                                             + Add Column
+                                          </button>
+                                       ) : (
+                                          <>
+                                             {column?.id !== "selection" ? (
+                                                <span className="relative w-full">
+                                                   <SortableHeader
+                                                      column={column}
+                                                   />
+                                                </span>
+                                             ) : (
+                                                <span>
+                                                   {column.render("Header")}
+                                                </span>
+                                             )}
+                                          </>
+                                       )}
+                                    </div>
+                                 </>
                               ))}
                            </div>
-                        );
-                     })}
-                  </div>
-                  <div className="text-sm">
-                     {createRows}
-                     <div className="addrec px-2 py-4 border-[1px] w-full">
-                        <span
-                           className={`hover:bg-gray-100 px-6 py-3 cursor-pointer rounded-md ${
-                              showAddRow ? "bg-gray-300" : ""
-                           }`}
-                           onClick={() => setNewRows((p) => p + 1)}
-                        >
-                           {"+ Add Record"}
-                        </span>
+                        ))}
                      </div>
+                     <div
+                        {...getTableBodyProps()}
+                        className="body text-sm main_row"
+                     >
+                        {page.map((row: any) => {
+                           prepareRow(row);
+                           return (
+                              <div {...row.getRowProps()} className="tr p-0">
+                                 {row.cells.map((cell: any) => (
+                                    <div
+                                       {...cell.getCellProps()}
+                                       className="td"
+                                    >
+                                       {cell?.column?.id === "selection" ? (
+                                          <div className="px-3 py-3">
+                                             {cell.render("Cell")}
+                                          </div>
+                                       ) : (
+                                          <>
+                                             {cell.render(
+                                                <CellInput cell={cell} />
+                                             )}
+                                          </>
+                                       )}
+                                    </div>
+                                 ))}
+                              </div>
+                           );
+                        })}
+                     </div>
+                     {createRows}
                   </div>
+               </Styles>
+            </div>
+            <div className="text-sm">
+               
+               <div className="px-2 py-6 border-b-[1px] w-[98%] relative  ">
+                  <span
+                     className={`text-[#9d9b9a] px-6 py-3 cursor-pointer  top-0 left-0 absolute rounded-md ${
+                        showAddRow ? "bg-gray-300" : ""
+                     }`}
+                     onClick={() => setNewRows((p) => p + 1)}
+                  >
+                     {"+ Add Record"}
+                  </span>
                </div>
-            </Styles>
+            </div>
          </div>
          {selectedFlatRows.length > 0 && (
             <FloatingMenu selectedFlatRows={selectedFlatRows} />

@@ -17,7 +17,7 @@ export const Styles = styled.div`
     }
 
     .th {
-      font-weight: 700;
+      font-weight: 900 !important;
       background-color: #000;
     }
 
@@ -74,6 +74,7 @@ export const Styles = styled.div`
       .body {
         position: relative;
         z-index: 0;
+        color: #252229 !important;
       }
 
       [data-sticky-td] {
@@ -94,6 +95,8 @@ export const Styles = styled.div`
       display: none !important;
     }
 
+
+    .td
     
 
     .main_head  {
@@ -102,17 +105,14 @@ export const Styles = styled.div`
     .main_head-0{
       padding: 14px 12px !important;
       font-size: 15px !important;
+      background-color: #fbf9f7 !important;
     }
 
     .main_head-1 {
-      padding: 0px !important;
+      padding:3px !important;
       padding-left: 11px !important;
       display: flex !important;
       align-items: center !important;
-    }
-
-    .main_head-0 {
-      background-color: #fbf9f7 !important;
     }
     .add_head {
       padding: 14px 2px !important;
