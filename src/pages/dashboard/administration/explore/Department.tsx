@@ -21,7 +21,7 @@ const Department = ({ cell }: any) => {
             let dept = data.find((item) => item.name === cell?.value);
             setCurrentDepartment(dept);
             const response = await getDepartmentDataShare(dept.id);
-            console.log(response, "res#");
+            
             if (response) {
                setDataSharedTo(response.shared_to);
                setDataSharedFrom(response.shared_from);
@@ -42,7 +42,7 @@ const Department = ({ cell }: any) => {
          let filtered = dataSharedTo.filter((item) => item.id !== dept.id);
          setDataSharedTo(filtered);
       }
-      console.log({dataSharedTo})
+      
       let shareTo: any[] = [];
       data.forEach((data: any) => {
          if (data.id !== currentDepartment.id) {
@@ -52,27 +52,27 @@ const Department = ({ cell }: any) => {
             });
          }
       });
-      console.log({shareTo})
+      
       dataSharedTo.forEach((sharedTo: any) => {
          let fieldIndex = shareTo.findIndex((item: any) => item.department_id === sharedTo.id);
-         console.log("shareTo index", fieldIndex);
+         
          shareTo[fieldIndex] = { ...shareTo[fieldIndex], is_shared: !shareTo[fieldIndex].is_shared };
       });
       // let payload: DataShareProps = {
       //    department: dept.id,
       //    shared_to: dataSharedTo,
       // };
-      // console.log({ shareTo });
+      // 
 
       // shareDataMutation.mutate(payload);
    };
 
    const shareDataMutation = useMutation(shareData, {
       onSuccess(data, variables, context) {
-         console.log("shared data", data);
+         
       },
       onError(error, variables, context) {
-         console.log("error sharing data", error);
+         
       },
    });
 

@@ -40,7 +40,9 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
    return (
       <>
          <button
-            className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
+            className={`flex items-center gap-2 cursor-pointer hover:bg-gray-100 ${
+               open && "bg-gray-100"
+            } p-2 rounded-lg text-sm`}
             onClick={handleClick}
          >
             <img src="/filter/person.svg" />
@@ -88,8 +90,13 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
 };
 
 const Filters = () => {
+   const [open, setOpen] = useState(false);
    return (
-      <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg">
+      <div
+         className={`flex items-center gap-2 cursor-pointer hover:bg-gray-100 ${
+            open && "bg-gray-100"
+         } p-2 rounded-lg text-sm`}
+      >
          <img src="/filter/filter.svg" />
          <span className="border-r-[1px] border-r-gray-300 pr-2 text-[#b2b3b3]">
             Filter
@@ -132,11 +139,13 @@ const HideFilters = ({
    return (
       <>
          <button
-            className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg "
+            className={`flex items-center gap-2 cursor-pointer hover:bg-gray-100 ${
+               open && "bg-gray-100"
+            } p-2 rounded-lg text-sm`}
             onClick={handleClick}
          >
             <img src="/filter/hide.svg" />
-            <span className="border-r-[1px] border-r-gray-300 pr-2 text-[#b2b3b3]">
+            <span className="border-r-[1px]  border-r-gray-300 pr-2 text-[#b2b3b3]">
                Hide
             </span>
             <span className="text-[#b2b3b3]">{getHiddenCount()}</span>

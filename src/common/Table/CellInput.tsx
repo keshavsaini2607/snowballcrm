@@ -14,8 +14,8 @@ const CellInput = ({ cell }: any) => {
 
    const handleInputBlur = (event: any) => {
       event.preventDefault();
-      console.log("event", event.target.value);
-      console.log("event", event.target.name);
+      
+      
       let isUserAttr = data.find(
          (item: any) => item.name === event.target.name
       );
@@ -35,10 +35,10 @@ const CellInput = ({ cell }: any) => {
 
    const saveUserMutation = useMutation(saveUserAttribute, {
       onSuccess(data, variables, context) {
-         console.log({ data });
+         
       },
       onError(error, variables, context) {
-         console.log("error saving user attr", error);
+         
       },
    });
 
@@ -47,12 +47,12 @@ const CellInput = ({ cell }: any) => {
    }, [cell]);
    return (
       <div
-         className="relative flex items-center pr-2"
+         className="relative flex items-center pr-1"
          onMouseOver={() => setHover(true)}
          onMouseOut={() => setHover(false)}
       >
          <input
-            className="w-[100%] px-2 py-3"
+            className="w-[100%] px-2 py-1"
             value={cellValue}
             name={cell?.column?.Header}
             onChange={(e) => setCellValue(e.target.value)}

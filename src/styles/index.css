@@ -65,14 +65,17 @@ html {
 .input {
    width: 150px !important;
    border: 1px solid #ccc;
-   padding: 7.9px;
+   padding: 8px;
    outline: none;
+   font-size: 14px;
 }
 
 .selInput {
    width: 150px !important;
    border: 1px solid #ccc;
    padding: 7.7px;
+   font-size: 14px;
+
 }
 
 .bolder {
@@ -111,8 +114,8 @@ input[type="checkbox"] {
    appearance: none;
    -webkit-appearance: none;
    -moz-appearance: none;
-   width: 20px;
-   height: 20px;
+   width: 17px;
+   height: 17px;
    border: 2px solid #ccc;
    border-radius: 4px;
    outline: none;
@@ -146,3 +149,10 @@ input[type="checkbox"] {
  .check {
    width: 30px !important;
  }
+
+ .left-sticky {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: white;
+  }

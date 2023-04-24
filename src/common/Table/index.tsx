@@ -42,15 +42,14 @@ const Table = ({
    const createNewRowRef = useRef<any>();
    const [newRows, setNewRows] = useState(0);
    const [createRows, setCreateRows] = useState<any[]>([]);
+   const messagesEndRef = useRef<any>(null);
 
    useEffect(() => {
-      console.log(showOnlyRow, "#");
       if (showOnlyRow.length > 0) {
          setDataToShow(showOnlyRow);
       } else {
          setDataToShow(originalData);
       }
-      console.log(dataToShow, "only show#");
    }, [showOnlyRow]);
 
    useEffect(() => {
@@ -91,6 +90,7 @@ const Table = ({
          hooks.visibleColumns.push((columns) => [
             {
                id: "selection",
+
                //@ts-ignore
                Header: ({ getToggleAllRowsSelectedProps }) => (
                   <div className="check">
@@ -101,6 +101,7 @@ const Table = ({
                      />
                   </div>
                ),
+               sticky: "left",
                Cell: ({ row }) => (
                   <div className="check">
                      <input
@@ -112,7 +113,6 @@ const Table = ({
                      />
                   </div>
                ),
-               sticky: "left",
             },
             ...columns,
          ]);
@@ -143,6 +143,8 @@ const Table = ({
       setCurrentPage(pageIndex);
    }, [tableInstance, pageIndex, canPreviousPage, canNextPage]);
 
+   console.log({ columns });
+
    return (
       <>
          <TableFilters
@@ -151,7 +153,10 @@ const Table = ({
             userData={originalData}
          />
          <div className="border-l-[10px] border-l-orange-500 rounded-tl-lg rounded-bl-lg">
-            <div className="mt-5 pr-10 w-[98%] max-h-[50vh] overflow-scroll">
+            <div
+               ref={messagesEndRef}
+               className="mt-5 pr-10 w-[98%] max-h-[50vh] overflow-scroll"
+            >
                <Styles>
                   <div
                      {...getTableProps()}
@@ -159,49 +164,53 @@ const Table = ({
                      style={{ overflow: "scroll" }}
                   >
                      <div className="header text-sm">
-                        {headerGroups.map((headerGroup, key) => (
+                        {headerGroups.map((headerGroup: any, key: any) => (
                            <div
                               {...headerGroup.getHeaderGroupProps()}
                               className="tr"
                            >
-                              {headerGroup.headers.map((column) => (
-                                 <>
-                                    <div
-                                       {...column.getHeaderProps()}
-                                       className={`th main_head-${key}`}
-                                    >
-                                       {column?.Header === "Add Column" ? (
-                                          <button
-                                             type="button"
-                                             data-te-ripple-init
-                                             data-te-ripple-color="light"
-                                             className="inline-block rounded bg-gray-50 px-6 py-2.5 text-xs font-medium uppercase leading-tight text-gray-700 shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
-                                             onClick={() =>
-                                                toggleAddFeatureModal(
-                                                   column?.Header
-                                                )
-                                             }
-                                          >
-                                             + Add Column
-                                          </button>
-                                       ) : (
-                                          <>
-                                             {column?.id !== "selection" ? (
-                                                <span className="relative w-full">
-                                                   <SortableHeader
-                                                      column={column}
-                                                   />
-                                                </span>
-                                             ) : (
-                                                <span>
-                                                   {column.render("Header")}
-                                                </span>
-                                             )}
-                                          </>
-                                       )}
-                                    </div>
-                                 </>
-                              ))}
+                              {headerGroup.headers.map(
+                                 (column: any, index: any) => (
+                                    <>
+                                       <div
+                                          {...column.getHeaderProps()}
+                                          className={`th main_head-${key} head-${index} ${
+                                             index === 0 ? "left-sticky" : ""
+                                          }`}
+                                       >
+                                          {column?.Header === "Add Column" ? (
+                                             <button
+                                                type="button"
+                                                data-te-ripple-init
+                                                data-te-ripple-color="light"
+                                                className="inline-block rounded bg-gray-50 px-6 py-2.5 text-xs font-medium uppercase leading-tight text-gray-700 shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
+                                                onClick={() =>
+                                                   toggleAddFeatureModal(
+                                                      column?.Header
+                                                   )
+                                                }
+                                             >
+                                                + Add Column
+                                             </button>
+                                          ) : (
+                                             <>
+                                                {column?.id !== "selection" ? (
+                                                   <span className="relative w-full">
+                                                      <SortableHeader
+                                                         column={column}
+                                                      />
+                                                   </span>
+                                                ) : (
+                                                   <span>
+                                                      {column.render("Header")}
+                                                   </span>
+                                                )}
+                                             </>
+                                          )}
+                                       </div>
+                                    </>
+                                 )
+                              )}
                            </div>
                         ))}
                      </div>
@@ -212,14 +221,16 @@ const Table = ({
                         {page.map((row: any) => {
                            prepareRow(row);
                            return (
-                              <div {...row.getRowProps()} className="tr p-0">
-                                 {row.cells.map((cell: any) => (
+                              <div {...row.getRowProps()} className={`tr p-0`}>
+                                 {row.cells.map((cell: any, index: any) => (
                                     <div
                                        {...cell.getCellProps()}
-                                       className="td"
+                                       className={`td td-0`}
                                     >
                                        {cell?.column?.id === "selection" ? (
-                                          <div className="px-3 py-3">
+                                          <div
+                                             className={` py-[8px] px-3 td-${index}`}
+                                          >
                                              {cell.render("Cell")}
                                           </div>
                                        ) : (
@@ -240,13 +251,19 @@ const Table = ({
                </Styles>
             </div>
             <div className="text-sm">
-               
-               <div className="px-2 py-6 border-b-[1px] w-[98%] relative  ">
+               <div className="px-2 py-6 border-b-[1px] border-r-[1px] w-[98%] relative">
+                  <div className="w-[150px] absolute top-0 left-0 p-3">
+                     <input type="checkbox" disabled className="cursor-not-allowed" />
+                  </div>
                   <span
-                     className={`text-[#9d9b9a] px-6 py-3 cursor-pointer  top-0 left-0 absolute rounded-md ${
+                     className={`text-[#9d9b9a] px-2 py-3 cursor-pointer  top-0 left-[40px] absolute rounded-md ${
                         showAddRow ? "bg-gray-300" : ""
                      }`}
-                     onClick={() => setNewRows((p) => p + 1)}
+                     onClick={() => {
+                        setNewRows((p) => p + 1);
+                        messagesEndRef.current.scrollTop =
+                           messagesEndRef.current.scrollHeight;
+                     }}
                   >
                      {"+ Add Record"}
                   </span>

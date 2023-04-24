@@ -10,13 +10,14 @@ import { useEffect, useState } from "react";
 
 const style = {
    position: "absolute" as "absolute",
-   bottom: "0",
+   top: "10%",
    right: "0",
    width: "70%",
-   height: "90%",
+   height: "80%",
    bgcolor: "#fff",
    borderLeft: "10px solid #ef7d30",
    borderTop: "3px solid #ef7d30",
+   borderBottom: "3px solid #ef7d30",
    boxShadow: 24,
    borderTopLeftRadius: "10px",
 };
@@ -56,6 +57,7 @@ const Icon = ({ iconName }: any) => {
    );
 };
 
+
 const AdminModal = ({ open, handleClose, children, cell }: props) => {
    return (
       <Modal
@@ -69,17 +71,47 @@ const AdminModal = ({ open, handleClose, children, cell }: props) => {
          <Box sx={style}>
             <div className="flex items-center gap-10 w-[100%]">
                <div className="flex items-center">
-                  <Tooltip title="close">
+                  <Tooltip title="close" componentsProps={{
+                        tooltip: {
+                           sx: {
+                              bgcolor: "common.white",
+                              color: "common.black",
+                              padding: 0,
+                              margin: 0
+                           },
+                        },
+                     }}>
                      <div onClick={handleClose} className="mx-2 cursor-pointer">
                         <Icon iconName="close" />
                      </div>
                   </Tooltip>
-                  <Tooltip title="save">
-                     <div className="mx-2 cursor-pointer">
+                  <Tooltip title="save" componentsProps={{
+                        tooltip: {
+                           sx: {
+                              bgcolor: "common.white",
+                              color: "common.black",
+                              padding: 0,
+                              margin: 0
+                           },
+                        },
+                     }}>
+                     <div className="mx-2 cursor-pointer" >
                         <Icon iconName="save" />
                      </div>
                   </Tooltip>
-                  <Tooltip title="info">
+                  <Tooltip
+                     title="info"
+                     componentsProps={{
+                        tooltip: {
+                           sx: {
+                              bgcolor: "common.white",
+                              color: "common.black",
+                              padding: 0,
+                              margin: 0
+                           },
+                        },
+                     }}
+                  >
                      <div className="mx-2 cursor-pointer">
                         <Icon iconName="info" />
                      </div>

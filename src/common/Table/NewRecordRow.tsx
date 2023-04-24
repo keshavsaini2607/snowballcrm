@@ -205,7 +205,7 @@ const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
 
    function handleInputChange(event: any) {
       if (event.target.name === "First Name") {
-         console.log("event", event.target.value);
+         
          var inputElement: any = document.getElementsByName("Users")[0];
          inputElement.value = event.target.value;
       }
