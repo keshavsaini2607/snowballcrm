@@ -28,7 +28,6 @@ export default function Root() {
 
       return () => {};
    }, [location]);
-   console.log({mouseHovered})
 
    return (
       <div className="w-full h-[calc(100vh)] overflow-hidden">

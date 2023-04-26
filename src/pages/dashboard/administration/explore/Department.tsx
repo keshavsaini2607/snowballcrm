@@ -21,8 +21,8 @@ const Department = ({ cell }: any) => {
             let dept = data.find((item) => item.name === cell?.value);
             setCurrentDepartment(dept);
             const response = await getDepartmentDataShare(dept.id);
-            
-            if (response) {
+
+            if (response && dataSharedTo.length < 1) {
                setDataSharedTo(response.shared_to);
                setDataSharedFrom(response.shared_from);
             }
@@ -31,49 +31,72 @@ const Department = ({ cell }: any) => {
    }, [data]);
 
    const isShared = (dept: any): boolean => {
-      return dataSharedTo.some((item) => item.id === dept.id);
+      return dataSharedTo.some((item) => item.department_id === dept.id);
    };
 
-   const handleDataShare = (dept: any) => {
-      let alreadyExists = dataSharedTo.some((item) => item.id === dept.id);
-      if (!alreadyExists) {
-         setDataSharedTo([...dataSharedTo, dept]);
-      } else {
-         let filtered = dataSharedTo.filter((item) => item.id !== dept.id);
-         setDataSharedTo(filtered);
-      }
-      
-      let shareTo: any[] = [];
-      data.forEach((data: any) => {
-         if (data.id !== currentDepartment.id) {
-            shareTo.push({
-               department_id: data.id,
-               is_shared: false,
-            });
-         }
-      });
-      
-      dataSharedTo.forEach((sharedTo: any) => {
-         let fieldIndex = shareTo.findIndex((item: any) => item.department_id === sharedTo.id);
-         
-         shareTo[fieldIndex] = { ...shareTo[fieldIndex], is_shared: !shareTo[fieldIndex].is_shared };
-      });
-      // let payload: DataShareProps = {
-      //    department: dept.id,
-      //    shared_to: dataSharedTo,
-      // };
-      // 
+   const isSharing = (dept: any): boolean => {
+      return dataSharedFrom.some((item) => item.department_id === dept.id);
+   }
 
-      // shareDataMutation.mutate(payload);
+   useEffect(() => {
+      console.log({dataSharedTo})
+      let share: any[] = [];
+      if(data && data instanceof Array) {
+         data.forEach((item) => {
+            if(item.id !== currentDepartment?.id) {
+               if(isShared(item)) {
+                  share.push({
+                     department_id: item?.id,
+                     is_shared: true
+                  })
+               } else {
+                  share.push({
+                     department_id: item?.id,
+                     is_shared: false
+                  })
+               }
+            }
+         })
+      }
+      if(currentDepartment && share) {
+         let payload: DataShareProps = {
+            department: currentDepartment?.id,
+            shared_to: share
+         }
+         shareDataMutation.mutate(payload);
+      }
+   }, [dataSharedTo])
+
+   const handleDataShare = async (event: any, dept: any) => {
+      if(isShared(dept)) {
+         let filter = dataSharedTo.filter(
+            (item) => item.department_id !== dept?.id
+         );
+         setDataSharedTo(filter);
+      } else {
+         setDataSharedTo([...dataSharedTo, {
+            department_id: dept?.id,
+            is_shared: true
+         }])
+      }
+    
+
+      // console.log({ dataSharedTo });
+
+      setTimeout(() => {
+         // if (dataSharedTo) {
+         //    let payload: DataShareProps = {
+         //       department: dept.id,
+         //       shared_to: dataSharedTo,
+         //    };
+         //    shareDataMutation.mutate(payload);
+         // }
+      }, 0);
    };
 
    const shareDataMutation = useMutation(shareData, {
-      onSuccess(data, variables, context) {
-         
-      },
-      onError(error, variables, context) {
-         
-      },
+      onSuccess(data, variables, context) {},
+      onError(error, variables, context) {},
    });
 
    return (
@@ -114,13 +137,16 @@ const Department = ({ cell }: any) => {
                         data?.map((dept: any) => (
                            <>
                               {dept.name !== cell?.value && (
-                                 <div className="flex items-center gap-3 mb-3">
+                                 <div
+                                    key={dept.id}
+                                    className="flex items-center gap-3 mb-3"
+                                 >
                                     <input
                                        type="checkbox"
                                        name={dept.name}
                                        id={dept.id}
                                        checked={isShared(dept)}
-                                       onChange={() => handleDataShare(dept)}
+                                       onChange={(e) => handleDataShare(e, dept)}
                                     />
                                     <span>{dept.name}</span>
                                  </div>
@@ -139,11 +165,16 @@ const Department = ({ cell }: any) => {
                         data?.map((dept: any) => (
                            <>
                               {dept.name !== cell?.value && (
-                                 <div className="flex items-center gap-3 mb-3">
+                                 <div
+                                    key={dept.id}
+                                    className="flex items-center gap-3 mb-3"
+                                 >
                                     <input
                                        type="checkbox"
                                        name={dept.name}
                                        id={dept.id}
+                                       checked={isSharing(dept)}
+                                       className="cursor-not-allowed"
                                        disabled
                                     />
                                     <span>{dept.name}</span>

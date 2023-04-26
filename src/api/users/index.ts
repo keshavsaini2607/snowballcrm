@@ -30,3 +30,11 @@ export const saveUserAttribute = async(payload: any) => {
       handleError(error);
    }
 }
+
+export const deleteUser = async() => {
+   try {
+      const response = await server.delete('/api/v2/users');
+   } catch (error) {
+      handleError(error);
+   }
+}

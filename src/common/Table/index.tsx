@@ -143,7 +143,6 @@ const Table = ({
       setCurrentPage(pageIndex);
    }, [tableInstance, pageIndex, canPreviousPage, canNextPage]);
 
-   console.log({ columns });
 
    return (
       <>
