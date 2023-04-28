@@ -56,11 +56,26 @@ const Table = ({
       setCols([...COLUMNS]);
    }, [COLUMNS]);
 
+   useEffect(() => {
+       
+      dataToShow.forEach((user) => {
+         if(user && user.user_attributes) {
+            user.user_attributes.sort((a: any, b: any) => a.attribute_id - b.attribute_id );
+         }
+      })
+
+    }, [dataToShow])
+
    let columns = useMemo(() => {
       return cols;
    }, [cols]);
 
+   
+
    let data: any[] = useMemo(() => dataToShow, [tableData, dataToShow]);
+
+   // console.log({columns})
+   // console.log({data})
 
    const toggleAddFeatureModal = (headerTitle: any) => {
       setShowAddFeature((p) => !p);
@@ -182,7 +197,7 @@ const Table = ({
                                                 type="button"
                                                 data-te-ripple-init
                                                 data-te-ripple-color="light"
-                                                className="inline-block rounded bg-gray-50 px-6 py-2.5 text-xs font-medium uppercase leading-tight text-gray-700 shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
+                                                className="inline-block rounded bg-transparent px-6 py-2.5 text-xs font-medium uppercase leading-tight text-gray-700 transition duration-150 ease-in-out focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
                                                 onClick={() =>
                                                    toggleAddFeatureModal(
                                                       column?.Header
@@ -235,7 +250,7 @@ const Table = ({
                                        ) : (
                                           <>
                                              {cell.render(
-                                                <CellInput cell={cell} />
+                                                <CellInput cell={cell} row={row} />
                                              )}
                                           </>
                                        )}

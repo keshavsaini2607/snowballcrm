@@ -77,11 +77,20 @@ const Administration = () => {
    function getAccessor(attributeId: number): string {
       let result: string = "";
       if (data && data?.length > 0) {
-         data[0]?.user_attributes?.forEach((attribute: any, index: number) => {
-            if (attribute?.attribute_id === attributeId) {
-               result = `user_attributes[${index}].value`;
+         // data[0]?.user_attributes?.forEach((attribute: any, index: number) => {
+         //    if (attribute?.attribute_id === attributeId) {
+         //       result = `user_attributes[${index}].value`;
+         //    }
+         // });
+         data.forEach((user: any) => {
+            if(user) {
+               user?.user_attributes?.forEach((attribute: any, index: number) => {
+                  if(attribute?.attribute_id === attributeId) {
+                     result = `user_attributes[${attributeId - 1}].value`;
+                  }
+               })
             }
-         });
+         })
       }
 
       return result;

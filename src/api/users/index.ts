@@ -24,7 +24,7 @@ export const createUser = async(payload: any) => {
 
 export const saveUserAttribute = async(payload: any) => {
    try {
-      const response = await server.patch('/api/v2/users', payload);
+      const response = await server.put(`/api/v2/users/${payload.user_id}/user-attributes`, payload);
       return response.data;
    } catch (error) {
       handleError(error);
@@ -33,7 +33,7 @@ export const saveUserAttribute = async(payload: any) => {
 
 export const deleteUser = async() => {
    try {
-      const response = await server.delete('/api/v2/users');
+      const response = await server.delete(`/api/v2/users`);
    } catch (error) {
       handleError(error);
    }

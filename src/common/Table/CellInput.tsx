@@ -6,39 +6,38 @@ import { useMutation, useQuery } from "react-query";
 import { saveUserAttribute } from "../../api/users";
 import { getUserAttributes } from "../../api/userAttributes";
 
-const CellInput = ({ cell }: any) => {
+const CellInput = ({ cell, row }: any) => {
    const [error, setError] = useState(false);
    const [cellValue, setCellValue] = useState("");
    const [hover, setHover] = useState(false);
    const { data, isLoading } = useQuery("userAttribtues", getUserAttributes);
+   // console.log({row})
 
    const handleInputBlur = (event: any) => {
       event.preventDefault();
-      
-      
+      console.log("event", event);
       let isUserAttr = data.find(
          (item: any) => item.name === event.target.name
       );
+      console.log({ isUserAttr });
       let payload: any;
       if (isUserAttr) {
-         payload = [
-            {
-               is: isUserAttr?.id,
-               attribute_id: isUserAttr?.attribute_type_id,
-               value: event?.target?.value,
-            },
-         ];
-
-         saveUserMutation.mutate(payload);
+         (payload = {
+            user_id: row?.original?.id,
+            is_verified: true,
+            attribute_id: isUserAttr?.id,
+            value: event?.target?.value,
+         }),
+            saveUserMutation.mutate(payload);
       }
    };
 
    const saveUserMutation = useMutation(saveUserAttribute, {
       onSuccess(data, variables, context) {
-         
+         console.log("user attribute saved", data);
       },
       onError(error, variables, context) {
-         
+         console.log("error saving user attribute", error);
       },
    });
 
