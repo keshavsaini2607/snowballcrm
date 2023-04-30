@@ -77,7 +77,7 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
                            readOnly
                         />
                         <span className="ml-4 text-sm">
-                           {column?.user_attributes[1]?.value ||
+                           {column?.user_attributes[0]?.value ||
                               column?.username}
                         </span>
                      </label>

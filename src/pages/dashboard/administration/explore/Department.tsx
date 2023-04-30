@@ -39,7 +39,7 @@ const Department = ({ cell }: any) => {
    }
 
    useEffect(() => {
-      console.log({dataSharedTo})
+      
       let share: any[] = [];
       if(data && data instanceof Array) {
          data.forEach((item) => {
@@ -81,7 +81,7 @@ const Department = ({ cell }: any) => {
       }
     
 
-      // console.log({ dataSharedTo });
+      // 
 
       setTimeout(() => {
          // if (dataSharedTo) {

@@ -1,6 +1,6 @@
 import server from "..";
 import { handleError } from "../../utils/helpers";
-import { CreateUserPayload } from "./types";
+import { DeleteUserPayload } from "./types";
 
 export const getUsers = async ({ page, page_size }: any) => {
    try {
@@ -31,9 +31,11 @@ export const saveUserAttribute = async(payload: any) => {
    }
 }
 
-export const deleteUser = async() => {
+export const deleteUser = async(payload: DeleteUserPayload) => {
    try {
-      const response = await server.delete(`/api/v2/users`);
+      
+      const response = await server.delete(`/api/v2/users`, {data: payload});
+      return response.data;
    } catch (error) {
       handleError(error);
    }

@@ -176,3 +176,26 @@ export const departmentDataSharing = [
 export const userAttributeTypes = [
    ''
 ]
+
+export const columnMenu = [
+   {
+      id: '1',
+      title: 'Rename',
+      icon: '/assets/admin/rename.svg'
+   },
+   {
+      id: '2',
+      title: 'Sort',
+      icon: '/assets/admin/sort.svg'
+   },
+   {
+      id: '3',
+      title: 'Duplicate',
+      icon: '/assets/admin/duplicate.svg'
+   },
+   {
+      id: '4',
+      title: 'Delete',
+      icon: '/assets/admin/delete.svg'
+   },
+]

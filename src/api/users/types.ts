@@ -10,3 +10,8 @@ export interface CreateUserPayload {
    activity_access: any[];
    forms_access: any[];
 }
+
+export interface DeleteUserPayload {
+   user_id: string;
+   department_id: string;
+}

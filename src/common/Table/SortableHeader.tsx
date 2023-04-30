@@ -1,19 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import SortHeaderMenu from "./SortHeaderMenu";
 import { GrStar } from "react-icons/gr";
 import { handleUnderscore } from "../../utils/helpers";
+import ColumnMenuModal from "../Modals/ColumnMenuModal";
+import { useQuery } from "react-query";
+import { getUserAttributes } from "../../api/userAttributes";
 
 type props = {
    column: any;
 };
 
-const showSortForCols = ["Department", "User", "Email"];
 
 const SortableHeader = ({ column }: props) => {
    const [showSort, setShowSort] = useState(false);
    const [iconName, setIconName] = useState("sort");
    const [mouseHover, setMouseHover] = useState(false);
+   const [showColumnMenu, setShowColumnMenu] = useState(false);
+   const { data } = useQuery('userAttributes', getUserAttributes);
+   const [showSortForCols, setShowSortForCols] = useState(["Department", "User", "Email"])
+
+
    const showHeader = (): boolean => {
       let show = false;
       showSortForCols.forEach((col) => {
@@ -23,6 +30,27 @@ const SortableHeader = ({ column }: props) => {
       });
       return show;
    };
+
+   useEffect(() => {
+      if(data && data instanceof Array) {
+         let temp: any = [];
+         data.forEach((attribute: any) => {
+            let alreadyExists = showSortForCols.some((item) => item === attribute.name);
+            if(!alreadyExists) {
+               temp.push(attribute.name);
+            }
+         })
+         setShowSortForCols([...showSortForCols, ...temp]);
+      }
+   }, [data])
+
+   
+
+   const isMandatoryColumn = () => {
+      if(column.Header === 'Department' || column.Header === 'User' || column.Header === 'Email') {
+         return true;
+      }
+   }
    return (
       <div
          className="flex items-center justify-between pr-2 gap-1 w-[100%] relative"
@@ -52,14 +80,20 @@ const SortableHeader = ({ column }: props) => {
             </div>
          </div>
 
-         {showHeader() && showSort && (
+         {showHeader() && showSort && !isMandatoryColumn() && (
             <BsThreeDots
                className={`cursor-pointer ${mouseHover && 'text-primary'}`}
                size={17}
                onMouseOver={() => setMouseHover(true)}
                onMouseOut={() => setMouseHover(false)}
+               onClick={() => setShowColumnMenu(true)}
             />
          )}
+         <ColumnMenuModal 
+            open={showColumnMenu}
+            handleClose={() => setShowColumnMenu(false)}
+            column={column}
+         />
       </div>
    );
 };

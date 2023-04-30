@@ -11,15 +11,15 @@ const CellInput = ({ cell, row }: any) => {
    const [cellValue, setCellValue] = useState("");
    const [hover, setHover] = useState(false);
    const { data, isLoading } = useQuery("userAttribtues", getUserAttributes);
-   // console.log({row})
+   // 
 
    const handleInputBlur = (event: any) => {
       event.preventDefault();
-      console.log("event", event);
+      
       let isUserAttr = data.find(
          (item: any) => item.name === event.target.name
       );
-      console.log({ isUserAttr });
+      
       let payload: any;
       if (isUserAttr) {
          (payload = {
@@ -34,10 +34,10 @@ const CellInput = ({ cell, row }: any) => {
 
    const saveUserMutation = useMutation(saveUserAttribute, {
       onSuccess(data, variables, context) {
-         console.log("user attribute saved", data);
+         
       },
       onError(error, variables, context) {
-         console.log("error saving user attribute", error);
+         
       },
    });
 

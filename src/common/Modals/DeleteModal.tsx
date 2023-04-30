@@ -1,11 +1,15 @@
 import { Button, Modal, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { deleteUser } from "../../api/users";
+import { DeleteUserPayload } from "../../api/users/types";
+import { QueryClient } from "react-query";
 
 interface props {
    open: boolean;
    handleClose: () => void;
    entries: number;
+   selectedRows: any;
 }
 
 const style = {
@@ -21,7 +25,20 @@ const style = {
    py: 1.5
 };
 
-const DeleteModal = ({ open, handleClose, entries }: props) => {
+const DeleteModal = ({ open, handleClose, entries, selectedRows }: props) => {
+   const queryClient = new QueryClient();
+   const handleDelete = () => {
+      if(selectedRows && selectedRows instanceof Array) {
+         selectedRows.forEach(async (row) => {
+            let payload: DeleteUserPayload = {
+               user_id: row.original.id,
+               department_id: row.original.department_id
+            }
+            await deleteUser(payload);
+            handleClose();
+         })
+      }
+   }
    return (
       <Modal
          open={open}
@@ -37,7 +54,7 @@ const DeleteModal = ({ open, handleClose, entries }: props) => {
                You want to delete {entries} record{entries > 1 ? "s" : ""}
             </Typography>
             <div className="w-full flex items-center justify-end mt-4 gap-4">
-               <Button variant="contained" color="error">Delete</Button>
+               <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>
                <Button variant="contained" onClick={handleClose}>Cancel</Button>
             </div>
          </Box>

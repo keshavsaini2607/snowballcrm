@@ -42,12 +42,14 @@ const Table = ({
    const createNewRowRef = useRef<any>();
    const [newRows, setNewRows] = useState(0);
    const [createRows, setCreateRows] = useState<any[]>([]);
+   const [alreadySorted, setAlreadySorted] = useState(false);
    const messagesEndRef = useRef<any>(null);
 
    useEffect(() => {
       if (showOnlyRow.length > 0) {
          setDataToShow(showOnlyRow);
       } else {
+         console.log(originalData[0])
          setDataToShow(originalData);
       }
    }, [showOnlyRow]);
@@ -57,25 +59,26 @@ const Table = ({
    }, [COLUMNS]);
 
    useEffect(() => {
-       
-      dataToShow.forEach((user) => {
-         if(user && user.user_attributes) {
-            user.user_attributes.sort((a: any, b: any) => a.attribute_id - b.attribute_id );
-         }
-      })
-
-    }, [dataToShow])
+      if(showOnlyRow.length < 1 && !alreadySorted) {
+         dataToShow.forEach((user) => {
+            if (user && user.user_attributes) {
+               user.user_attributes.sort(
+                  (a: any, b: any) => a.attribute_id - b.attribute_id
+               );
+            }
+         });
+         setAlreadySorted(true);
+      }
+   }, [dataToShow]);
 
    let columns = useMemo(() => {
       return cols;
    }, [cols]);
 
-   
-
    let data: any[] = useMemo(() => dataToShow, [tableData, dataToShow]);
 
-   // console.log({columns})
-   // console.log({data})
+   // 
+   // 
 
    const toggleAddFeatureModal = (headerTitle: any) => {
       setShowAddFeature((p) => !p);
@@ -158,7 +161,6 @@ const Table = ({
       setCurrentPage(pageIndex);
    }, [tableInstance, pageIndex, canPreviousPage, canNextPage]);
 
-
    return (
       <>
          <TableFilters
@@ -166,7 +168,7 @@ const Table = ({
             getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
             userData={originalData}
          />
-         <div className="border-l-[10px] border-l-orange-500 rounded-tl-lg rounded-bl-lg">
+         <div className="border-l-[10px] border-l-orange-500 rounded-tl-lg rounded-bl-lg ">
             <div
                ref={messagesEndRef}
                className="mt-5 pr-10 w-[98%] max-h-[50vh] overflow-scroll"
@@ -209,7 +211,12 @@ const Table = ({
                                           ) : (
                                              <>
                                                 {column?.id !== "selection" ? (
-                                                   <span className="relative w-full">
+                                                   <span
+                                                      className="w-full"
+                                                      style={{
+                                                         position: "relative",
+                                                      }}
+                                                   >
                                                       <SortableHeader
                                                          column={column}
                                                       />
@@ -230,7 +237,7 @@ const Table = ({
                      </div>
                      <div
                         {...getTableBodyProps()}
-                        className="body text-sm main_row"
+                        className="body text-sm main_row "
                      >
                         {page.map((row: any) => {
                            prepareRow(row);
@@ -250,7 +257,10 @@ const Table = ({
                                        ) : (
                                           <>
                                              {cell.render(
-                                                <CellInput cell={cell} row={row} />
+                                                <CellInput
+                                                   cell={cell}
+                                                   row={row}
+                                                />
                                              )}
                                           </>
                                        )}
@@ -267,7 +277,11 @@ const Table = ({
             <div className="text-sm">
                <div className="px-2 py-6 border-b-[1px] border-r-[1px] w-[98%] relative">
                   <div className="w-[150px] absolute top-0 left-0 p-3">
-                     <input type="checkbox" disabled className="cursor-not-allowed" />
+                     <input
+                        type="checkbox"
+                        disabled
+                        className="cursor-not-allowed"
+                     />
                   </div>
                   <span
                      className={`text-[#9d9b9a] px-2 py-3 cursor-pointer  top-0 left-[40px] absolute rounded-md ${
