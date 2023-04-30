@@ -27,6 +27,7 @@ interface props {
    handleClose: () => void;
    children: any;
    cell: any;
+   user?: string;
 }
 
 let commonStyles = {
@@ -58,7 +59,7 @@ const Icon = ({ iconName }: any) => {
 };
 
 
-const AdminModal = ({ open, handleClose, children, cell }: props) => {
+const AdminModal = ({ open, handleClose, children, cell, user }: props) => {
    return (
       <Modal
          open={open}
@@ -126,7 +127,7 @@ const AdminModal = ({ open, handleClose, children, cell }: props) => {
                   </h1>
                   <div className="bg-[url('/admin-modal-header-back.svg')] px-10 flex items-center gap-10">
                      <h2 className="text-white font-extrabold">
-                        {cell?.value}
+                        {user?? cell?.value}
                      </h2>
                      <input
                         type="text"
@@ -144,7 +145,7 @@ const AdminModal = ({ open, handleClose, children, cell }: props) => {
             </div>
 
             <div className="px-8 pt-8">{children}</div>
-            {cell?.column?.Header === "First Name" && (
+            {cell?.column?.Header === "User" && (
                <div>
                   <ConsultantMenu />
                </div>

@@ -10,6 +10,7 @@ import {
 } from "../../../api/userAttributes";
 import Loader from "../../../components/loader";
 import { useNavigate } from "react-router-dom";
+import { getActivityAccess } from "../../../api/types";
 
 const Administration = () => {
    const [tableInstance, setTableInstance] = useState<any>();
@@ -21,6 +22,10 @@ const Administration = () => {
       ["users", { page: 1, page_size: 10 } as any],
       getAdministrationData
    );
+
+   const { data: activity } = useQuery('activity-access', getActivityAccess);
+
+   
 
    const { data: userAttributes, isLoading: userAttributeLoading } = useQuery(
       "userAttributes",
@@ -77,11 +82,6 @@ const Administration = () => {
    function getAccessor(attributeId: number): string {
       let result: string = "";
       if (data && data?.length > 0) {
-         // data[0]?.user_attributes?.forEach((attribute: any, index: number) => {
-         //    if (attribute?.attribute_id === attributeId) {
-         //       result = `user_attributes[${index}].value`;
-         //    }
-         // });
          data.forEach((user: any) => {
             if(user) {
                user?.user_attributes?.forEach((attribute: any, index: number) => {

@@ -37,6 +37,14 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
       handleClose();
    };
 
+   const getNameAttribute = (attributes: any[]): any => {
+      attributes.forEach((attr) => {
+         if (attr.name === "First Name") {
+            return attr;
+         }
+      });
+   };
+
    return (
       <>
          <button
@@ -77,7 +85,7 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
                            readOnly
                         />
                         <span className="ml-4 text-sm">
-                           {column?.user_attributes[0]?.value ||
+                           {getNameAttribute(column?.user_attributes)?.value ||
                               column?.username}
                         </span>
                      </label>
@@ -90,18 +98,70 @@ const PersonFilter = ({ userData }: PersonFilterProps) => {
 };
 
 const Filters = () => {
-   const [open, setOpen] = useState(false);
+   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+   const open = Boolean(anchorEl);
+   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+   };
+
+   const handleClose = () => {
+      setAnchorEl(null);
+   };
+
    return (
-      <div
-         className={`flex items-center gap-2 cursor-pointer hover:bg-gray-100 ${
-            open && "bg-gray-100"
-         } p-2 rounded-lg text-sm`}
-      >
-         <img src="/filter/filter.svg" />
-         <span className="border-r-[1px] border-r-gray-300 pr-2 text-[#b2b3b3]">
-            Filter
-         </span>
-         <span className="text-[#b2b3b3]">0</span>
+      <div>
+         <button
+            className={`flex items-center gap-2 cursor-pointer hover:bg-gray-100 ${
+               open && "bg-gray-100"
+            } p-2 rounded-lg text-sm`}
+            onClick={handleClick}
+         >
+            <img src="/filter/filter.svg" />
+            <span className="border-r-[1px] border-r-gray-300 pr-2 text-[#b2b3b3]">
+               Filter
+            </span>
+            <span className="text-[#b2b3b3]">0</span>
+         </button>
+         <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+               "aria-labelledby": "basic-button",
+            }}
+            className="h-[300px]"
+         >
+            <div className="border-l-[4px] border-l-primary h-full text-text p-4">
+               <div className="flex items-center gap-6 mb-5">
+                  <p className="w-[15%]">Where</p>
+                  <select className="border-[1px] w-[15vw]">
+                     <option disabled>Column</option>
+                  </select>
+                  <select className="border-[1px] w-[15vw]" placeholder="Condition">
+                     <option disabled>Condition</option>
+                  </select>
+                  <select className="border-[1px] w-[15vw]">
+                     <option disabled>Value</option>
+                  </select>
+               </div>
+               <div className="flex items-center gap-6 mb-5">
+                  <p className="w-[15%]">And</p>
+                  <select className="border-[1px] w-[15vw]">
+                     <option disabled>Column</option>
+                  </select>
+                  <select className="border-[1px] w-[15vw]" placeholder="Condition">
+                     <option disabled>Condition</option>
+                  </select>
+                  <select className="border-[1px] w-[15vw]">
+                     <option disabled>Value</option>
+                  </select>
+               </div>
+               <button>
+                  <span className="text-[#a2a0a0]">+ Add new filter</span>
+               </button>
+            </div>
+         </Menu>
       </div>
    );
 };

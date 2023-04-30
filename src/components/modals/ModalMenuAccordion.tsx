@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { AiOutlineDown, AiOutlineRight } from "react-icons/ai";
+import { handleUnderscore } from "../../utils/helpers";
+import { useQuery } from "react-query";
+import { getActivityAccess } from "../../api/types";
 
 let iconStyle = {
    border: "1px solid gray",
@@ -9,8 +12,26 @@ let iconStyle = {
    padding: "2px",
 };
 
-const ModalMenuAccordion = () => {
+const ModalMenuAccordion = ({ data }: any) => {
    const [expanded, setExpanded] = useState(false);
+   const { data: activityAccess } = useQuery(
+      "activityAccess",
+      getActivityAccess
+   );
+
+   function getOptions(headerName: string) {
+      let resArr: any[] = [];
+
+      if (activityAccess && activityAccess instanceof Array) {
+         activityAccess.forEach((activity: any) => {
+            if (activity.parent_name === headerName) {
+               resArr.push(activity.child_name);
+            }
+         });
+      }
+
+      return resArr;
+   }
 
    return (
       <div className="relative">
@@ -25,23 +46,17 @@ const ModalMenuAccordion = () => {
                   <AiOutlineDown style={iconStyle} />
                )}
             </span>
-            <span className="text-sm">Client Access</span>
+            <span className="text-sm">{handleUnderscore(data)}</span>
             <span className="text-green-500 text-sm">Full Access</span>
          </div>
          {expanded && (
             <div className={`ml-8 text-sm`}>
-               <span className="flex items-center gap-3 mt-2">
-                  <input type="checkbox" name="Read" id="Read" />
-                  <label htmlFor="Read">Read</label>
-               </span>
-               <span className="flex items-center gap-3 mt-2">
-                  <input type="checkbox" name="Read" id="Read" />
-                  <label htmlFor="Read">Write</label>
-               </span>
-               <span className="flex items-center gap-3 mt-2">
-                  <input type="checkbox" name="Read" id="Read" />
-                  <label htmlFor="Read">Delete</label>
-               </span>
+               {getOptions(data).map((option: any) => (
+                  <span className="flex items-center gap-3 mt-2">
+                     <input type="checkbox" name="Read" id="Read" />
+                     <label htmlFor="Read">{handleUnderscore(option)}</label>
+                  </span>
+               ))}
             </div>
          )}
       </div>

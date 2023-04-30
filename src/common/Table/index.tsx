@@ -18,6 +18,10 @@ import AddFeatureModal from "../Modals/AddFeatureModals";
 import CellInput from "./CellInput";
 import { handleUnderscore } from "../../utils/helpers";
 import SortableHeader from "./SortableHeader";
+import UserCell from "./UserCell";
+import UserAccessOption from "./UserAccessOption";
+import { useQuery } from "react-query";
+import { getActivityAccess } from "../../api/types";
 
 type props = {
    tableData: any;
@@ -45,11 +49,15 @@ const Table = ({
    const [alreadySorted, setAlreadySorted] = useState(false);
    const messagesEndRef = useRef<any>(null);
 
+   const { data: activityAccess } = useQuery(
+      "activityAccess",
+      getActivityAccess
+   );
+
    useEffect(() => {
       if (showOnlyRow.length > 0) {
          setDataToShow(showOnlyRow);
       } else {
-         console.log(originalData[0])
          setDataToShow(originalData);
       }
    }, [showOnlyRow]);
@@ -59,7 +67,7 @@ const Table = ({
    }, [COLUMNS]);
 
    useEffect(() => {
-      if(showOnlyRow.length < 1 && !alreadySorted) {
+      if (showOnlyRow.length < 1 && !alreadySorted) {
          dataToShow.forEach((user) => {
             if (user && user.user_attributes) {
                user.user_attributes.sort(
@@ -77,13 +85,26 @@ const Table = ({
 
    let data: any[] = useMemo(() => dataToShow, [tableData, dataToShow]);
 
-   // 
-   // 
+   //
+   //
 
    const toggleAddFeatureModal = (headerTitle: any) => {
       setShowAddFeature((p) => !p);
       setFeatureToAdd(headerTitle);
    };
+
+   console.log({activityAccess})
+
+   function isActivityAccessInput(headerName: string) {
+      if (activityAccess && activityAccess instanceof Array) {
+         for (const activity of activityAccess) {
+            if (activity.parent_name === headerName) {
+               return true;
+            } 
+         }
+         return false;
+      }
+   }
 
    useEffect(() => {
       let arr = [];
@@ -240,6 +261,8 @@ const Table = ({
                         className="body text-sm main_row "
                      >
                         {page.map((row: any) => {
+                           {
+                           }
                            prepareRow(row);
                            return (
                               <div {...row.getRowProps()} className={`tr p-0`}>
@@ -256,11 +279,31 @@ const Table = ({
                                           </div>
                                        ) : (
                                           <>
-                                             {cell.render(
-                                                <CellInput
-                                                   cell={cell}
-                                                   row={row}
-                                                />
+                                             {isActivityAccessInput(
+                                                cell?.column?.parent?.Header
+                                             ) ? (
+                                                <>
+                                                   <UserAccessOption cell={cell} />
+                                                </>
+                                             ) : (
+                                                <>
+                                                   {cell?.column?.id ===
+                                                   "User" ? (
+                                                      <UserCell
+                                                         cell={cell}
+                                                         row={row}
+                                                      />
+                                                   ) : (
+                                                      <>
+                                                         {cell.render(
+                                                            <CellInput
+                                                               cell={cell}
+                                                               row={row}
+                                                            />
+                                                         )}
+                                                      </>
+                                                   )}
+                                                </>
                                              )}
                                           </>
                                        )}

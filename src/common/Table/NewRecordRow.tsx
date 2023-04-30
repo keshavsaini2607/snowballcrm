@@ -10,7 +10,7 @@ import { getAttributeTypes } from "../../api/userAttributes";
 import { handleUnderscore } from "../../utils/helpers";
 import { CreateUserPayload } from "../../api/users/types";
 import { getDepartments } from "../../api/departments";
-import { createUser } from "../../api/users";
+import { createUser, saveUserAttribute } from "../../api/users";
 
 const defaultCols: any[] = [
    {
@@ -211,6 +211,21 @@ const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
       }
    }
 
+
+   function handleSelectChange(event: any, column: any) {
+      
+      
+   }
+
+   const saveAttributeMutation = useMutation(saveUserAttribute, {
+      onSuccess(data, variables, context) {
+         
+      },
+      onError(error, variables, context) {
+         
+      },
+   });
+
    const renderControl = (column: any) => {
       if (column.type === "autocomplete") {
          return (
@@ -240,6 +255,7 @@ const NewRecordRow = ({ createNewRowRef, isNewTable }: props) => {
                className="selInput w-[180px]"
                name={column.key}
                defaultValue={column.key}
+               onChange={(event) => handleSelectChange(event, column)}
             >
                <option disabled>{column.key}</option>
                <option value="Yes">Yes</option>

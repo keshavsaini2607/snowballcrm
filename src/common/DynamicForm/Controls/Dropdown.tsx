@@ -6,6 +6,7 @@ import {
 } from "../../../api/userAttributes";
 import { useMutation, useQuery } from "react-query";
 import { CreateAttributeProps } from "../../../api/userAttributes/types";
+import { handleUnderscore } from "../../../utils/helpers";
 
 interface props {
    formField: any;
@@ -20,6 +21,7 @@ const Dropdown: React.FC<props> = ({ formField, registerFunc, errors }) => {
       getAttributeTypes
    );
 
+   
    
 
    const formatTitle = (title: string) => {
@@ -39,7 +41,7 @@ const Dropdown: React.FC<props> = ({ formField, registerFunc, errors }) => {
             className="border-2 bg-[#f6f6f6] border-[#e4e7eb] rounded-md py-3 px-1 text-sm cursor-pointer outline-none"
          >
             {data?.map((opt: any) => (
-               <option>{formatTitle(opt?.name)}</option>
+               <option disabled={opt?.name !== 'text_field'}>{handleUnderscore(opt?.name)}</option>
             ))}
          </select>
       </div>

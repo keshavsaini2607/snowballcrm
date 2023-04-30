@@ -25,7 +25,7 @@ export const COLUMNS = [
          },
          {
             Header: "User",
-            accessor: "user",
+            accessor: ({ row }: any) => row?.id ?? 10,
          },
          {
             Header: "Email",
@@ -36,11 +36,6 @@ export const COLUMNS = [
 
    {
       Header: "User Details",
-      columns: [
-         // {
-         //    Header: "Add Column",
-         //    // Cell: Explore,
-         // },
-      ],
+      columns: [],
    },
 ];

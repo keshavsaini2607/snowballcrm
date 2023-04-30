@@ -1,21 +1,31 @@
 import React, { useState } from "react";
 import ModalMenuAccordion from "./ModalMenuAccordion";
+import { useQuery } from "react-query";
+import { getActivityAccess } from "../../api/types";
+
+const accessObject: any = [
+   "Client_Access",
+   "Form_Access",
+   "Lead_Access",
+   "Marketing_Access",
+   "Document_Access",
+   "Client_onboarding_access",
+   "Department_view_access",
+   "User_access",
+   "Access_control",
+   "Form_field_access",
+   "Export_access",
+   "Progress_view_access",
+   "Email_Notification",
+   "lead_board",
+];
 
 const ActivityAccess = () => {
    return (
       <div className="px-8 py-4 grid grid-cols-2 gap-x-20 gap-y-4 scroll-important h-[30%]">
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
-         <ModalMenuAccordion />
+         {accessObject.map((da: string) => (
+            <ModalMenuAccordion data={da} />
+         ))}
       </div>
    );
 };
@@ -26,7 +36,7 @@ const LeadAccess = () => {
 
 const ConsultantMenu = () => {
    const [activeHeader, setActiveHeader] = useState("activity");
-
+   
    function renderContent() {
       switch (activeHeader) {
          case "activity":

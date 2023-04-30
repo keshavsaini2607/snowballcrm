@@ -4,7 +4,7 @@ import AdminModal from "../../../../components/modals/AdminModal";
 import Consultant from "./Consultant";
 import Department from "./Department";
 
-const Explore = ({ cell, hover }: any) => {
+const Explore = ({ cell, hover, user }: any) => {
    const [showExplore, setShowExplore] = useState(false);
    const [showModal, setShowModal] = useState(false);
 
@@ -14,7 +14,7 @@ const Explore = ({ cell, hover }: any) => {
             return <Department cell={cell} />;
 
          case "User":
-            return <Consultant cell={cell} />
+            return <Consultant cell={cell} user={user} />
 
          default: {
             return <h1>Something went wrong</h1>;
@@ -42,6 +42,7 @@ const Explore = ({ cell, hover }: any) => {
                setShowModal(false);
                setShowExplore(false);
             }}
+            user={user}
             cell={cell}
          >
             {getContentFile()}
